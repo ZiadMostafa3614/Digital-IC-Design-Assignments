@@ -1,0 +1,47 @@
+Loading db file '/home/ICer/Labs/UART_TX/std_cells/scmetro_tsmc_cl013g_rvt_ss_1p08v_125c.db'
+Information: Propagating switching activity (low effort zero delay simulation). (PWR-6)
+Warning: Design has unannotated primary inputs. (PWR-414)
+Warning: Design has unannotated sequential cell outputs. (PWR-415)
+ 
+****************************************
+Report : power
+        -hier
+        -analysis_effort low
+Design : UART_TX
+Version: O-2018.06-SP1
+Date   : Wed Sep  2 03:39:28 2026
+****************************************
+
+
+Library(s) Used:
+
+    scmetro_tsmc_cl013g_rvt_ss_1p08v_125c (File: /home/ICer/Labs/UART_TX/std_cells/scmetro_tsmc_cl013g_rvt_ss_1p08v_125c.db)
+
+
+Operating Conditions: scmetro_tsmc_cl013g_rvt_ss_1p08v_125c   Library: scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+Wire Load Model Mode: top
+
+Design        Wire Load Model            Library
+------------------------------------------------
+UART_TX                tsmc13_wl30       scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+
+Global Operating Voltage = 1.08 
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1pW
+
+
+--------------------------------------------------------------------------------
+                                       Switch   Int      Leak     Total
+Hierarchy                              Power    Power    Power    Power    %
+--------------------------------------------------------------------------------
+UART_TX                                7.67e-05 3.05e-05 5.93e+05 7.00e-04 100.0
+  u_mux (uart_mux)                     4.13e-06 2.91e-06 5.00e+04 5.71e-05   8.2
+  u_parity_calc (uart_parity_calc)     4.51e-06 3.47e-06 1.06e+05 1.14e-04  16.3
+  u_serializer (uart_serializer)       1.89e-05 1.66e-05 2.77e+05 3.13e-04  44.7
+  u_fsm (uart_fsm)                     7.65e-06 4.59e-06 1.16e+05 1.29e-04  18.4
+1

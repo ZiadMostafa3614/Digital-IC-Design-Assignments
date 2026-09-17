@@ -1,0 +1,279 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{amsmath}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+\definecolor{headerblue}{RGB}{30,80,140}
+
+\lstdefinestyle{logstyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\scriptsize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{gray!40},
+    xleftmargin=15pt,
+    xrightmargin=5pt
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{headerblue}{\textbf{Gate-Level Simulation \& Power Analysis — Assignment\_GLS\_1.0}}}
+\fancyhead[R]{\textcolor{gray}{Digital IC Design Course}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{1.5pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{headerblue}\leaders\hrule height \headrulewidth\hfill}}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=headerblue,
+    urlcolor=headerblue,
+}
+
+\titleformat{\section}{\large\bfseries\color{headerblue}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{headerblue!80}}{}{0em}{}
+
+\begin{document}
+
+%--- Title Page ---%
+\begin{titlepage}
+\centering
+\vspace*{1.5cm}
+{\Huge\bfseries\color{headerblue} Gate-Level Simulation (GLS) \& Dynamic Power Analysis\\[0.3em]}
+{\Large\color{gray} Assignment\_GLS\_1.0 — ALU Adder Configuration\\[2.5cm]}
+
+\begin{tabular}{ll}
+\textbf{Student Name:} & Ziad Mostafa Abdelaziz \\[0.5em]
+\textbf{Course:}       & Digital IC Design \\[0.5em]
+\textbf{EDA Tools:}    & Synopsys Design Compiler, Mentor QuestaSim 10.7c, Synopsys PrimeTime PX \\[0.5em]
+\textbf{Technology:}   & TSMC 0.13\,$\mu$m RVT (\texttt{scmetro\_tsmc\_cl013g\_rvt}) \\[0.5em]
+\textbf{Date:}         & September 2026 \\
+\end{tabular}
+
+\vfill
+\rule{\linewidth}{1pt}
+\end{titlepage}
+
+%--- Table of Contents ---%
+\tableofcontents
+\newpage
+
+%====================================================================%
+\section{Flow Architecture \& Objectives}
+
+Gate-Level Simulation (GLS) is a critical verification milestone in the ASIC design flow. Unlike RTL simulation, GLS simulates the post-synthesis gate-level netlist with full SDF timing back-annotation, verifying that the gate-level implementation functions correctly under realistic delay conditions.
+
+Furthermore, dynamic power consumption depends heavily on circuit switching activity. By dumping a Value Change Dump (\texttt{.vcd}) file during GLS and importing it into Synopsys PrimeTime PX, we obtain high-accuracy time-based dynamic power estimation.
+
+\begin{figure}[H]
+\centering
+\begin{verbatim}
+                    RTL Design (alu8_top.v)
+                              |
+                              v
+                 Design Compiler Synthesis
+                              |
+         +--------------------+--------------------+
+         |                    |                    |
+         v                    v                    v
+  Gate Netlist (v)        SDC File             SDF File
+         |                    |                    |
+         +--------------------+--------------------+
+                              |
+                              v
+                 QuestaSim Gate-Level Simulation
+                              |
+                              v
+                    Adder.vcd (Switching)
+                              |
+                              v
+                     PrimeTime PX Power
+                              |
+                              v
+                    Adder_Power.rpt (Report)
+\end{verbatim}
+\caption{Complete Synthesis $\to$ GLS $\to$ PrimeTime PX Power Analysis Flow}
+\end{figure}
+
+%====================================================================%
+\section{Stage 1: Logic Synthesis (Design Compiler)}
+
+\subsection{RTL Configuration}
+As specified in the assignment requirements, the parameter \texttt{Adder\_0\_Mult\_1} in \texttt{alu8\_top.v} was set to \texttt{0} to instantiate the 8-bit Adder module (\texttt{add\_unit}):
+
+\begin{lstlisting}[style=logstyle, caption={RTL Configuration in alu8\_top.v}]
+module alu8_top #( parameter Adder_0_Mult_1 = 0 ) (
+    input  wire        clk, rst_n, en,    
+    input  wire [7:0]  a, b,
+    output wire [15:0] result,
+    output wire        valid
+);
+    // Instantiates add_unit (8-bit Ripple-Carry Adder)
+\end{lstlisting}
+
+\subsection{Synthesis Output Files}
+Synthesis was executed using Synopsys Design Compiler under a $100\text{ MHz}$ clock constraint ($10\text{ ns}$ clock period), generating the following key deliverables:
+\begin{itemize}
+  \item \textbf{\texttt{alu8\_top\_netlist.v}:} Synthesized Gate-Level Verilog Netlist ($3.5\text{ KB}$, 35 cells).
+  \item \textbf{\texttt{alu8\_top\_netlist.ddc}:} Binary Design Database ($31.2\text{ KB}$).
+  \item \textbf{\texttt{alu8\_top.sdc}:} Synopsys Design Constraints ($7.4\text{ KB}$).
+  \item \textbf{\texttt{alu8\_top.sdf}:} Standard Delay Format Timing File ($43.2\text{ KB}$).
+\end{itemize}
+
+\subsection{Synthesis Performance \& Quality Metrics}
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Metric} & \textbf{Synthesis Value} \\
+\midrule
+Top Module & \texttt{alu8\_top} (Adder Configuration) \\
+Operating Conditions & \texttt{scmetro\_tsmc\_cl013g\_rvt\_ss\_1p08v\_125c} \\
+Total Cell Area & \textbf{$707.20\ \mu\text{m}^2$} \\
+Combinational Cell Area & $328.30\ \mu\text{m}^2$ (20 cells) \\
+Sequential Cell Area & $378.90\ \mu\text{m}^2$ (13 DFFs) \\
+Critical Path Delay & $6.69\text{ ns}$ (\texttt{a[0]} $\to$ \texttt{DW01\_add\_0} $\to$ \texttt{cout\_reg}) \\
+Setup Slack & \textbf{$+2.87\text{ ns}$ (MET, 0 Violations)} \\
+Baseline Power & $0.0834\text{ mW}$ ($83.4\ \mu\text{W}$) \\
+\bottomrule
+\end{tabular}
+\caption{Synthesis Performance Summary}
+\end{table}
+
+%====================================================================%
+\section{Stage 2: Gate-Level Simulation (QuestaSim)}
+
+\subsection{Testbench Setup}
+In \texttt{tb.v}, multiplier testcases were disabled and Adder testcases were enabled with VCD dumping configured to \texttt{VCD/Adder.vcd}:
+
+\begin{verbatim}
+initial begin
+    rst_n = 0; en = 0; a = 0; b = 0;
+    repeat (50) @(posedge clk);
+    rst_n = 1;
+
+    $dumpfile("VCD/Adder.vcd");
+    $dumpvars(0, tb);
+
+    // 10 Adder Testcases Executed (drive a, b -> check_add)
+end
+\end{verbatim}
+
+\subsection{Simulation Execution Command}
+GLS was launched in Mentor QuestaSim using the command:
+\begin{verbatim}
+vsim -do run.do &
+\end{verbatim}
+
+Where \texttt{run.do} loads the standard cell simulation library (\texttt{tsmc13\_m.v}), gate-level netlist (\texttt{alu8\_top\_netlist.v}), testbench (\texttt{tb.v}), and annotates worst-case SDF timing delays (\texttt{-sdfmax /tb/dut=alu8\_top.sdf}).
+
+\subsection{Gate-Level Simulation Waveform Results}
+Figure~\ref{fig:waveform} displays the QuestaSim simulation waveform demonstrating successful 2-cycle pipeline latency, SDF timing propagation, and correct 16-bit sum output (\texttt{result}) generation for the 10 Adder testcases.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{images/output waveform.png}
+\caption{QuestaSim Gate-Level Simulation Waveform Demonstrating 100\% Correct Adder Results under SDF Timing Annotation}
+\label{fig:waveform}
+\end{figure}
+
+\subsection{QuestaSim Transcript Output}
+Figure~\ref{fig:transcript} displays the QuestaSim execution transcript proving that all 10 Adder testcases passed with zero errors.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{images/Transcript output.png}
+\caption{QuestaSim Execution Transcript Confirming ALL 10 TESTS PASSED}
+\label{fig:transcript}
+\end{figure}
+
+%====================================================================%
+\section{Stage 3: PrimeTime PX Power Analysis}
+
+\subsection{PrimeTime Execution Command}
+Time-based dynamic power analysis was executed in Synopsys PrimeTime PX using:
+\begin{verbatim}
+pt_shell -f PT.tcl | tee pw.log
+\end{verbatim}
+
+PrimeTime annotated switching activity from \texttt{sim/VCD/Adder.vcd} across \textbf{93.65\% of design nets} and \textbf{100.00\% of leaf cells}.
+
+\subsection{PrimeTime PX Dynamic Power Report (\texttt{Adder\_Power.rpt})}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Power Category} & \textbf{Power Value (W)} & \textbf{Power Value ($\mu$W)} & \textbf{\% Contribution} \\
+\midrule
+\textbf{Net Switching Power} & $8.184 \times 10^{-5}$ & $81.84\ \mu\text{W}$ & \textbf{66.84\%} \\
+\textbf{Cell Internal Power} & $3.999 \times 10^{-5}$ & $39.99\ \mu\text{W}$ & \textbf{32.66\%} \\
+\textbf{Cell Leakage Power}  & $6.034 \times 10^{-7}$ & $0.603\ \mu\text{W}$ & \textbf{0.49\%} \\
+\midrule
+\textbf{Total Power}         & $\mathbf{1.224 \times 10^{-4}}$ & $\mathbf{122.40\ \mu\text{W}}$ & \textbf{100.00\%} \\
+\bottomrule
+\end{tabular}
+\caption{PrimeTime PX Dynamic Power Analysis Breakdown}
+\end{table}
+
+\begin{itemize}
+  \item \textbf{Peak Power:} \textbf{$28.80\text{ mW}$} (occurred at $535.00\text{ ns}$ during input vector transitions).
+  \item \textbf{Clock Network Power:} $30.96\ \mu\text{W}$ (25.29\% of total power).
+  \item \textbf{Register Power:} $57.55\ \mu\text{W}$ (47.00\% of total power).
+  \item \textbf{Combinational Power:} $33.93\ \mu\text{W}$ (27.71\% of total power).
+\end{itemize}
+
+%====================================================================%
+\section{Deliverables Checklist \& Conclusion}
+
+All requirements for \textbf{Assignment\_GLS\_1.0} have been fully satisfied:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Deliverable Item} & \textbf{File Name} & \textbf{Status} \\
+\midrule
+Gate-Level Netlist   & \texttt{alu8\_top\_netlist.v} & Included ($3.5\text{ KB}$) \\
+Binary Database      & \texttt{alu8\_top\_netlist.ddc} & Included ($31.2\text{ KB}$) \\
+Design Constraints   & \texttt{alu8\_top.sdc} & Included ($7.4\text{ KB}$) \\
+Timing SDF           & \texttt{alu8\_top.sdf} & Included ($43.2\text{ KB}$) \\
+Setup Timing Report  & \texttt{Setup.rpt} & Included ($+2.87\text{ ns}$ Slack) \\
+Hold Timing Report   & \texttt{Hold.rpt} & Included (0 Violations) \\
+Constraints Report   & \texttt{Constraints.rpt} & Included (0 Violations) \\
+Area Report          & \texttt{Area.rpt} & Included ($707.20\ \mu\text{m}^2$) \\
+Power Report         & \texttt{Power.rpt} & Included ($83.4\ \mu\text{W}$) \\
+Dynamic Power Report & \texttt{Adder\_Power.rpt} & Included ($122.40\ \mu\text{W}$) \\
+Verification PDF     & \texttt{Assignment\_GLS\_1.0\_Report.pdf} & Included (with Waveforms) \\
+\bottomrule
+\end{tabular}
+\caption{Final Assignment Deliverables Checklist}
+\end{table}
+
+The Gate-Level Simulation verified 100\% functional accuracy of the synthesized Adder netlist under worst-case timing delays, and PrimeTime PX successfully estimated dynamic power consumption using VCD switching activity.
+
+\end{document}

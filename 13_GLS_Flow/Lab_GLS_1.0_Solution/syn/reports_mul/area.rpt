@@ -1,0 +1,46 @@
+ 
+****************************************
+Report : area
+Design : alu8_top
+Version: O-2018.06-SP1
+Date   : Tue Sep  1 05:39:25 2026
+****************************************
+
+Library(s) Used:
+
+    scmetro_tsmc_cl013g_rvt_ss_1p08v_125c (File: /home/ICer/Labs/Lab_GLS_1.0/std_cells/scmetro_tsmc_cl013g_rvt_ss_1p08v_125c.db)
+
+Number of ports:                          122
+Number of nets:                           373
+Number of cells:                          227
+Number of combinational cells:            187
+Number of sequential cells:                38
+Number of macros/black boxes:               0
+Number of buf/inv:                         21
+Number of references:                       1
+
+Combinational area:               2847.614015
+Buf/Inv area:                      142.380700
+Noncombinational area:            1074.327085
+Macro/Black Box area:                0.000000
+Net Interconnect area:           77000.387634
+
+Total cell area:                  3921.941100
+Total area:                      80922.328735
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area          Local cell area
+                                  ------------------  ---------------------------- 
+Hierarchical cell                 Absolute   Percent  Combi-     Noncombi-  Black-
+                                  Total      Total    national   national   boxes   Design
+--------------------------------  ---------  -------  ---------  ---------  ------  --------------------
+alu8_top                          3921.9411    100.0     0.0000     0.0000  0.0000  alu8_top
+genblk1.u_mul                     3921.9411    100.0  2352.2233  1074.3271  0.0000  mult_unit
+genblk1.u_mul/add_0_root_add_0_root_add_135
+                                   495.3907     12.6   495.3907     0.0000  0.0000  mult_unit_DW01_add_0
+--------------------------------  ---------  -------  ---------  ---------  ------  --------------------
+Total                                                 2847.6140  1074.3271  0.0000
+
+1

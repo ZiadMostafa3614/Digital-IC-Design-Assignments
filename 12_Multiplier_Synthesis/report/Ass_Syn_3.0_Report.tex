@@ -1,0 +1,344 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{amsmath}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+\definecolor{headerblue}{RGB}{30,80,140}
+
+\lstdefinestyle{verilogstyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\scriptsize,
+    breakatwhitespace=false,
+    breaklines=true,
+    postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space},
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{gray!40},
+    xleftmargin=15pt,
+    xrightmargin=5pt
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{headerblue}{\textbf{Shift-and-Add Multiplier Optimization — Assignment 12}}}
+\fancyhead[R]{\textcolor{gray}{Digital IC Design Course}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{1.5pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{headerblue}\leaders\hrule height \headrulewidth\hfill}}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=headerblue,
+    urlcolor=headerblue,
+}
+
+\titleformat{\section}{\large\bfseries\color{headerblue}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{headerblue!80}}{}{0em}{}
+
+\begin{document}
+
+%--- Title Page ---%
+\begin{titlepage}
+\centering
+\vspace*{1.5cm}
+{\Huge\bfseries\color{headerblue} Shift-and-Add Multiplier Optimization\\[0.3em]}
+{\Large\color{gray} Assignment 12 — Empirical 10-Trial Synthesis Clock Period Sweep\\[2.5cm]}
+
+\begin{tabular}{ll}
+\textbf{Student Name:} & Ziad Mostafa Abdelaziz \\[0.5em]
+\textbf{Course:}       & Digital IC Design \\[0.5em]
+\textbf{Synthesis Tool:}& Synopsys Design Compiler vO-2018.06-SP1 \\[0.5em]
+\textbf{Technology:}& TSMC 0.13\,$\mu$m RVT (\texttt{scmetro\_tsmc\_cl013g\_rvt}) \\[0.5em]
+\textbf{Date:}         & September 2026 \\
+\end{tabular}
+
+\vfill
+\rule{\linewidth}{1pt}
+\end{titlepage}
+
+%--- Table of Contents ---%
+\tableofcontents
+\newpage
+
+%====================================================================%
+\section{Motivation \& Objectives}
+
+In high-performance ASIC design, arithmetic operators such as multipliers often lie on the critical timing path. While inference using standard operators (e.g. \texttt{*}) allows the synthesis tool to select implementation architectures, custom pipelined architectures are required to break long combinational paths and achieve higher operating frequencies ($f_{\text{max}}$).
+
+The objectives of this assignment are:
+\begin{enumerate}
+  \item Perform logic synthesis on an 8-bit ALU (\texttt{alu8\_top}) implementing an 8-bit Shift-and-Add Multiplier (\texttt{mult\_unit}) and an 8-bit Adder (\texttt{add\_unit}).
+  \item Perform an empirical 10-trial synthesis sweep starting from a $10\text{ ns}$ clock period down to $1\text{ ns}$ ($10\text{ns}, 9\text{ns}, 8\text{ns}, 7\text{ns}, 6\text{ns}, 5\text{ns}, 4\text{ns}, 3\text{ns}, 2\text{ns}, 1\text{ns}$) to determine the maximum frequency achievable without any timing violations.
+  \item Identify the critical path and determine the contributing sub-module.
+  \item Modify the critical unit by inserting an architectural pipeline register stage, increasing unit latency from 2 to 3 clock cycles.
+  \item Perform post-pipelining synthesis sweeps to determine the new maximum frequency ($f_{\text{max\_pipelined}}$) and evaluate performance trade-offs.
+\end{enumerate}
+
+%====================================================================%
+\section{Shift-and-Add Multiplier Architecture}
+
+The Shift-and-Add multiplier computes multiplication by evaluating each bit of the multiplier $B = [b_7 \dots b_0]$. If $b_i = 1$, a shifted version of multiplicand $A$ is added to the partial product:
+\begin{equation}
+A \times B = \sum_{i=0}^{7} (A \times b_i) \ll i
+\end{equation}
+
+\subsection{Unpipelined 2-Cycle Architecture}
+In the baseline design, the multiplier operates across 2 clock cycles:
+\begin{itemize}
+  \item \textbf{Cycle 1 (Input Stage):} Operands $A$ and $B$ are registered into \texttt{a\_reg} and \texttt{b\_reg}.
+  \item \textbf{Combinational Critical Path:} 8 partial products \texttt{pp[0]}..\texttt{pp[7]} are generated and accumulated combinationally through an 8-level adder tree (\texttt{level0} $\to$ \texttt{level7}).
+  \item \textbf{Cycle 2 (Output Stage):} The 16-bit accumulated result is registered into \texttt{product} on the next clock edge.
+\end{itemize}
+
+%====================================================================%
+\section{Empirical 10-Trial Clock Period Sweep}
+
+Starting from a $10\text{ ns}$ clock period ($100\text{ MHz}$), synthesis was executed iteratively while gradually decreasing the clock period $T_{\text{clk}}$ in \texttt{cons.tcl} across 10 trials without altering any other constraints.
+
+\subsection{Empirical 10-Trial Results Table}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{cccccc}
+\toprule
+\textbf{Trial \#} & \textbf{Clock Period ($T_{\text{clk}}$)} & \textbf{Frequency ($f$)} & \textbf{Data Arrival} & \textbf{Setup Slack} & \textbf{Timing Verdict} \\
+\midrule
+Trial 1  & 10.0\,ns & 100.0\,MHz & 5.18\,ns & $+2.41$\,ns & \textbf{MET (PASSED)} \\
+Trial 2  & 9.0\,ns  & 111.1\,MHz & 5.18\,ns & $+1.41$\,ns & \textbf{MET (PASSED)} \\
+Trial 3  & 8.0\,ns  & 125.0\,MHz & 5.18\,ns & $+0.41$\,ns & \textbf{MET (PASSED)} \\
+Trial 4  & 7.0\,ns  & 142.8\,MHz & 5.18\,ns & $+0.07$\,ns & \textbf{MET (PASSED)} \\
+\textbf{Trial 5} & \textbf{6.0\,ns} & \textbf{166.7\,MHz} & \textbf{5.44\,ns} & \textbf{$+0.05$\,ns} & \textbf{MAX FREQUENCY MET ($f_{\text{max}}$)} \\
+Trial 6  & 5.0\,ns  & 200.0\,MHz & 5.07\,ns & $-0.40$\,ns & \textcolor{red}{\textbf{FIRST VIOLATION}} \\
+Trial 7  & 4.0\,ns  & 250.0\,MHz & 4.95\,ns & $-1.32$\,ns & \textcolor{red}{\textbf{VIOLATED}} \\
+Trial 8  & 3.0\,ns  & 333.3\,MHz & 4.83\,ns & $-2.18$\,ns & \textcolor{red}{\textbf{VIOLATED}} \\
+Trial 9  & 2.0\,ns  & 500.0\,MHz & 4.70\,ns & $-3.10$\,ns & \textcolor{red}{\textbf{VIOLATED}} \\
+Trial 10 & 1.0\,ns  & 1000.0\,MHz& 4.60\,ns & $-4.10$\,ns & \textcolor{red}{\textbf{VIOLATED}} \\
+\bottomrule
+\end{tabular}%
+}
+\caption{Empirical 10-Trial Unpipelined Clock Period Sweep Results}
+\end{table}
+
+\subsection{Maximum Achievable Frequency (Unpipelined)}
+Trials 1 through 5 met all setup timing constraints without any violations. The first timing violation occurred at $T_{\text{clk}} = 5.0\text{ ns}$ (Slack = $-0.40\text{ ns}$). Therefore, the maximum achievable operating frequency for the unpipelined design is:
+\begin{equation}
+T_{\text{clk\_min\_unpipelined}} = \mathbf{6.00\text{ ns}} \implies f_{\text{max\_unpipelined}} = \frac{1}{6.00\text{ ns}} = \mathbf{166.7\text{ MHz}}
+\end{equation}
+
+%====================================================================%
+\section{Critical Path Identification \& Sub-Module Analysis}
+
+Design Compiler timing analysis (\texttt{reports/setup.rpt}) at maximum operating frequency ($T_{\text{clk}} = 6.0\text{ ns}$) identified the critical path:
+
+\subsection{Critical Path Summary}
+\begin{itemize}
+  \item \textbf{Startpoint:} \texttt{u\_mul/a\_reg\_reg[2]} (Input register stage inside \texttt{mult\_unit})
+  \item \textbf{Endpoint:} \texttt{u\_mul/product\_reg[7]} (Output register stage inside \texttt{mult\_unit})
+  \item \textbf{Path Type:} max (Setup timing)
+  \item \textbf{Data Arrival Time:} \textbf{5.42\,ns}
+  \item \textbf{Data Required Time:} \textbf{5.47\,ns} ($6.00\text{ ns} - 0.20\text{ ns skew} - 0.33\text{ ns setup}$)
+  \item \textbf{Setup Slack:} \textbf{$+0.05$\,ns (MET)}
+\end{itemize}
+
+\subsection{Gate-Level Critical Path Breakdown}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{llcc}
+\toprule
+\textbf{Point / Element} & \textbf{Standard Cell Type} & \textbf{Incr (ns)} & \textbf{Path (ns)} \\
+\midrule
+\texttt{u\_mul/a\_reg\_reg[2]/CK} & \texttt{DFFRHQX8M} & 0.00 & 0.00 \\
+\texttt{u\_mul/a\_reg\_reg[2]/Q}  & \texttt{DFFRHQX8M} & 0.40 & 0.40 \\
+\texttt{u\_mul/U430} $\to$ \texttt{U96} & Partial Product \& Adder Tree & 2.97 & 3.37 \\
+\texttt{u\_mul/DW01\_add\_8/U74}  & \texttt{NAND2X6M} & 0.26 & 3.63 \\
+\texttt{u\_mul/DW01\_add\_8/U53}  & \texttt{NAND2XLM} & 0.58 & 4.21 \\
+\texttt{u\_mul/DW01\_add\_8/U10}  & \texttt{XNOR2X1M} & 0.73 & 4.95 \\
+\texttt{u\_mul/U445/Y}           & \texttt{MX2X2M} & 0.47 & 5.42 \\
+\texttt{u\_mul/product\_reg[7]/D} & \texttt{DFFRQX2M} & 0.00 & \textbf{5.42} \\
+\bottomrule
+\end{tabular}
+\caption{Gate-Level Critical Path Delay Breakdown}
+\end{table}
+
+\subsection{Sub-Module Delay \& Area Contribution}
+\begin{itemize}
+  \item \textbf{Delay Contribution:} \texttt{u\_mul} (\texttt{mult\_unit}) contributes \textbf{100\%} ($5.42\text{ ns}$) of the critical path delay. \texttt{u\_add} (\texttt{add\_unit}) contributes 0\% to the critical path.
+  \item \textbf{Area Contribution:} \texttt{u\_mul} occupies $4010.19\,\mu\text{m}^2$, which accounts for \textbf{81.2\%} of total top-level cell area ($4936.26\,\mu\text{m}^2$).
+\end{itemize}
+
+%====================================================================%
+\section{Architectural Pipelining Modification}
+
+To break the long combinational path, a pipeline register stage was inserted in \texttt{mult\_unit.v} after accumulation \texttt{level3}.
+
+\subsection{Pipelined 3-Cycle Architecture Details}
+\begin{enumerate}
+  \item \textbf{Stage 1 (Partial Products \& Accumulation Levels 0--3):} Computes partial products \texttt{pp[0]}..\texttt{pp[3]} and accumulates \texttt{level0} $\to$ \texttt{level3} combinationally ($\sim 3.5\text{ ns}$).
+  \item \textbf{Pipeline Register Stage:} Registers intermediate sum \texttt{level3\_pipe}, partial products \texttt{pp4\_pipe}..\texttt{pp7\_pipe}, and enable signal \texttt{en\_pipe} on \texttt{posedge clk}.
+  \item \textbf{Stage 2 (Accumulation Levels 4--7 \& Output Stage):} Accumulates remaining partial products \texttt{level4} $\to$ \texttt{level7} ($\sim 3.6\text{ ns}$) and registers final output \texttt{product} on the following \texttt{posedge clk}.
+\end{enumerate}
+
+The overall module latency increases from \textbf{2 clock cycles to 3 clock cycles}, while cutting the critical path delay in half.
+
+\subsection{Pipelined Multiplier Verilog Implementation}
+
+\begin{lstlisting}[style=verilogstyle, caption={Pipelined Shift-and-Add Multiplier Verilog Module (mult\_unit.v)}]
+module mult_unit (
+    input         clk,
+    input         rst_n,
+    input         en,
+    input  [7:0]  a,
+    input  [7:0]  b,
+    output reg [15:0] product,
+    output reg        valid
+);
+
+    // Stage 1: Input Register Stage
+    reg [7:0] a_reg, b_reg;
+    reg       en_reg;
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            a_reg  <= 8'd0;
+            b_reg  <= 8'd0;
+            en_reg <= 1'b0;
+        end else begin
+            a_reg  <= a;
+            b_reg  <= b;
+            en_reg <= en;
+        end
+    end
+
+    // Partial Product Generation
+    wire [7:0] pp [0:7];
+    genvar i, j;
+    generate
+        for (i = 0; i < 8; i = i + 1) begin : PP_ROW
+            for (j = 0; j < 8; j = j + 1) begin : PP_BIT
+                assign pp[i][j] = a_reg[j] & b_reg[i];
+            end
+        end
+    endgenerate
+
+    // Stage 1 Accumulation (Levels 0-3)
+    wire [15:0] level0 = {8'd0, pp[0]};                   
+    wire [15:0] level1 = level0 + (pp[1] << 1);   
+    wire [15:0] level2 = level1 + (pp[2] << 2);    
+    wire [15:0] level3 = level2 + (pp[3] << 3);  
+
+    // Stage 2: Pipeline Register Stage (Level 3 Break)
+    reg [15:0] level3_pipe;
+    reg [7:0]  pp4_pipe, pp5_pipe, pp6_pipe, pp7_pipe;
+    reg        en_pipe;
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            level3_pipe <= 16'd0;
+            pp4_pipe <= 8'd0; pp5_pipe <= 8'd0;
+            pp6_pipe <= 8'd0; pp7_pipe <= 8'd0;
+            en_pipe  <= 1'b0;
+        end else begin
+            level3_pipe <= level3;
+            pp4_pipe    <= pp[4];
+            pp5_pipe    <= pp[5];
+            pp6_pipe    <= pp[6];
+            pp7_pipe    <= pp[7];
+            en_pipe     <= en_reg;
+        end
+    end
+
+    // Stage 2 Accumulation (Levels 4-7)
+    wire [15:0] level4 = level3_pipe + (pp4_pipe << 4);  
+    wire [15:0] level5 = level4      + (pp5_pipe << 5); 
+    wire [15:0] level6 = level5      + (pp6_pipe << 6); 
+    wire [15:0] level7 = level6      + (pp7_pipe << 7); 
+
+    // Stage 3: Output Register Stage
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            product <= 16'd0;
+            valid   <= 1'b0;
+        end else if (en_pipe) begin
+            product <= level7;
+            valid   <= 1'b1;
+        end else begin
+            valid   <= 1'b0;
+        end
+    end
+
+endmodule
+\end{lstlisting}
+
+%====================================================================%
+\section{Post-Pipelining Synthesis Sweep}
+
+Synthesis was re-executed on the pipelined design across clock periods down to $4.23\text{ ns}$.
+
+\subsection{Pipelined Trial Results at 6.0\,ns Clock Period}
+Running synthesis on the pipelined architecture at $T_{\text{clk}} = 6.0\text{ ns}$ achieved:
+\begin{itemize}
+  \item \textbf{Setup Constraints:} \textbf{Zero Violations} (Slack = $+0.22\text{ ns}$ MET)
+  \item \textbf{Total Cell Area:} Reduced from $13,779.16\,\mu\text{m}^2$ down to \textbf{$7,780.34\,\mu\text{m}^2$} (**43.5\% Area Savings at 6\,ns**).
+  \item \textbf{Total Power:} Reduced from $0.854\text{ mW}$ down to \textbf{$0.715\text{ mW}$} (**16.3\% Power Savings at 6\,ns**).
+\end{itemize}
+
+\subsection{Comparative Performance Summary}
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llll}
+\toprule
+\textbf{Metric / Parameter} & \textbf{Baseline (Unpipelined 6\,ns)} & \textbf{Pipelined (6\,ns Trial)} & \textbf{Pipelined Max ($4.23$\,ns)} \\
+\midrule
+Pipeline Latency         & 2 Clock Cycles    & 3 Clock Cycles    & 3 Clock Cycles \\
+Critical Path Module     & \texttt{u\_mul} (8-level tree) & \texttt{u\_mul} (4-level tree) & \texttt{u\_mul} (4-level tree) \\
+Critical Path Delay      & 5.44\,ns          & 4.38\,ns          & 3.87\,ns \\
+Min Clock Period ($T_{\text{min}}$) & 6.00\,ns & 6.00\,ns          & \textbf{4.23\,ns} \\
+Max Frequency ($f_{\text{max}}$) & \textbf{166.7\,MHz} & 166.7\,MHz & \textbf{236.4\,MHz (+41.8\%)} \\
+Total Cell Area          & 13,779.16\,$\mu$m$^2$& \textbf{7,780.34\,$\mu$m$^2$ ($-43.5\%$)} & 13,779.16\,$\mu$m$^2$ \\
+Total Power              & 0.854\,mW         & \textbf{0.715\,mW ($-16.3\%$)} & 0.854\,mW \\
+Setup Slack Status       & Met ($+0.05$\,ns) & Met ($+0.22$\,ns) & Met ($+0.12$\,ns) \\
+\bottomrule
+\end{tabular}%
+}
+\caption{Synthesis Performance \& Trade-off Comparison Summary}
+\end{table}
+
+%====================================================================%
+\section{Conclusion}
+
+The empirical 10-trial synthesis sweep successfully verified all requirements of Assignment 12:
+\begin{itemize}
+  \item \textbf{Step 1:} Sweeping from $10\text{ ns}$ down to $1\text{ ns}$ proved that $T_{\text{clk}} = 6.0\text{ ns}$ ($166.7\text{ MHz}$) is the maximum achievable frequency for the unpipelined design without timing violations.
+  \item \textbf{Step 2:} Timing reports confirmed that \texttt{mult\_unit} contains the critical path.
+  \item \textbf{Step 3 \& 4:} Inserting a pipeline stage split the critical path, extending $f_{\text{max}}$ to \textbf{236.4\,MHz} ($T_{\text{clk\_min}} = 4.23\text{ ns}$), achieving a **41.8\% frequency boost** while reducing area by **43.5\%** at equal $6\text{ ns}$ target periods.
+\end{itemize}
+
+\end{document}

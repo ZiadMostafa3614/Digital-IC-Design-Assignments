@@ -1,0 +1,1919 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 100
+Design : alu8_top
+Version: O-2018.06-SP1
+Date   : Tue Sep  1 05:39:26 2026
+****************************************
+
+Operating Conditions: scmetro_tsmc_cl013g_rvt_ss_1p08v_125c   Library: scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+Wire Load Model Mode: top
+
+  Startpoint: b[6] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/b_reg_reg[6]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  b[6] (in)                                               0.17       2.17 r
+  genblk1.u_mul/b[6] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/b_reg_reg[6]/D (DFFRX1M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/b_reg_reg[6]/CK (DFFRX1M)                 0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.36
+
+
+  Startpoint: b[7] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/b_reg_reg[7]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  b[7] (in)                                               0.17       2.17 r
+  genblk1.u_mul/b[7] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/b_reg_reg[7]/D (DFFRX1M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/b_reg_reg[7]/CK (DFFRX1M)                 0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.36
+
+
+  Startpoint: a[7] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/a_reg_reg[7]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  a[7] (in)                                               0.17       2.17 r
+  genblk1.u_mul/a[7] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/a_reg_reg[7]/D (DFFRX1M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/a_reg_reg[7]/CK (DFFRX1M)                 0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.36
+
+
+  Startpoint: a[6] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/a_reg_reg[6]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  a[6] (in)                                               0.17       2.17 r
+  genblk1.u_mul/a[6] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/a_reg_reg[6]/D (DFFRX1M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/a_reg_reg[6]/CK (DFFRX1M)                 0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.36
+
+
+  Startpoint: a[5] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/a_reg_reg[5]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  a[5] (in)                                               0.17       2.17 r
+  genblk1.u_mul/a[5] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/a_reg_reg[5]/D (DFFRX1M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/a_reg_reg[5]/CK (DFFRX1M)                 0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.36
+
+
+  Startpoint: en (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/en_reg_reg
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  en (in)                                                 0.17       2.17 r
+  genblk1.u_mul/en (mult_unit)                            0.00       2.17 r
+  genblk1.u_mul/en_reg_reg/D (DFFRX1M)                    0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/en_reg_reg/CK (DFFRX1M)                   0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.36
+
+
+  Startpoint: b[2] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/b_reg_reg[2]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  b[2] (in)                                               0.17       2.17 r
+  genblk1.u_mul/b[2] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/b_reg_reg[2]/D (DFFRX1M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/b_reg_reg[2]/CK (DFFRX1M)                 0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.36
+
+
+  Startpoint: b[3] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/b_reg_reg[3]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  b[3] (in)                                               0.17       2.17 r
+  genblk1.u_mul/b[3] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/b_reg_reg[3]/D (DFFRX1M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/b_reg_reg[3]/CK (DFFRX1M)                 0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.36
+
+
+  Startpoint: a[4] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/a_reg_reg[4]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  a[4] (in)                                               0.17       2.17 r
+  genblk1.u_mul/a[4] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/a_reg_reg[4]/D (DFFRX1M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/a_reg_reg[4]/CK (DFFRX1M)                 0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.36
+
+
+  Startpoint: b[4] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/b_reg_reg[4]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  b[4] (in)                                               0.17       2.17 r
+  genblk1.u_mul/b[4] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/b_reg_reg[4]/D (DFFRX2M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/b_reg_reg[4]/CK (DFFRX2M)                 0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.37
+
+
+  Startpoint: a[3] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/a_reg_reg[3]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  a[3] (in)                                               0.17       2.17 r
+  genblk1.u_mul/a[3] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/a_reg_reg[3]/D (DFFRX2M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/a_reg_reg[3]/CK (DFFRX2M)                 0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.37
+
+
+  Startpoint: a[2] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/a_reg_reg[2]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  a[2] (in)                                               0.17       2.17 r
+  genblk1.u_mul/a[2] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/a_reg_reg[2]/D (DFFRX2M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/a_reg_reg[2]/CK (DFFRX2M)                 0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.37
+
+
+  Startpoint: a[1] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/a_reg_reg[1]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  a[1] (in)                                               0.17       2.17 r
+  genblk1.u_mul/a[1] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/a_reg_reg[1]/D (DFFRX2M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/a_reg_reg[1]/CK (DFFRX2M)                 0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.37
+
+
+  Startpoint: b[0] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/b_reg_reg[0]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  b[0] (in)                                               0.17       2.17 r
+  genblk1.u_mul/b[0] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/b_reg_reg[0]/D (DFFRX2M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/b_reg_reg[0]/CK (DFFRX2M)                 0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.37
+
+
+  Startpoint: b[1] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/b_reg_reg[1]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  b[1] (in)                                               0.17       2.17 r
+  genblk1.u_mul/b[1] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/b_reg_reg[1]/D (DFFRX2M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/b_reg_reg[1]/CK (DFFRX2M)                 0.00       9.80 r
+  library setup time                                     -0.27       9.53
+  data required time                                                 9.53
+  --------------------------------------------------------------------------
+  data required time                                                 9.53
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.37
+
+
+  Startpoint: a[0] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/a_reg_reg[0]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  a[0] (in)                                               0.17       2.17 r
+  genblk1.u_mul/a[0] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/a_reg_reg[0]/D (DFFRX4M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/a_reg_reg[0]/CK (DFFRX4M)                 0.00       9.80 r
+  library setup time                                     -0.26       9.54
+  data required time                                                 9.54
+  --------------------------------------------------------------------------
+  data required time                                                 9.54
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.37
+
+
+  Startpoint: b[5] (input port clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/b_reg_reg[5]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                    2.00       2.00 r
+  b[5] (in)                                               0.17       2.17 r
+  genblk1.u_mul/b[5] (mult_unit)                          0.00       2.17 r
+  genblk1.u_mul/b_reg_reg[5]/D (DFFRX4M)                  0.00       2.17 r
+  data arrival time                                                  2.17
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/b_reg_reg[5]/CK (DFFRX4M)                 0.00       9.80 r
+  library setup time                                     -0.26       9.54
+  data required time                                                 9.54
+  --------------------------------------------------------------------------
+  data required time                                                 9.54
+  data arrival time                                                 -2.17
+  --------------------------------------------------------------------------
+  slack (MET)                                                        7.37
+
+
+  Startpoint: genblk1.u_mul/b_reg_reg[3]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[15]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/b_reg_reg[3]/CK (DFFRX1M)                 0.00       0.00 r
+  genblk1.u_mul/b_reg_reg[3]/Q (DFFRX1M)                  0.83       0.83 r
+  genblk1.u_mul/U46/Y (INVX10M)                           0.32       1.16 f
+  genblk1.u_mul/U62/Y (NOR2X1M)                           0.74       1.90 r
+  genblk1.u_mul/U5/CO (ADDFHX1M)                          0.61       2.51 r
+  genblk1.u_mul/U117/CO (ADDFX2M)                         0.49       3.00 r
+  genblk1.u_mul/U119/CO (ADDFX2M)                         0.47       3.47 r
+  genblk1.u_mul/U121/CO (ADDFX2M)                         0.47       3.93 r
+  genblk1.u_mul/U122/CO (ADDFX2M)                         0.47       4.40 r
+  genblk1.u_mul/U63/CO (ADDFX4M)                          0.53       4.93 r
+  genblk1.u_mul/U155/Y (CLKXOR2X2M)                       0.46       5.39 r
+  genblk1.u_mul/U37/CO (ADDFX2M)                          0.79       6.18 r
+  genblk1.u_mul/U45/CO (ADDFHX4M)                         0.38       6.57 r
+  genblk1.u_mul/U71/Y (AND2X2M)                           0.50       7.06 r
+  genblk1.u_mul/U150/Y (CLKXOR2X2M)                       0.61       7.68 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/A[13] (mult_unit_DW01_add_0)
+                                                          0.00       7.68 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_13/CO (ADDFHX2M)
+                                                          0.57       8.25 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_14/CO (ADDFX4M)
+                                                          0.58       8.83 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U4/Y (OR2X4M)
+                                                          0.31       9.14 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U6/Y (NAND2X6M)
+                                                          0.12       9.26 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/SUM[15] (mult_unit_DW01_add_0)
+                                                          0.00       9.26 r
+  genblk1.u_mul/U54/Y (AO22X2M)                           0.32       9.58 r
+  genblk1.u_mul/product_reg[15]/D (DFFRHQX8M)             0.00       9.58 r
+  data arrival time                                                  9.58
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[15]/CK (DFFRHQX8M)            0.00       9.80 r
+  library setup time                                     -0.20       9.60
+  data required time                                                 9.60
+  --------------------------------------------------------------------------
+  data required time                                                 9.60
+  data arrival time                                                 -9.58
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.02
+
+
+  Startpoint: genblk1.u_mul/b_reg_reg[0]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[14]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/b_reg_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  genblk1.u_mul/b_reg_reg[0]/Q (DFFRX2M)                  0.72       0.72 r
+  genblk1.u_mul/U42/Y (INVX10M)                           0.28       0.99 f
+  genblk1.u_mul/U12/Y (NOR2X5M)                           0.45       1.44 r
+  genblk1.u_mul/U11/Y (CLKAND2X16M)                       0.28       1.73 r
+  genblk1.u_mul/U27/CO (ADDFHX8M)                         0.23       1.96 r
+  genblk1.u_mul/U25/CO (ADDFHX8M)                         0.23       2.19 r
+  genblk1.u_mul/U18/CO (ADDFHX8M)                         0.22       2.41 r
+  genblk1.u_mul/U88/CO (ADDFX2M)                          0.44       2.85 r
+  genblk1.u_mul/U65/CO (ADDFHX4M)                         0.30       3.15 r
+  genblk1.u_mul/U67/CO (ADDFX2M)                          0.60       3.75 r
+  genblk1.u_mul/U164/Y (CLKXOR2X2M)                       0.56       4.31 r
+  genblk1.u_mul/U53/CO (ADDFHX4M)                         0.51       4.81 r
+  genblk1.u_mul/U35/CO (ADDFX2M)                          0.60       5.42 r
+  genblk1.u_mul/U38/Y (CLKAND2X4M)                        0.44       5.85 r
+  genblk1.u_mul/U56/Y (AND2X2M)                           0.50       6.35 r
+  genblk1.u_mul/U52/Y (CLKAND2X3M)                        0.49       6.84 r
+  genblk1.u_mul/U68/Y (AND2X2M)                           0.51       7.35 r
+  genblk1.u_mul/U157/Y (CLKXOR2X2M)                       0.59       7.94 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/B[14] (mult_unit_DW01_add_0)
+                                                          0.00       7.94 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_14/S (ADDFX4M)
+                                                          0.75       8.70 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/SUM[14] (mult_unit_DW01_add_0)
+                                                          0.00       8.70 f
+  genblk1.u_mul/U135/Y (AO22X1M)                          0.58       9.28 f
+  genblk1.u_mul/product_reg[14]/D (DFFRHQX8M)             0.00       9.28 f
+  data arrival time                                                  9.28
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[14]/CK (DFFRHQX8M)            0.00       9.80 r
+  library setup time                                     -0.23       9.57
+  data required time                                                 9.57
+  --------------------------------------------------------------------------
+  data required time                                                 9.57
+  data arrival time                                                 -9.28
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.29
+
+
+  Startpoint: genblk1.u_mul/b_reg_reg[3]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[13]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/b_reg_reg[3]/CK (DFFRX1M)                 0.00       0.00 r
+  genblk1.u_mul/b_reg_reg[3]/Q (DFFRX1M)                  0.83       0.83 r
+  genblk1.u_mul/U46/Y (INVX10M)                           0.32       1.16 f
+  genblk1.u_mul/U62/Y (NOR2X1M)                           0.74       1.90 r
+  genblk1.u_mul/U5/CO (ADDFHX1M)                          0.61       2.51 r
+  genblk1.u_mul/U117/CO (ADDFX2M)                         0.49       3.00 r
+  genblk1.u_mul/U119/CO (ADDFX2M)                         0.47       3.47 r
+  genblk1.u_mul/U121/CO (ADDFX2M)                         0.47       3.93 r
+  genblk1.u_mul/U122/CO (ADDFX2M)                         0.47       4.40 r
+  genblk1.u_mul/U63/CO (ADDFX4M)                          0.53       4.93 r
+  genblk1.u_mul/U155/Y (CLKXOR2X2M)                       0.46       5.39 r
+  genblk1.u_mul/U37/CO (ADDFX2M)                          0.79       6.18 r
+  genblk1.u_mul/U45/CO (ADDFHX4M)                         0.38       6.57 r
+  genblk1.u_mul/U71/Y (AND2X2M)                           0.50       7.06 r
+  genblk1.u_mul/U150/Y (CLKXOR2X2M)                       0.61       7.68 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/A[13] (mult_unit_DW01_add_0)
+                                                          0.00       7.68 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_13/S (ADDFHX2M)
+                                                          0.57       8.25 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/SUM[13] (mult_unit_DW01_add_0)
+                                                          0.00       8.25 f
+  genblk1.u_mul/U48/Y (AO22X1M)                           0.57       8.82 f
+  genblk1.u_mul/product_reg[13]/D (DFFRHQX8M)             0.00       8.82 f
+  data arrival time                                                  8.82
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[13]/CK (DFFRHQX8M)            0.00       9.80 r
+  library setup time                                     -0.23       9.57
+  data required time                                                 9.57
+  --------------------------------------------------------------------------
+  data required time                                                 9.57
+  data arrival time                                                 -8.82
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.75
+
+
+  Startpoint: genblk1.u_mul/b_reg_reg[3]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[12]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/b_reg_reg[3]/CK (DFFRX1M)                 0.00       0.00 r
+  genblk1.u_mul/b_reg_reg[3]/Q (DFFRX1M)                  0.83       0.83 r
+  genblk1.u_mul/U46/Y (INVX10M)                           0.32       1.16 f
+  genblk1.u_mul/U62/Y (NOR2X1M)                           0.74       1.90 r
+  genblk1.u_mul/U5/CO (ADDFHX1M)                          0.61       2.51 r
+  genblk1.u_mul/U117/CO (ADDFX2M)                         0.49       3.00 r
+  genblk1.u_mul/U119/CO (ADDFX2M)                         0.47       3.47 r
+  genblk1.u_mul/U121/CO (ADDFX2M)                         0.47       3.93 r
+  genblk1.u_mul/U122/CO (ADDFX2M)                         0.47       4.40 r
+  genblk1.u_mul/U63/CO (ADDFX4M)                          0.53       4.93 r
+  genblk1.u_mul/U155/Y (CLKXOR2X2M)                       0.46       5.39 r
+  genblk1.u_mul/U37/CO (ADDFX2M)                          0.79       6.18 r
+  genblk1.u_mul/U45/CO (ADDFHX4M)                         0.38       6.57 r
+  genblk1.u_mul/U151/Y (CLKXOR2X2M)                       0.58       7.14 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/A[12] (mult_unit_DW01_add_0)
+                                                          0.00       7.14 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_12/S (ADDFHX2M)
+                                                          0.57       7.71 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/SUM[12] (mult_unit_DW01_add_0)
+                                                          0.00       7.71 f
+  genblk1.u_mul/U136/Y (AO22X1M)                          0.57       8.29 f
+  genblk1.u_mul/product_reg[12]/D (DFFRHQX8M)             0.00       8.29 f
+  data arrival time                                                  8.29
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[12]/CK (DFFRHQX8M)            0.00       9.80 r
+  library setup time                                     -0.23       9.57
+  data required time                                                 9.57
+  --------------------------------------------------------------------------
+  data required time                                                 9.57
+  data arrival time                                                 -8.29
+  --------------------------------------------------------------------------
+  slack (MET)                                                        1.28
+
+
+  Startpoint: genblk1.u_mul/b_reg_reg[3]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[11]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/b_reg_reg[3]/CK (DFFRX1M)                 0.00       0.00 r
+  genblk1.u_mul/b_reg_reg[3]/Q (DFFRX1M)                  0.83       0.83 r
+  genblk1.u_mul/U46/Y (INVX10M)                           0.32       1.16 f
+  genblk1.u_mul/U62/Y (NOR2X1M)                           0.74       1.90 r
+  genblk1.u_mul/U5/CO (ADDFHX1M)                          0.61       2.51 r
+  genblk1.u_mul/U117/CO (ADDFX2M)                         0.49       3.00 r
+  genblk1.u_mul/U119/CO (ADDFX2M)                         0.47       3.47 r
+  genblk1.u_mul/U121/CO (ADDFX2M)                         0.47       3.93 r
+  genblk1.u_mul/U122/CO (ADDFX2M)                         0.47       4.40 r
+  genblk1.u_mul/U63/CO (ADDFX4M)                          0.53       4.93 r
+  genblk1.u_mul/U155/Y (CLKXOR2X2M)                       0.56       5.49 f
+  genblk1.u_mul/U37/S (ADDFX2M)                           0.68       6.17 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/A[10] (mult_unit_DW01_add_0)
+                                                          0.00       6.17 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_10/CO (ADDFX2M)
+                                                          0.70       6.86 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_11/S (ADDFHX2M)
+                                                          0.44       7.31 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/SUM[11] (mult_unit_DW01_add_0)
+                                                          0.00       7.31 f
+  genblk1.u_mul/U137/Y (AO22X1M)                          0.57       7.88 f
+  genblk1.u_mul/product_reg[11]/D (DFFRHQX8M)             0.00       7.88 f
+  data arrival time                                                  7.88
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[11]/CK (DFFRHQX8M)            0.00       9.80 r
+  library setup time                                     -0.23       9.57
+  data required time                                                 9.57
+  --------------------------------------------------------------------------
+  data required time                                                 9.57
+  data arrival time                                                 -7.88
+  --------------------------------------------------------------------------
+  slack (MET)                                                        1.69
+
+
+  Startpoint: genblk1.u_mul/b_reg_reg[3]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[10]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/b_reg_reg[3]/CK (DFFRX1M)                 0.00       0.00 r
+  genblk1.u_mul/b_reg_reg[3]/Q (DFFRX1M)                  0.83       0.83 r
+  genblk1.u_mul/U46/Y (INVX10M)                           0.32       1.16 f
+  genblk1.u_mul/U62/Y (NOR2X1M)                           0.74       1.90 r
+  genblk1.u_mul/U5/CO (ADDFHX1M)                          0.61       2.51 r
+  genblk1.u_mul/U117/CO (ADDFX2M)                         0.49       3.00 r
+  genblk1.u_mul/U119/CO (ADDFX2M)                         0.47       3.47 r
+  genblk1.u_mul/U121/CO (ADDFX2M)                         0.47       3.93 r
+  genblk1.u_mul/U122/CO (ADDFX2M)                         0.47       4.40 r
+  genblk1.u_mul/U63/CO (ADDFX4M)                          0.53       4.93 r
+  genblk1.u_mul/U155/Y (CLKXOR2X2M)                       0.56       5.49 f
+  genblk1.u_mul/U37/S (ADDFX2M)                           0.68       6.17 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/A[10] (mult_unit_DW01_add_0)
+                                                          0.00       6.17 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_10/S (ADDFX2M)
+                                                          0.70       6.87 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/SUM[10] (mult_unit_DW01_add_0)
+                                                          0.00       6.87 f
+  genblk1.u_mul/U139/Y (AO22X1M)                          0.59       7.46 f
+  genblk1.u_mul/product_reg[10]/D (DFFRHQX8M)             0.00       7.46 f
+  data arrival time                                                  7.46
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[10]/CK (DFFRHQX8M)            0.00       9.80 r
+  library setup time                                     -0.23       9.57
+  data required time                                                 9.57
+  --------------------------------------------------------------------------
+  data required time                                                 9.57
+  data arrival time                                                 -7.46
+  --------------------------------------------------------------------------
+  slack (MET)                                                        2.11
+
+
+  Startpoint: genblk1.u_mul/b_reg_reg[3]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[9]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/b_reg_reg[3]/CK (DFFRX1M)                 0.00       0.00 r
+  genblk1.u_mul/b_reg_reg[3]/Q (DFFRX1M)                  0.83       0.83 r
+  genblk1.u_mul/U46/Y (INVX10M)                           0.32       1.16 f
+  genblk1.u_mul/U62/Y (NOR2X1M)                           0.74       1.90 r
+  genblk1.u_mul/U5/CO (ADDFHX1M)                          0.61       2.51 r
+  genblk1.u_mul/U117/CO (ADDFX2M)                         0.49       3.00 r
+  genblk1.u_mul/U119/CO (ADDFX2M)                         0.47       3.47 r
+  genblk1.u_mul/U121/S (ADDFX2M)                          0.49       3.95 f
+  genblk1.u_mul/U110/CO (ADDFX2M)                         0.67       4.62 f
+  genblk1.u_mul/U124/CO (ADDFX2M)                         0.51       5.13 f
+  genblk1.u_mul/U126/S (ADDFX2M)                          0.52       5.65 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/A[9] (mult_unit_DW01_add_0)
+                                                          0.00       5.65 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_9/S (ADDFX2M)
+                                                          0.70       6.34 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/SUM[9] (mult_unit_DW01_add_0)
+                                                          0.00       6.34 f
+  genblk1.u_mul/U138/Y (AO22X1M)                          0.59       6.94 f
+  genblk1.u_mul/product_reg[9]/D (DFFRHQX8M)              0.00       6.94 f
+  data arrival time                                                  6.94
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[9]/CK (DFFRHQX8M)             0.00       9.80 r
+  library setup time                                     -0.23       9.57
+  data required time                                                 9.57
+  --------------------------------------------------------------------------
+  data required time                                                 9.57
+  data arrival time                                                 -6.94
+  --------------------------------------------------------------------------
+  slack (MET)                                                        2.63
+
+
+  Startpoint: genblk1.u_mul/b_reg_reg[3]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[8]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/b_reg_reg[3]/CK (DFFRX1M)                 0.00       0.00 r
+  genblk1.u_mul/b_reg_reg[3]/Q (DFFRX1M)                  0.83       0.83 r
+  genblk1.u_mul/U46/Y (INVX10M)                           0.32       1.16 f
+  genblk1.u_mul/U62/Y (NOR2X1M)                           0.74       1.90 r
+  genblk1.u_mul/U5/CO (ADDFHX1M)                          0.61       2.51 r
+  genblk1.u_mul/U117/CO (ADDFX2M)                         0.49       3.00 r
+  genblk1.u_mul/U119/CO (ADDFX2M)                         0.47       3.47 r
+  genblk1.u_mul/U121/S (ADDFX2M)                          0.49       3.95 f
+  genblk1.u_mul/U110/CO (ADDFX2M)                         0.67       4.62 f
+  genblk1.u_mul/U124/S (ADDFX2M)                          0.52       5.14 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/A[8] (mult_unit_DW01_add_0)
+                                                          0.00       5.14 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_8/S (ADDFX2M)
+                                                          0.70       5.84 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/SUM[8] (mult_unit_DW01_add_0)
+                                                          0.00       5.84 f
+  genblk1.u_mul/U142/Y (AO22X1M)                          0.59       6.43 f
+  genblk1.u_mul/product_reg[8]/D (DFFRHQX8M)              0.00       6.43 f
+  data arrival time                                                  6.43
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[8]/CK (DFFRHQX8M)             0.00       9.80 r
+  library setup time                                     -0.23       9.57
+  data required time                                                 9.57
+  --------------------------------------------------------------------------
+  data required time                                                 9.57
+  data arrival time                                                 -6.43
+  --------------------------------------------------------------------------
+  slack (MET)                                                        3.14
+
+
+  Startpoint: genblk1.u_mul/b_reg_reg[3]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[7]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/b_reg_reg[3]/CK (DFFRX1M)                 0.00       0.00 r
+  genblk1.u_mul/b_reg_reg[3]/Q (DFFRX1M)                  0.83       0.83 r
+  genblk1.u_mul/U46/Y (INVX10M)                           0.32       1.16 f
+  genblk1.u_mul/U62/Y (NOR2X1M)                           0.74       1.90 r
+  genblk1.u_mul/U5/CO (ADDFHX1M)                          0.61       2.51 r
+  genblk1.u_mul/U117/CO (ADDFX2M)                         0.49       3.00 r
+  genblk1.u_mul/U119/S (ADDFX2M)                          0.60       3.60 f
+  genblk1.u_mul/U152/Y (AND2X1M)                          0.47       4.06 f
+  genblk1.u_mul/U110/S (ADDFX2M)                          0.54       4.61 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/A[7] (mult_unit_DW01_add_0)
+                                                          0.00       4.61 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_7/S (ADDFX2M)
+                                                          0.70       5.30 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/SUM[7] (mult_unit_DW01_add_0)
+                                                          0.00       5.30 f
+  genblk1.u_mul/U141/Y (AO22X1M)                          0.59       5.90 f
+  genblk1.u_mul/product_reg[7]/D (DFFRHQX8M)              0.00       5.90 f
+  data arrival time                                                  5.90
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[7]/CK (DFFRHQX8M)             0.00       9.80 r
+  library setup time                                     -0.23       9.57
+  data required time                                                 9.57
+  --------------------------------------------------------------------------
+  data required time                                                 9.57
+  data arrival time                                                 -5.90
+  --------------------------------------------------------------------------
+  slack (MET)                                                        3.67
+
+
+  Startpoint: genblk1.u_mul/b_reg_reg[0]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[6]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/b_reg_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  genblk1.u_mul/b_reg_reg[0]/Q (DFFRX2M)                  0.72       0.72 r
+  genblk1.u_mul/U42/Y (INVX10M)                           0.28       0.99 f
+  genblk1.u_mul/U12/Y (NOR2X5M)                           0.45       1.44 r
+  genblk1.u_mul/U11/Y (CLKAND2X16M)                       0.28       1.73 r
+  genblk1.u_mul/U27/CO (ADDFHX8M)                         0.23       1.96 r
+  genblk1.u_mul/U25/CO (ADDFHX8M)                         0.23       2.19 r
+  genblk1.u_mul/U18/S (ADDFHX8M)                          0.41       2.60 f
+  genblk1.u_mul/U162/Y (AND2X1M)                          0.37       2.97 f
+  genblk1.u_mul/U82/CO (ADDFX2M)                          0.53       3.50 f
+  genblk1.u_mul/U84/S (ADDFX2M)                           0.52       4.02 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/B[6] (mult_unit_DW01_add_0)
+                                                          0.00       4.02 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_6/S (ADDFX2M)
+                                                          0.78       4.79 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/SUM[6] (mult_unit_DW01_add_0)
+                                                          0.00       4.79 f
+  genblk1.u_mul/U140/Y (AO22X1M)                          0.59       5.39 f
+  genblk1.u_mul/product_reg[6]/D (DFFRHQX8M)              0.00       5.39 f
+  data arrival time                                                  5.39
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[6]/CK (DFFRHQX8M)             0.00       9.80 r
+  library setup time                                     -0.23       9.57
+  data required time                                                 9.57
+  --------------------------------------------------------------------------
+  data required time                                                 9.57
+  data arrival time                                                 -5.39
+  --------------------------------------------------------------------------
+  slack (MET)                                                        4.18
+
+
+  Startpoint: genblk1.u_mul/b_reg_reg[0]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[5]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/b_reg_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  genblk1.u_mul/b_reg_reg[0]/Q (DFFRX2M)                  0.72       0.72 r
+  genblk1.u_mul/U42/Y (INVX10M)                           0.28       0.99 f
+  genblk1.u_mul/U12/Y (NOR2X5M)                           0.45       1.44 r
+  genblk1.u_mul/U11/Y (CLKAND2X16M)                       0.28       1.73 r
+  genblk1.u_mul/U27/CO (ADDFHX8M)                         0.23       1.96 r
+  genblk1.u_mul/U25/CO (ADDFHX8M)                         0.23       2.19 r
+  genblk1.u_mul/U18/S (ADDFHX8M)                          0.41       2.60 f
+  genblk1.u_mul/U40/Y (CLKXOR2X2M)                        0.46       3.07 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/B[4] (mult_unit_DW01_add_0)
+                                                          0.00       3.07 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_4/CO (ADDFX2M)
+                                                          0.77       3.84 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_5/S (ADDFX2M)
+                                                          0.48       4.32 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/SUM[5] (mult_unit_DW01_add_0)
+                                                          0.00       4.32 f
+  genblk1.u_mul/U144/Y (AO22X1M)                          0.59       4.91 f
+  genblk1.u_mul/product_reg[5]/D (DFFRHQX8M)              0.00       4.91 f
+  data arrival time                                                  4.91
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[5]/CK (DFFRHQX8M)             0.00       9.80 r
+  library setup time                                     -0.23       9.57
+  data required time                                                 9.57
+  --------------------------------------------------------------------------
+  data required time                                                 9.57
+  data arrival time                                                 -4.91
+  --------------------------------------------------------------------------
+  slack (MET)                                                        4.66
+
+
+  Startpoint: genblk1.u_mul/b_reg_reg[0]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[4]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/b_reg_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  genblk1.u_mul/b_reg_reg[0]/Q (DFFRX2M)                  0.72       0.72 r
+  genblk1.u_mul/U42/Y (INVX10M)                           0.28       0.99 f
+  genblk1.u_mul/U12/Y (NOR2X5M)                           0.45       1.44 r
+  genblk1.u_mul/U11/Y (CLKAND2X16M)                       0.28       1.73 r
+  genblk1.u_mul/U27/CO (ADDFHX8M)                         0.23       1.96 r
+  genblk1.u_mul/U25/CO (ADDFHX8M)                         0.23       2.19 r
+  genblk1.u_mul/U18/S (ADDFHX8M)                          0.41       2.60 f
+  genblk1.u_mul/U40/Y (CLKXOR2X2M)                        0.46       3.07 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/B[4] (mult_unit_DW01_add_0)
+                                                          0.00       3.07 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_4/S (ADDFX2M)
+                                                          0.77       3.84 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/SUM[4] (mult_unit_DW01_add_0)
+                                                          0.00       3.84 f
+  genblk1.u_mul/U143/Y (AO22X1M)                          0.59       4.43 f
+  genblk1.u_mul/product_reg[4]/D (DFFRHQX8M)              0.00       4.43 f
+  data arrival time                                                  4.43
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[4]/CK (DFFRHQX8M)             0.00       9.80 r
+  library setup time                                     -0.23       9.57
+  data required time                                                 9.57
+  --------------------------------------------------------------------------
+  data required time                                                 9.57
+  data arrival time                                                 -4.43
+  --------------------------------------------------------------------------
+  slack (MET)                                                        5.13
+
+
+  Startpoint: genblk1.u_mul/b_reg_reg[3]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[3]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/b_reg_reg[3]/CK (DFFRX1M)                 0.00       0.00 r
+  genblk1.u_mul/b_reg_reg[3]/Q (DFFRX1M)                  0.83       0.83 r
+  genblk1.u_mul/U46/Y (INVX10M)                           0.32       1.16 f
+  genblk1.u_mul/U24/Y (NOR2X3M)                           0.64       1.80 r
+  genblk1.u_mul/U22/Y (XOR2X2M)                           0.51       2.31 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/A[3] (mult_unit_DW01_add_0)
+                                                          0.00       2.31 r
+  genblk1.u_mul/add_0_root_add_0_root_add_135/U1_3/S (ADDFX2M)
+                                                          0.74       3.05 f
+  genblk1.u_mul/add_0_root_add_0_root_add_135/SUM[3] (mult_unit_DW01_add_0)
+                                                          0.00       3.05 f
+  genblk1.u_mul/U146/Y (AO22X1M)                          0.59       3.64 f
+  genblk1.u_mul/product_reg[3]/D (DFFRHQX8M)              0.00       3.64 f
+  data arrival time                                                  3.64
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[3]/CK (DFFRHQX8M)             0.00       9.80 r
+  library setup time                                     -0.23       9.57
+  data required time                                                 9.57
+  --------------------------------------------------------------------------
+  data required time                                                 9.57
+  data arrival time                                                 -3.64
+  --------------------------------------------------------------------------
+  slack (MET)                                                        5.92
+
+
+  Startpoint: genblk1.u_mul/en_reg_reg
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[2]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/en_reg_reg/CK (DFFRX1M)                   0.00       0.00 r
+  genblk1.u_mul/en_reg_reg/QN (DFFRX1M)                   0.89       0.89 r
+  genblk1.u_mul/U134/Y (INVX4M)                           0.63       1.52 f
+  genblk1.u_mul/U85/Y (INVX2M)                            0.54       2.06 r
+  genblk1.u_mul/U80/Y (BUFX4M)                            0.85       2.91 r
+  genblk1.u_mul/U145/Y (AO22X1M)                          0.54       3.44 r
+  genblk1.u_mul/product_reg[2]/D (DFFRHQX8M)              0.00       3.44 r
+  data arrival time                                                  3.44
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[2]/CK (DFFRHQX8M)             0.00       9.80 r
+  library setup time                                     -0.21       9.59
+  data required time                                                 9.59
+  --------------------------------------------------------------------------
+  data required time                                                 9.59
+  data arrival time                                                 -3.44
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.15
+
+
+  Startpoint: genblk1.u_mul/en_reg_reg
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[1]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/en_reg_reg/CK (DFFRX1M)                   0.00       0.00 r
+  genblk1.u_mul/en_reg_reg/QN (DFFRX1M)                   0.89       0.89 r
+  genblk1.u_mul/U134/Y (INVX4M)                           0.63       1.52 f
+  genblk1.u_mul/U85/Y (INVX2M)                            0.54       2.06 r
+  genblk1.u_mul/U80/Y (BUFX4M)                            0.85       2.91 r
+  genblk1.u_mul/U148/Y (AO22X1M)                          0.54       3.44 r
+  genblk1.u_mul/product_reg[1]/D (DFFRHQX8M)              0.00       3.44 r
+  data arrival time                                                  3.44
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[1]/CK (DFFRHQX8M)             0.00       9.80 r
+  library setup time                                     -0.21       9.59
+  data required time                                                 9.59
+  --------------------------------------------------------------------------
+  data required time                                                 9.59
+  data arrival time                                                 -3.44
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.15
+
+
+  Startpoint: genblk1.u_mul/en_reg_reg
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/product_reg[0]
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/en_reg_reg/CK (DFFRX1M)                   0.00       0.00 r
+  genblk1.u_mul/en_reg_reg/QN (DFFRX1M)                   0.89       0.89 r
+  genblk1.u_mul/U134/Y (INVX4M)                           0.63       1.52 f
+  genblk1.u_mul/U85/Y (INVX2M)                            0.54       2.06 r
+  genblk1.u_mul/U80/Y (BUFX4M)                            0.85       2.91 r
+  genblk1.u_mul/U147/Y (AO22X1M)                          0.54       3.44 r
+  genblk1.u_mul/product_reg[0]/D (DFFRHQX8M)              0.00       3.44 r
+  data arrival time                                                  3.44
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/product_reg[0]/CK (DFFRHQX8M)             0.00       9.80 r
+  library setup time                                     -0.21       9.59
+  data required time                                                 9.59
+  --------------------------------------------------------------------------
+  data required time                                                 9.59
+  data arrival time                                                 -3.44
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.15
+
+
+  Startpoint: genblk1.u_mul/en_reg_reg
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: genblk1.u_mul/valid_reg
+            (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Path Group: MASTER_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/en_reg_reg/CK (DFFRX1M)                   0.00       0.00 r
+  genblk1.u_mul/en_reg_reg/Q (DFFRX1M)                    0.74       0.74 r
+  genblk1.u_mul/valid_reg/D (DFFRHQX8M)                   0.00       0.74 r
+  data arrival time                                                  0.74
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  genblk1.u_mul/valid_reg/CK (DFFRHQX8M)                  0.00       9.80 r
+  library setup time                                     -0.21       9.59
+  data required time                                                 9.59
+  --------------------------------------------------------------------------
+  data required time                                                 9.59
+  data arrival time                                                 -0.74
+  --------------------------------------------------------------------------
+  slack (MET)                                                        8.86
+
+
+  Startpoint: genblk1.u_mul/product_reg[15]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[15] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[15]/CK (DFFRHQX8M)            0.00       0.00 r
+  genblk1.u_mul/product_reg[15]/Q (DFFRHQX8M)             1.15       1.15 r
+  genblk1.u_mul/product[15] (mult_unit)                   0.00       1.15 r
+  result[15] (out)                                        0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[14]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[14] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[14]/CK (DFFRHQX8M)            0.00       0.00 r
+  genblk1.u_mul/product_reg[14]/Q (DFFRHQX8M)             1.15       1.15 r
+  genblk1.u_mul/product[14] (mult_unit)                   0.00       1.15 r
+  result[14] (out)                                        0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[13]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[13] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[13]/CK (DFFRHQX8M)            0.00       0.00 r
+  genblk1.u_mul/product_reg[13]/Q (DFFRHQX8M)             1.15       1.15 r
+  genblk1.u_mul/product[13] (mult_unit)                   0.00       1.15 r
+  result[13] (out)                                        0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[12]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[12] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[12]/CK (DFFRHQX8M)            0.00       0.00 r
+  genblk1.u_mul/product_reg[12]/Q (DFFRHQX8M)             1.15       1.15 r
+  genblk1.u_mul/product[12] (mult_unit)                   0.00       1.15 r
+  result[12] (out)                                        0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[11]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[11] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[11]/CK (DFFRHQX8M)            0.00       0.00 r
+  genblk1.u_mul/product_reg[11]/Q (DFFRHQX8M)             1.15       1.15 r
+  genblk1.u_mul/product[11] (mult_unit)                   0.00       1.15 r
+  result[11] (out)                                        0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[10]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[10] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[10]/CK (DFFRHQX8M)            0.00       0.00 r
+  genblk1.u_mul/product_reg[10]/Q (DFFRHQX8M)             1.15       1.15 r
+  genblk1.u_mul/product[10] (mult_unit)                   0.00       1.15 r
+  result[10] (out)                                        0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[9]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[9] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[9]/CK (DFFRHQX8M)             0.00       0.00 r
+  genblk1.u_mul/product_reg[9]/Q (DFFRHQX8M)              1.15       1.15 r
+  genblk1.u_mul/product[9] (mult_unit)                    0.00       1.15 r
+  result[9] (out)                                         0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[8]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[8] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[8]/CK (DFFRHQX8M)             0.00       0.00 r
+  genblk1.u_mul/product_reg[8]/Q (DFFRHQX8M)              1.15       1.15 r
+  genblk1.u_mul/product[8] (mult_unit)                    0.00       1.15 r
+  result[8] (out)                                         0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[7]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[7] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[7]/CK (DFFRHQX8M)             0.00       0.00 r
+  genblk1.u_mul/product_reg[7]/Q (DFFRHQX8M)              1.15       1.15 r
+  genblk1.u_mul/product[7] (mult_unit)                    0.00       1.15 r
+  result[7] (out)                                         0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[6]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[6] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[6]/CK (DFFRHQX8M)             0.00       0.00 r
+  genblk1.u_mul/product_reg[6]/Q (DFFRHQX8M)              1.15       1.15 r
+  genblk1.u_mul/product[6] (mult_unit)                    0.00       1.15 r
+  result[6] (out)                                         0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[5]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[5] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[5]/CK (DFFRHQX8M)             0.00       0.00 r
+  genblk1.u_mul/product_reg[5]/Q (DFFRHQX8M)              1.15       1.15 r
+  genblk1.u_mul/product[5] (mult_unit)                    0.00       1.15 r
+  result[5] (out)                                         0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[4]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[4] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[4]/CK (DFFRHQX8M)             0.00       0.00 r
+  genblk1.u_mul/product_reg[4]/Q (DFFRHQX8M)              1.15       1.15 r
+  genblk1.u_mul/product[4] (mult_unit)                    0.00       1.15 r
+  result[4] (out)                                         0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[3]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[3] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[3]/CK (DFFRHQX8M)             0.00       0.00 r
+  genblk1.u_mul/product_reg[3]/Q (DFFRHQX8M)              1.15       1.15 r
+  genblk1.u_mul/product[3] (mult_unit)                    0.00       1.15 r
+  result[3] (out)                                         0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[2]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[2] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[2]/CK (DFFRHQX8M)             0.00       0.00 r
+  genblk1.u_mul/product_reg[2]/Q (DFFRHQX8M)              1.15       1.15 r
+  genblk1.u_mul/product[2] (mult_unit)                    0.00       1.15 r
+  result[2] (out)                                         0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[1]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[1] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[1]/CK (DFFRHQX8M)             0.00       0.00 r
+  genblk1.u_mul/product_reg[1]/Q (DFFRHQX8M)              1.15       1.15 r
+  genblk1.u_mul/product[1] (mult_unit)                    0.00       1.15 r
+  result[1] (out)                                         0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/product_reg[0]
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: result[0] (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/product_reg[0]/CK (DFFRHQX8M)             0.00       0.00 r
+  genblk1.u_mul/product_reg[0]/Q (DFFRHQX8M)              1.15       1.15 r
+  genblk1.u_mul/product[0] (mult_unit)                    0.00       1.15 r
+  result[0] (out)                                         0.00       1.15 r
+  data arrival time                                                  1.15
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.65
+
+
+  Startpoint: genblk1.u_mul/valid_reg
+              (rising edge-triggered flip-flop clocked by MASTER_CLK)
+  Endpoint: valid (output port clocked by MASTER_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu8_top           tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MASTER_CLK (rise edge)                            0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  genblk1.u_mul/valid_reg/CK (DFFRHQX8M)                  0.00       0.00 r
+  genblk1.u_mul/valid_reg/Q (DFFRHQX8M)                   1.10       1.10 r
+  genblk1.u_mul/valid (mult_unit)                         0.00       1.10 r
+  valid (out)                                             0.00       1.10 r
+  data arrival time                                                  1.10
+
+  clock MASTER_CLK (rise edge)                           10.00      10.00
+  clock network delay (ideal)                             0.00      10.00
+  clock uncertainty                                      -0.20       9.80
+  output external delay                                  -2.00       7.80
+  data required time                                                 7.80
+  --------------------------------------------------------------------------
+  data required time                                                 7.80
+  data arrival time                                                 -1.10
+  --------------------------------------------------------------------------
+  slack (MET)                                                        6.70
+
+
+1

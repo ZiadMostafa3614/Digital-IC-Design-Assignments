@@ -1,0 +1,38 @@
+****************************************
+Report : Time Based Power
+Design : alu8_top
+Version: O-2018.06-SP1
+Date   : Tue Sep  1 05:49:48 2026
+****************************************
+
+
+
+  Attributes
+  ----------
+      i  -  Including register clock pin internal power
+      u  -  User defined power group
+
+                        Internal  Switching  Leakage    Total
+Power Group             Power     Power      Power      Power   (     %)  Attrs
+--------------------------------------------------------------------------------
+clock_network           7.844e-05    0.0000    0.0000 7.844e-05 (21.72%)  i
+register                1.243e-05 8.896e-05 7.709e-07 1.022e-04 (28.28%)  
+combinational           4.094e-05 1.367e-04 2.992e-06 1.806e-04 (50.00%)  
+sequential                 0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+memory                     0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+io_pad                     0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+black_box                  0.0000    0.0000    0.0000    0.0000 ( 0.00%)  
+
+  Net Switching Power  = 2.256e-04   (62.47%)
+  Cell Internal Power  = 1.318e-04   (36.49%)
+  Cell Leakage Power   = 3.763e-06   ( 1.04%)
+                         ---------
+Total Power            = 3.612e-04  (100.00%)
+
+X Transition Power     =    0.0000
+Glitching Power        =    0.0000
+
+Peak Power             =    0.0540
+Peak Time              =   710.000
+
+1

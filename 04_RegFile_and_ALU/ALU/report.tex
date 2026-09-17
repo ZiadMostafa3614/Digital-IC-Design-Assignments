@@ -1,0 +1,117 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{booktabs}
+\usepackage{caption}
+
+\title{Assignment 4: 16-Bit ALU}
+\author{Ziad Mostafa Abdelaziz}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+ALU\_TOP is the fundamental building block of the processor, which is responsible for carrying out different functions:
+\begin{itemize}
+    \item Signed Arithmetic functions through the \textbf{ARITHMETIC\_UNIT} block.
+    \item Logic functions through the \textbf{LOGIC\_UNIT} block.
+    \item Shift functions through the \textbf{SHIFT\_UNIT} block.
+    \item Comparison functions through the \textbf{CMP\_UNIT} block.
+\end{itemize}
+The \textbf{Decoder Unit} is responsible for enabling which function to operate according to the most significant 2-bits of the ALU\_FUNC control bus, specifically ALU\_FUNC[3:2].
+
+\section{Specifications}
+\begin{itemize}
+    \item All Outputs are registered.
+    \item All registers are cleared using an Asynchronous active low reset.
+    \item \textbf{Arith\_OUT Width}: The output bus width is parameterized as \texttt{OUT\_DATA\_WIDTH = 2 * DATA\_WIDTH} (default 32 bits) to support full-precision outcomes during multiplication ($16\times 16 \rightarrow 32$-bit precision signed result), preventing truncations or overflows.
+    \item \textbf{Arith\_Flag} is activated "High" only when the ALU performs one of the arithmetic operations (Signed Addition, Signed Subtraction, Signed Multiplication, Signed Division) and is "LOW" otherwise.
+    \item \textbf{Logic\_Flag} is activated "High" only when the ALU performs Boolean operations (AND, OR, NAND, NOR).
+    \item \textbf{CMP\_Flag} is activated "High" only when the ALU performs Comparison operations (Equal, Greater than, Less than) or NOP.
+    \item \textbf{Shift\_Flag} is activated "High" only when the ALU performs shifting operations (shift right, shift left).
+\end{itemize}
+
+\section{ALU Function Tables}
+
+\subsection{Decoder Truth Table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ccccc}
+        \toprule
+        \textbf{ALU\_FUNC[3:2]} & \textbf{Arith\_En} & \textbf{Logic\_En} & \textbf{CMP\_En} & \textbf{Shift\_En} \\
+        \midrule
+        00 & 1 & 0 & 0 & 0 \\
+        01 & 0 & 1 & 0 & 0 \\
+        10 & 0 & 0 & 1 & 0 \\
+        11 & 0 & 0 & 0 & 1 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Decoder Enable Logic}
+\end{table}
+
+\subsection{ALU\_FUN Operation}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cll}
+        \toprule
+        \textbf{ALU\_FUNC} & \textbf{Operation} & \textbf{ALU\_OUT (when applicable)} \\
+        \midrule
+        0000 & Arithmetic: Signed Addition & -- \\
+        0001 & Arithmetic: Signed Subtraction & -- \\
+        0010 & Arithmetic: Signed Multiplication & -- \\
+        0011 & Arithmetic: Signed Division & -- \\
+        0100 & Logic: AND & -- \\
+        0101 & Logic: OR & -- \\
+        0110 & Logic: NAND & -- \\
+        0111 & Logic: NOR & -- \\
+        1000 & NOP & Equal to 0 \\
+        1001 & CMP: A = B & Equal to 1 (else 0) \\
+        1010 & CMP: A $>$ B & Equal to 2 (else 0) \\
+        1011 & CMP: A $<$ B & Equal to 3 (else 0) \\
+        1100 & SHIFT: A $\gg$ 1 & -- \\
+        1101 & SHIFT: A $\ll$ 1 & -- \\
+        1110 & SHIFT: B $\gg$ 1 & -- \\
+        1111 & SHIFT: B $\ll$ 1 & -- \\
+        \bottomrule
+    \end{tabular}
+    \caption{ALU Function Selection}
+\end{table}
+
+\section{Simulation Waveforms $\&$ Analysis}
+The simulation verifies the operation of the ALU over various test cases utilizing a 100~kHz clock with a 40\% low (4000~ns) and 60\% high (6000~ns) duty cycle. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{{"wave form screen shot.png"}}
+    \caption{Full Simulation Waveforms of the 16-Bit ALU}
+\end{figure}
+
+\subsection{Waveform Analysis $\&$ Commentary}
+\begin{itemize}
+    \item \textbf{Reset Behavior}: At $t=0$, the reset signal (\texttt{RST}) is held active low. The internal registers are cleared, meaning all outputs and flags are set to 0. Operations only begin properly once \texttt{RST} goes high at 100~ns. As all outputs are synchronized with the positive edge of the clock (\texttt{CLK}), we see that the updated calculation results appear safely after the active clock edge.
+    
+    \item \textbf{Negative Arithmetic Examples}: 
+    To deal with negative values in the testbench, inputs were provided in a signed context using their two's complement form. For instance, the decimal value $-4$ produces the two's complement hexadecimal \texttt{FFFC}, and $-10$ gives \texttt{FFF6}. The testbench applied operations like \texttt{ADD\_NEG\_NEG} ($A=-4, B=-10$), which produced $-14$ in the arithmetic output and successfully asserted \texttt{Arith\_Flag} high. The next clock edge safely latched these items.
+
+    \item \textbf{Shift and Logic Transitions}: 
+    For Logical AND (\texttt{0100}), applying $A=12$ (\texttt{000C}) and $B=10$ (\texttt{000A}) produces the result $8$, updating the \texttt{Logic\_OUT} output properly while asserting the \texttt{Logic\_Flag} completely decoupled from the Arithmetic Flag. Furthermore, logical shifts like $A \ll 1$ (where $A=16$) effectively multiplied the input by 2, yielding $32$ as verified on the \texttt{SHIFT\_OUT} bus.
+
+    \item \textbf{Comparison Output}: 
+    For a comparison operation like $A > B$ (\texttt{1010}), providing $A=8$ and $B=3$ assigns the output value $2$ to \texttt{CMP\_OUT}, acting as a status code.
+\end{itemize}
+
+\section{Simulation Output Logs}
+The simulation log validates each function's expected value versus its actual registered output and corresponding module flag, resulting in 28 PASSED test cases and 0 FAILED out of 28.
+\vspace{0.5cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{{"log output screen shot.png"}}
+    \caption{Simulation Log Output Screen Shot}
+\end{figure}
+
+\end{document}

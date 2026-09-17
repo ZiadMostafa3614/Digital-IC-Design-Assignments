@@ -1,0 +1,50 @@
+ 
+****************************************
+Report : area
+Design : UART_TX
+Version: O-2018.06-SP1
+Date   : Wed Sep  2 03:40:27 2026
+****************************************
+
+Information: Updating design information... (UID-85)
+Warning: Clock port 'SCAN_CLK' is assigned input delay relative to clock 'TX_CLK'. (TIM-111)
+Warning: Clock port 'SCAN_CLK' is assigned input delay relative to clock 'TX_CLK'. (TIM-111)
+Library(s) Used:
+
+    scmetro_tsmc_cl013g_rvt_ss_1p08v_125c (File: /home/ICer/Labs/UART_TX/std_cells/scmetro_tsmc_cl013g_rvt_ss_1p08v_125c.db)
+
+Number of ports:                           78
+Number of nets:                           186
+Number of cells:                          100
+Number of combinational cells:             80
+Number of sequential cells:                16
+Number of macros/black boxes:               0
+Number of buf/inv:                         31
+Number of references:                      10
+
+Combinational area:                631.887905
+Buf/Inv area:                      207.099201
+Noncombinational area:             549.518875
+Macro/Black Box area:                0.000000
+Net Interconnect area:           37800.190521
+
+Total cell area:                  1181.406780
+Total area:                      38981.597302
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area          Local cell area
+                                  ------------------  --------------------------- 
+Hierarchical cell                 Absolute   Percent  Combi-    Noncombi-  Black-
+                                  Total      Total    national  national   boxes   Design
+--------------------------------  ---------  -------  --------  ---------  ------  -----------------------
+UART_TX                           1181.4068    100.0  112.9632     0.0000  0.0000  UART_TX
+u_fsm                              223.5730     18.9  117.6700   105.9030  0.0000  uart_fsm_test_1
+u_mux                               52.9515      4.5   21.1806    31.7709  0.0000  uart_mux_test_1
+u_parity_calc                      136.4972     11.6  102.3729    34.1243  0.0000  uart_parity_calc_test_1
+u_serializer                       655.4219     55.5  277.7012   377.7207  0.0000  uart_serializer_test_1
+--------------------------------  ---------  -------  --------  ---------  ------  -----------------------
+Total                                                 631.8879   549.5189  0.0000
+
+1

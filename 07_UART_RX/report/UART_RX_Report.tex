@@ -1,0 +1,300 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{amsmath}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+\definecolor{headerblue}{RGB}{30,80,140}
+
+\lstdefinestyle{verilogstyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\scriptsize,
+    breakatwhitespace=false,
+    breaklines=true,
+    postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space},
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{gray!40},
+    xleftmargin=15pt,
+    xrightmargin=5pt
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{headerblue}{\textbf{UART Receiver — Assignment 7}}}
+\fancyhead[R]{\textcolor{gray}{Digital IC Design Course}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{1.5pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{headerblue}\leaders\hrule height \headrulewidth\hfill}}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=headerblue,
+    urlcolor=headerblue,
+}
+
+\titleformat{\section}{\large\bfseries\color{headerblue}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{headerblue!80}}{}{0em}{}
+
+\begin{document}
+
+%--- Title Page ---%
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\Huge\bfseries\color{headerblue} UART Receiver Design \& Verification\\[0.5em]}
+{\Large\color{gray} Assignment 7 — RTL Implementation, Lint Audit \& ModelSim Verification\\[3cm]}
+
+\begin{tabular}{ll}
+\textbf{Student Name:} & Ziad Mostafa Abdelaziz \\[0.5em]
+\textbf{Course:}       & Digital IC Design Course \\[0.5em]
+\textbf{Simulator:}    & ModelSim Intel FPGA Edition v10.5b \\[0.5em]
+\textbf{Lint Tool:}    & SpyGlass vL-2016.06 \\[0.5em]
+\textbf{Baud Rate:}    & 115.2 KHz (Reference TX Clock) \\[0.5em]
+\textbf{Date:}         & August 2026 \\
+\end{tabular}
+
+\vfill
+\rule{\linewidth}{1pt}
+\end{titlepage}
+
+%--- Table of Contents ---%
+\tableofcontents
+\newpage
+
+%====================================================================%
+\section{Design Overview}
+
+A Universal Asynchronous Receiver/Transmitter (UART) is a core serial communication module. In Full Duplex mode, the Receiving UART converts incoming serial data into an 8-bit parallel byte for master devices.
+
+The UART Receiver (\texttt{UART\_RX}) module is designed with an oversampling architecture to reliably sample incoming data at configurable prescale rates ($8\times$, $16\times$, or $32\times$) relative to the transmit clock ($f_{\text{TX}} = 115.2~\text{KHz}$).
+
+\subsection{Frame Structures}
+
+The design supports three frame configurations controlled by \texttt{PAR\_EN} (Parity Enable) and \texttt{PAR\_TYP} (Parity Type):
+
+\begin{enumerate}
+    \item \textbf{Even Parity Mode (\texttt{PAR\_EN = 1, PAR\_TYP = 0}):}
+    \[
+    \text{START (0)} \quad | \quad \text{b0 b1 b2 b3 b4 b5 b6 b7 (LSB first)} \quad | \quad \text{EP} \quad | \quad \text{STOP (1)}
+    \]
+    Where $\text{EP} = \bigoplus \text{P\_DATA}$ (XOR of all 8 data bits).
+
+    \item \textbf{Odd Parity Mode (\texttt{PAR\_EN = 1, PAR\_TYP = 1}):}
+    \[
+    \text{START (0)} \quad | \quad \text{b0 b1 b2 b3 b4 b5 b6 b7 (LSB first)} \quad | \quad \text{OP} \quad | \quad \text{STOP (1)}
+    \]
+    Where $\text{OP} = \overline{\bigoplus \text{P\_DATA}}$ (XNOR of all 8 data bits).
+
+    \item \textbf{No Parity Mode (\texttt{PAR\_EN = 0}):}
+    \[
+    \text{START (0)} \quad | \quad \text{b0 b1 b2 b3 b4 b5 b6 b7 (LSB first)} \quad | \quad \text{STOP (1)}
+    \]
+\end{enumerate}
+
+\subsection{Block Interface}
+
+\begin{table}[H]
+\centering
+\caption{UART RX Interface Signal Description}
+\begin{tabular}{lccl}
+\toprule
+\textbf{Port Name} & \textbf{Width} & \textbf{Direction} & \textbf{Description} \\
+\midrule
+\texttt{CLK}          & 1 & Input  & Receiver Clock Signal ($f_{\text{RX}} = \text{Prescale} \times 115.2~\text{KHz}$) \\
+\texttt{RST}          & 1 & Input  & Synchronized active-low reset signal \\
+\texttt{PAR\_TYP}     & 1 & Input  & Parity Type Select (0: Even, 1: Odd) \\
+\texttt{PAR\_EN}      & 1 & Input  & Parity Enable (1: Enabled, 0: Disabled) \\
+\texttt{Prescale}     & 6 & Input  & Oversampling ratio (8, 16, or 32) \\
+\texttt{RX\_IN}        & 1 & Input  & Serial input bit stream \\
+\texttt{P\_DATA}       & 8 & Output & Parallel output byte \\
+\texttt{data\_valid}   & 1 & Output & 1-clock cycle high pulse on valid frame \\
+\texttt{Parity\_Error} & 1 & Output & High on parity check failure \\
+\texttt{Stop\_Error}   & 1 & Output & High on stop bit framing failure \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Oversampling and 3-Sample Majority Voting}
+
+To filter out line noise and glitches, \texttt{UART\_RX} uses a 3-sample majority voter at the center of every bit period.
+
+Given a prescale factor $N$, the samples are taken at clock ticks:
+\[
+T_1 = \frac{N}{2} - 1, \quad T_2 = \frac{N}{2}, \quad T_3 = \frac{N}{2} + 1
+\]
+
+\begin{table}[H]
+\centering
+\caption{Center Sampling Ticks per Prescale Value}
+\begin{tabular}{ccc}
+\toprule
+\textbf{Prescale ($N$)} & \textbf{RX Clock Frequency} & \textbf{Sample Ticks ($T_1, T_2, T_3$)} \\
+\midrule
+8  & 921.6 KHz  & 3, 4, 5 \\
+16 & 1.8432 MHz & 7, 8, 9 \\
+32 & 3.6864 MHz & 15, 16, 17 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The majority voted output bit is computed as:
+\[
+\text{sampled\_bit} = (S_1 \cdot S_2) \lor (S_1 \cdot S_3) \lor (S_2 \cdot S_3)
+\]
+
+%====================================================================%
+\section{System Architecture}
+
+The receiver is structured modularly with 7 sub-blocks orchestrated by the main top-level wrapper \texttt{UART\_RX}:
+
+\begin{enumerate}
+    \item \texttt{uart\_rx\_fsm}: Finite State Machine controlling state transitions, sampling enables, check enables, and error clearing.
+    \item \texttt{data\_sampling}: Samples \texttt{RX\_IN} at center ticks and computes the majority vote.
+    \item \texttt{edge\_bit\_counter}: Tracks edge ticks within a bit period and bit counts within a frame.
+    \item \texttt{deserializer}: Converts serial bits into 8-bit parallel \texttt{P\_DATA} LSB-first.
+    \item \texttt{strt\_check}: Verifies that the start bit remains 0 at sample time.
+    \item \texttt{parity\_check}: Calculates expected parity and checks against the received parity bit.
+    \item \texttt{stp\_check}: Verifies that the stop bit equals 1.
+\end{enumerate}
+
+%====================================================================%
+\section{RTL Source Code}
+
+\subsection{Top Module — \texttt{UART\_RX.v}}
+\lstinputlisting[style=verilogstyle, caption={UART\_RX.v}]{../UART_RX.v}
+
+\subsection{FSM Controller — \texttt{uart\_rx\_fsm.v}}
+\lstinputlisting[style=verilogstyle, caption={uart\_rx\_fsm.v}]{../uart_rx_fsm.v}
+
+\subsection{Data Sampling Module — \texttt{data\_sampling.v}}
+\lstinputlisting[style=verilogstyle, caption={data\_sampling.v}]{../data_sampling.v}
+
+\subsection{Edge and Bit Counter — \texttt{edge\_bit\_counter.v}}
+\lstinputlisting[style=verilogstyle, caption={edge\_bit\_counter.v}]{../edge_bit_counter.v}
+
+\subsection{Deserializer Module — \texttt{deserializer.v}}
+\lstinputlisting[style=verilogstyle, caption={deserializer.v}]{../deserializer.v}
+
+\subsection{Start Bit Checker — \texttt{strt\_check.v}}
+\lstinputlisting[style=verilogstyle, caption={strt\_check.v}]{../strt_check.v}
+
+\subsection{Parity Checker — \texttt{parity\_check.v}}
+\lstinputlisting[style=verilogstyle, caption={parity\_check.v}]{../parity_check.v}
+
+\subsection{Stop Bit Checker — \texttt{stp\_check.v}}
+\lstinputlisting[style=verilogstyle, caption={stp\_check.v}]{../stp_check.v}
+
+%====================================================================%
+\section{SpyGlass Lint Audit}
+
+The SpyGlass project file (\texttt{lint.prj}) and report (\texttt{moresimple.rpt}) inside \texttt{UART\_SPYGLASS} were audited:
+
+\subsection{\texttt{moresimple.rpt} Summary}
+
+\begin{table}[H]
+\centering
+\caption{SpyGlass Report Overview}
+\begin{tabular}{lc}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Total Generated Messages & 3 \\
+Number of Errors & \textbf{0} \\
+Number of Warnings & 1 (\texttt{STARC05-2.11.3.1}) \\
+Design Read Messages & 2 (Info) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Rule Analysis}
+\begin{itemize}
+    \item \textbf{DetectTopDesignUnits (Info):} Identified \texttt{UART\_RX} correctly as top design unit.
+    \item \textbf{ElabSummary (Info):} Elaboration completed successfully with zero missing hierarchy components.
+    \item \textbf{STARC05-2.11.3.1 (Warning on \texttt{edge\_bit\_counter.v}):} Flagged because edge and bit counter logic are implemented in a single sequential block. This is a design choice that maintains clean counter synchrony without creating any latches or functional risks.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/spyglass_lint.png}
+\caption{SpyGlass Lint Summary Result}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{images/spyglass_design_read.png}
+\caption{SpyGlass Design Read Report}
+\end{figure}
+
+%====================================================================%
+\section{Simulation \& Verification Results}
+
+The design was verified using ModelSim Intel FPGA Edition v10.5b with a self-checking testbench (\texttt{UART\_RX\_tb.v}).
+
+\subsection{ModelSim Transcripts}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{images/transcript_prescale8.png}
+\caption{ModelSim Verification Log — Prescale = 8 (Even/Odd/No Parity \& Consecutive Frames)}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{images/transcript_prescale16.png}
+\caption{ModelSim Verification Log — Prescale = 16 (All Frame Types \& Consecutive Frames)}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{images/transcript_prescale32.png}
+\caption{ModelSim Verification Log — Prescale = 32 (All Frame Types \& Consecutive Frames)}
+\end{figure}
+
+\subsection{Waveform Timing Analysis}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.98\textwidth]{images/waveform_snapshot.png}
+\caption{ModelSim Waveform Snapshot — UART RX Signals, Internal States \& Outputs}
+\end{figure}
+
+%====================================================================%
+\section{FSM \& Design Quality Discussion}
+
+Addressing key design feedback points:
+
+\begin{enumerate}
+    \item \textbf{FSM Signal Assignment Scoping:} All persistent state outputs (\texttt{enable}, \texttt{dat\_samp\_en}, \texttt{deser\_en}, \texttt{bit\_cnt\_en}) are assigned directly at the top of each state block, ensuring predictable multi-cycle outputs.
+    \item \textbf{One-Shot Check Enables:} \texttt{strt\_chk\_en}, \texttt{par\_chk\_en}, and \texttt{stp\_chk\_en} are gated by \texttt{edge\_done} to pulse precisely at the end of the sampling period.
+    \item \textbf{Back-to-Back Error Clearing:} The FSM generates \texttt{clear\_err} during \texttt{CHK\_ERR} state to reset error registers, preventing stale flags from persisting into subsequent frames.
+\end{enumerate}
+
+%====================================================================%
+\section{Conclusion}
+
+The UART Receiver design in \texttt{Assignment 7} successfully fulfills all functional, architectural, and quality requirements. Verification via ModelSim confirmed 100\% test case pass rates across all oversampling prescale settings ($8\times, 16\times, 32\times$), and SpyGlass analysis confirmed 0 errors.
+
+\end{document}

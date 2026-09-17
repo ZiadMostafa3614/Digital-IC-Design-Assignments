@@ -1,0 +1,346 @@
+\documentclass[12pt,a4paper]{article}
+
+% ---- Packages ----
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{float}
+\usepackage{caption}
+
+% ---- Colors ----
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+
+% ---- Code Listings Style ----
+\lstdefinestyle{verilogstyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{darkblue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\scriptsize,
+    breaklines=true,
+    numbers=left,
+    numbersep=5pt,
+    frame=single,
+    tabsize=4,
+    captionpos=b,
+    morekeywords={module, endmodule, input, output, wire, reg, always, posedge, negedge, assign, begin, end, if, else, parameter, localparam, integer, for}
+}
+\lstset{style=verilogstyle}
+
+% ---- Header / Footer ----
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Assignment 10 -- Asynchronous FIFO}
+\lhead{Digital IC Design}
+\rfoot{Page \thepage}
+
+% ---- Title Format ----
+\titleformat{\section}{\Large\bfseries\color{darkblue}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{darkblue!80}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{darkblue!60}}{\thesubsubsection}{1em}{}
+
+% ---- Hyperref ----
+\hypersetup{
+    colorlinks=true,
+    linkcolor=darkblue,
+    urlcolor=blue,
+    citecolor=darkblue
+}
+
+\begin{document}
+
+% ===========================================================================
+% TITLE PAGE
+% ===========================================================================
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\Huge\bfseries Asynchronous FIFO\\(ASYNC\_FIFO)\par}
+\vspace{1cm}
+{\Large Assignment 10 -- Digital IC Design Course\par}
+\vspace{2cm}
+{\large\textbf{Submitted by:} Ziad Mostafa Abdelaziz\par}
+\vspace{0.5cm}
+{\large\today\par}
+\vfill
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% ===========================================================================
+% 1. INTRODUCTION & FIFO DEPTH CALCULATION
+% ===========================================================================
+\section{Introduction and Depth Calculation}
+
+An \textbf{Asynchronous FIFO} is a dual-port memory buffer used to transfer data between two independent, asynchronous clock domains: a write domain (\texttt{W\_CLK}) and a read domain (\texttt{R\_CLK}). To prevent metastability and data incoherence across clock domain crossings (CDC), Gray-coded pointers are passed through double-flop synchronizers (\texttt{DF\_SYNC}).
+
+\subsection{Mathematical FIFO Buffer Depth Calculation}
+
+To prevent data overflow under burst conditions, the minimum required FIFO buffer depth is calculated based on the write and read frequency parameters given in the assignment specification:
+
+\begin{itemize}
+    \item \textbf{Write Clock Frequency ($f_w$):} $100\text{ MHz} \implies T_w = 10\text{ ns}$
+    \item \textbf{Read Clock Frequency ($f_r$):} $40\text{ MHz} \implies T_r = 25\text{ ns}$
+    \item \textbf{Burst Write Size ($B$):} $9\text{ Bytes}$ (written continuously at 100 MHz)
+\end{itemize}
+
+\subsubsection{Derivation Steps}
+
+\begin{enumerate}
+    \item \textbf{Burst Duration ($t_{\text{burst}}$):}
+    \[
+        t_{\text{burst}} = B \times T_w = 9 \times 10\text{ ns} = 90\text{ ns}
+    \]
+
+    \item \textbf{Items Read During Burst ($N_{\text{read}}$):}
+    \[
+        N_{\text{read}} = \left\lfloor \frac{t_{\text{burst}}}{T_r} \right\rfloor = \left\lfloor \frac{90\text{ ns}}{25\text{ ns}} \right\rfloor = 3\text{ items}
+    \]
+
+    \item \textbf{Minimum Buffer Capacity (Unread Items):}
+    \[
+        \text{Depth}_{\text{min}} = B - N_{\text{read}} = 9 - 3 = 6\text{ items}
+    \]
+
+    \item \textbf{Hardware Power-of-2 Depth Allocation:}
+    In hardware, FIFO depth must be a power of 2 ($2^m$) to enable seamless binary-to-Gray pointer wrapping:
+    \[
+        \text{Hardware Depth} = 2^{\lceil \log_2(6) \rceil} = 8\text{ entries} \quad (\texttt{ADDR\_SIZE} = 3)
+    \]
+\end{enumerate}
+
+\textbf{Conclusion:} A hardware FIFO depth of \textbf{8 entries} ($\texttt{ADDR\_SIZE} = 3$) guarantees zero overflow during the 9-byte burst write at 100 MHz with continuous reading at 40 MHz.
+
+% ===========================================================================
+% 2. BLOCK INTERFACE
+% ===========================================================================
+\section{Block Interface}
+
+\subsection{Parameters}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}llc@{}}
+\toprule
+\textbf{Parameter Name} & \textbf{Description} & \textbf{Default Value} \\
+\midrule
+\texttt{DATA\_WIDTH} & Width of data bus & 8 bits \\
+\texttt{ADDR\_SIZE}  & Memory address size (Depth = $2^{\texttt{ADDR\_SIZE}}$) & 3 (Depth = 8) \\
+\bottomrule
+\end{tabular}
+\caption{Design Parameters}
+\end{table}
+
+\subsection{Ports Description}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}llc@{}}
+\toprule
+\textbf{Signal Name} & \textbf{Description} & \textbf{Width} \\
+\midrule
+\texttt{W\_CLK}   & Source domain write clock               & 1 \\
+\texttt{W\_RST}   & Source domain active-low async reset    & 1 \\
+\texttt{W\_INC}   & Write operation enable                  & 1 \\
+\texttt{R\_CLK}   & Destination domain read clock          & 1 \\
+\texttt{R\_RST}   & Destination domain active-low async reset & 1 \\
+\texttt{R\_INC}   & Read operation enable                   & 1 \\
+\texttt{WR\_DATA} & Write Data Bus                          & Parameterized (8 bits) \\
+\texttt{RD\_DATA} & Read Data Bus                           & Parameterized (8 bits) \\
+\texttt{FULL}     & FIFO Buffer full flag                   & 1 \\
+\texttt{EMPTY}    & FIFO Buffer empty flag                  & 1 \\
+\bottomrule
+\end{tabular}
+\caption{Port Descriptions}
+\end{table}
+
+% ===========================================================================
+% 3. ARCHITECTURE AND SUB-MODULE DESIGN
+% ===========================================================================
+\section{Architecture and Design}
+
+The top-level \texttt{ASYNC\_FIFO} integrates five modular Verilog blocks:
+
+\begin{enumerate}
+    \item \textbf{\texttt{FIFO\_MEM\_CNTRL}:} Dual-port RAM array ($8 \times 8$). Writes occur synchronously on \texttt{W\_CLK} when gated write enable $\text{wclken} = \text{W\_INC} \land \overline{\text{FULL}}$ is high. Reads occur asynchronously from location \texttt{raddr}.
+    \item \textbf{\texttt{DF\_SYNC}:} 2-stage D flip-flop synchronizer chain used to safely transfer Gray pointers across asynchronous clock boundaries without metastability.
+    \item \textbf{\texttt{FIFO\_WR}:} Generates binary write address \texttt{waddr}, Gray write pointer \texttt{wptr}, and evaluates the Clifford Cummings full condition:
+    \begin{align*}
+        \text{FULL} = & (\text{wgray\_next}[3] \neq \text{wq2\_rptr}[3]) \land (\text{wgray\_next}[2] \neq \text{wq2\_rptr}[2]) \\
+                      & \land (\text{wgray\_next}[1:0] == \text{wq2\_rptr}[1:0])
+    \end{align*}
+    \item \textbf{\texttt{FIFO\_RD}:} Generates binary read address \texttt{raddr}, Gray read pointer \texttt{rptr}, and evaluates the empty condition:
+    \[
+        \text{EMPTY} = (\text{rgray\_next} == \text{rq2\_wptr})
+    \]
+    \item \textbf{\texttt{ASYNC\_FIFO}:} Structural top-level module connecting all sub-modules.
+\end{enumerate}
+
+% ===========================================================================
+% 4. COMPARISON ANALYSIS (OUR VERSION VS. OLD VERSION)
+% ===========================================================================
+\section{Comparative Analysis: Our Version vs. Old Implementation}
+
+A detailed comparative analysis was conducted between our optimized architecture and the previous implementation (\texttt{old version/ASYNC\_FIFO}):
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Design Feature} & \textbf{Old Implementation} & \textbf{Our Optimized Version} \\
+\midrule
+\textbf{Synchronizer} & 2D array + combinational \texttt{for} loop & Clean vector D-FF chain (\texttt{DF\_SYNC.v}) \\
+\textbf{FULL Flag}    & Combinational \texttt{assign} (glitch-prone) & Registered on \texttt{W\_CLK} (glitch-free) \\
+\textbf{EMPTY Flag}   & Un-registered combinational compare & Registered on \texttt{R\_CLK} (glitch-free) \\
+\textbf{Spec Naming}  & \texttt{bit\_sync.v} (non-compliant) & \texttt{DF\_SYNC.v} (100\% spec compliant) \\
+\textbf{Lint Status}  & 2D loop synthesis warnings & \textbf{0 Errors, 0 Warnings, 0 Latches} \\
+\bottomrule
+\end{tabular}
+\caption{Architectural Comparison Summary}
+\end{table}
+
+\subsection{Key Design Advantages of Our Version}
+\begin{enumerate}
+    \item \textbf{Glitch-Free Flag Generation:} By registering \texttt{FULL} on \texttt{W\_CLK} and \texttt{EMPTY} on \texttt{R\_CLK}, transient combinational glitches across asynchronous domain bit changes are completely eliminated.
+    \item \textbf{Synthesis Efficiency:} Using dedicated 1D vector registers in \texttt{DF\_SYNC.v} instead of 2D arrays avoids synthesis logic bloat and satisfies strict ASIC static timing constraints (STA).
+    \item \textbf{Strict Spec Alignment:} Follows exact module naming (\texttt{DF\_SYNC.v}) and power-of-2 pointer parameterization.
+\end{enumerate}
+
+% ===========================================================================
+% 5. RTL VERILOG CODE
+% ===========================================================================
+\section{RTL Verilog Modules}
+
+\lstinputlisting[language=Verilog, caption={FIFO\_MEM\_CNTRL.v -- Dual-Port RAM Memory}]{../rtl/FIFO_MEM_CNTRL.v}
+\lstinputlisting[language=Verilog, caption={DF\_SYNC.v -- Double Flop Synchronizer}]{../rtl/DF_SYNC.v}
+\lstinputlisting[language=Verilog, caption={FIFO\_WR.v -- Write Pointer \& Full Flag Generator}]{../rtl/FIFO_WR.v}
+\lstinputlisting[language=Verilog, caption={FIFO\_RD.v -- Read Pointer \& Empty Flag Generator}]{../rtl/FIFO_RD.v}
+\lstinputlisting[language=Verilog, caption={ASYNC\_FIFO.v -- Structural Top Module}]{../rtl/ASYNC_FIFO.v}
+
+% ===========================================================================
+% 6. TESTBENCH AND SIMULATION RESULTS
+% ===========================================================================
+\section{Testbench and Simulation Results}
+
+\subsection{Testbench Implementation}
+The self-checking testbench (\texttt{ASYNC\_FIFO\_tb.v}) executes 4 comprehensive test cases simulating $100\text{ MHz}$ write clock and $40\text{ MHz}$ read clock.
+
+\lstinputlisting[language=Verilog, caption={ASYNC\_FIFO\_tb.v -- Self-Checking Testbench}]{../tb/ASYNC_FIFO_tb.v}
+
+\subsection{ModelSim Console Transcript}
+
+All test cases passed with 0 errors:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{log output.png}
+    \caption{ModelSim Transcript Log -- All 4 Test Cases PASSED (0 Errors)}
+\end{figure}
+
+\subsection{Output Waveform}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{wave form output.png}
+    \caption{ModelSim Output Waveform -- ASYNC\_FIFO Simulation}
+\end{figure}
+
+\subsection{Detailed Waveform and Signal Transition Analysis}
+
+The output waveform captures the complete asynchronous operation of all four test cases across independent clock domains:
+
+\subsubsection{Write Domain Signals (100 MHz)}
+\begin{itemize}
+    \item \textbf{\texttt{W\_CLK} (Cyan):} The source domain clock runs at $f_w = 100$ MHz ($T_w = 10$ ns).
+    \item \textbf{\texttt{W\_RST} (Orange):} Active-low asynchronous reset for the write domain. When \texttt{W\_RST} = 0, \texttt{wbin}, \texttt{wptr}, and \texttt{wfull} clear to 0 immediately.
+    \item \textbf{\texttt{W\_INC} (Yellow):} Write enable signal. Pulsed high during burst writes of 9 bytes (\texttt{0x11} to \texttt{0x99}).
+    \item \textbf{\texttt{WR\_DATA} (White, Hex):} Multi-bit write data bus. Holds test data bytes driven on \texttt{W\_CLK} edges.
+    \item \textbf{\texttt{FULL} (Red):} FIFO full flag. Remains LOW (0) during TC2 concurrent read/write operation. In TC3 (full test), \texttt{FULL} asserts to HIGH (1) exactly when the write pointer reaches 8 entries without concurrent reads, inhibiting further memory writes.
+\end{itemize}
+
+\subsubsection{Read Domain Signals (40 MHz)}
+\begin{itemize}
+    \item \textbf{\texttt{R\_CLK} (Cyan):} The destination domain clock runs at $f_r = 40$ MHz ($T_r = 25$ ns).
+    \item \textbf{\texttt{R\_RST} (Orange):} Active-low asynchronous reset for the read domain. Clears \texttt{rbin}, \texttt{rptr}, and sets \texttt{EMPTY} = 1.
+    \item \textbf{\texttt{R\_INC} (Yellow):} Read enable signal. Enabled continuously during concurrent read operations.
+    \item \textbf{\texttt{RD\_DATA} (Green, Hex):} Read data output bus from dual-port memory. Accurately outputs stored bytes in exact FIFO sequence (\texttt{0x11}, \texttt{0x22}, \dots, \texttt{0x99}).
+    \item \textbf{\texttt{EMPTY} (Lime):} FIFO empty flag. Asserts to HIGH (1) post-reset and when all entries are drained (TC4), preventing read underflow.
+\end{itemize}
+
+\subsubsection{Internal Pointers and Synchronizer Signals}
+\begin{itemize}
+    \item \textbf{\texttt{waddr} \& \texttt{raddr} (Magenta, Unsigned):} 3-bit binary addresses ($0 \dots 7$) indexing memory locations.
+    \item \textbf{\texttt{wptr} \& \texttt{rptr} (Gold, Binary Gray):} 4-bit Gray-code pointers. Only 1 bit changes per increment, eliminating multi-bit CDC metastability.
+    \item \textbf{\texttt{wq2\_rptr} (Purple):} Read Gray pointer synchronized into the \texttt{W\_CLK} domain via \texttt{sync\_r2w} (2 D-FF stages).
+    \item \textbf{\texttt{rq2\_wptr} (Purple):} Write Gray pointer synchronized into the \texttt{R\_CLK} domain via \texttt{sync\_w2r} (2 D-FF stages).
+\end{itemize}
+
+% ===========================================================================
+% 7. SPYGLASS LINT RESULTS
+% ===========================================================================
+\section{SpyGlass Lint Results}
+
+The design was analyzed using Synopsys SpyGlass (version vL-2016.06) under the \texttt{rtl\_handoff} methodology across all standard linting policies (lint, morelint, clock-reset, erc, latch, simulation, starc).
+
+\subsection{Design Read Step Output}
+
+SpyGlass successfully elaborated \texttt{ASYNC\_FIFO.v} and all sub-modules. The message tree shows \textbf{Total: 2 messages, Displayed: 2, Waived: 0} -- both are informational \texttt{Design Read} messages (no errors or warnings).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{spy glass Design read step output.png}
+    \caption{SpyGlass Design Read Step Output -- 2 Info Messages, 0 Errors}
+\end{figure}
+
+\subsection{Lint RTL Goal Run Output}
+
+The Lint RTL goal run completed with a \textbf{clean lint result} (0 Errors, 0 Warnings, 0 Latches).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{lint rtl goal output (lint clean).png}
+    \caption{SpyGlass Lint RTL Goal Run Output -- Clean Lint (0 Errors, 0 Warnings)}
+\end{figure}
+
+\subsection{SpyGlass Lint Summary Report (moresimple.rpt)}
+
+\begin{lstlisting}[language={}, caption={SpyGlass moresimple.rpt -- Lint Summary Report}]
+Total Number of Generated Messages :          2
+Number of Waived Messages          :          0
+Number of Reported Messages        :          2
+Number of Overlimit Messages       :          0
+
+MORESIMPLE REPORT:
+
+############### BuiltIn -> RuleGroup=Design Read ###############
+[1] DetectTopDesignUnits  Info  ASYNC_FIFO.v  Line 8
+    Module ASYNC_FIFO is a top level design unit
+[0] ElabSummary           Info
+    Please refer file elab_summary.rpt for elab summary report
+\end{lstlisting}
+
+% ===========================================================================
+% 8. CONCLUSION
+% ===========================================================================
+\section{Conclusion}
+
+The Asynchronous FIFO (\texttt{ASYNC\_FIFO}) was successfully designed, modeled, and verified.
+\begin{itemize}
+    \item Mathematical buffer depth calculation verified that an 8-entry FIFO ($\texttt{ADDR\_SIZE}=3$) fully accommodates a 9-byte burst write at 100 MHz with 40 MHz concurrent reading without overflow.
+    \item Gray-code pointer encoding and double-flop synchronizers (\texttt{DF\_SYNC}) eliminated CDC metastability.
+    \item Registered full/empty flags eliminate combinational glitches and provide superior timing margin over the old un-registered implementation.
+    \item All 4 simulation test cases passed with 0 errors in ModelSim.
+    \item Clean SpyGlass lint report: 0 errors, 0 warnings, 0 latches.
+\end{itemize}
+
+\end{document}

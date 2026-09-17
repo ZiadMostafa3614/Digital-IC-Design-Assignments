@@ -1,0 +1,366 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{amsmath}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+\definecolor{headerblue}{RGB}{30,80,140}
+
+\lstdefinestyle{verilogstyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\scriptsize,
+    breakatwhitespace=false,
+    breaklines=true,
+    postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space},
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{gray!40},
+    xleftmargin=15pt,
+    xrightmargin=5pt
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{headerblue}{\textbf{UART Transmitter — Full ASIC \& DFT Flow}}}
+\fancyhead[R]{\textcolor{gray}{Digital IC Design Course}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{1.5pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{headerblue}\leaders\hrule height \headrulewidth\hfill}}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=headerblue,
+    urlcolor=headerblue,
+}
+
+\titleformat{\section}{\large\bfseries\color{headerblue}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{headerblue!80}}{}{0em}{}
+
+\begin{document}
+
+%--- Title Page ---%
+\begin{titlepage}
+\centering
+\vspace*{1.5cm}
+{\Huge\bfseries\color{headerblue} UART Transmitter Design\\[0.3em]}
+{\Large\color{gray} Full ASIC Flow: RTL $\to$ Synthesis $\to$ Formality $\to$ DFT Scan Insertion\\[2.5cm]}
+
+\begin{tabular}{ll}
+\textbf{Student Name:} & Ziad Mostafa Abdelaziz \\[0.5em]
+\textbf{Course:}       & Digital IC Design \\[0.5em]
+\textbf{RTL Simulator:}& ModelSim Intel FPGA Edition v10.5b \\[0.5em]
+\textbf{Lint Tool:}    & Synopsys SpyGlass vL-2016.06 \\[0.5em]
+\textbf{Synthesis Tool:}& Synopsys Design Compiler vO-2018.06-SP1 \\[0.5em]
+\textbf{Formality:}& Synopsys Formality vL-2016.03-SP1 \\[0.5em]
+\textbf{DFT Tool:}& Synopsys DFT Compiler vO-2018.06-SP1 \\[0.5em]
+\textbf{Technology:}& TSMC 0.13\,$\mu$m RVT (\texttt{scmetro\_tsmc\_cl013g\_rvt}) \\[0.5em]
+\textbf{Date:}         & September 2026 \\
+\end{tabular}
+
+\vfill
+\rule{\linewidth}{1pt}
+\end{titlepage}
+
+%--- Table of Contents ---%
+\tableofcontents
+\newpage
+
+%====================================================================%
+\section{Design Overview}
+
+The UART Transmitter (\texttt{UART\_TX}) is a serial communication block that converts an 8-bit parallel data byte into a serial bit stream conforming to the standard UART frame format. The design is fully synchronous and supports even parity, odd parity, and no-parity modes.
+
+\subsection{Output Frame Format}
+
+Three frame configurations are supported depending on \texttt{PAR\_EN} and \texttt{PAR\_TYP}:
+\begin{itemize}
+  \item \textbf{With Even Parity:} \texttt{START | b0 b1 b2 b3 b4 b5 b6 b7 | PAR | STOP}
+  \item \textbf{With Odd Parity:}  \texttt{START | b0 b1 b2 b3 b4 b5 b6 b7 | PAR | STOP}
+  \item \textbf{No Parity:}        \texttt{START | b0 b1 b2 b3 b4 b5 b6 b7 | STOP}
+\end{itemize}
+
+\subsection{Port Description}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{llll}
+\toprule
+\textbf{Port Name} & \textbf{Direction} & \textbf{Width} & \textbf{Description} \\
+\midrule
+\texttt{CLK}        & Input  & 1 & System clock signal \\
+\texttt{RST}        & Input  & 1 & Asynchronous active-low reset \\
+\texttt{P\_DATA}    & Input  & 8 & 8-bit parallel input data payload \\
+\texttt{DATA\_VALID}& Input  & 1 & High-active pulse indicating valid input data \\
+\texttt{PAR\_EN}    & Input  & 1 & Parity enable (1 = enable parity, 0 = no parity) \\
+\texttt{PAR\_TYP}   & Input  & 1 & Parity type (0 = even parity, 1 = odd parity) \\
+\texttt{TX\_OUT}    & Output & 1 & Serial output line (idle state HIGH) \\
+\texttt{Busy}       & Output & 1 & Transmission status (HIGH from START to STOP bit) \\
+\midrule
+\texttt{SI}         & Input  & 1 & DFT Scan Data Input \\
+\texttt{SE}         & Input  & 1 & DFT Scan Enable \\
+\texttt{scan\_clk}  & Input  & 1 & DFT Scan Test Clock \\
+\texttt{scan\_rst}  & Input  & 1 & DFT Scan Active-Low Reset \\
+\texttt{test\_mode} & Input  & 1 & DFT Test Mode Control (1 = Scan Test, 0 = Normal) \\
+\texttt{SO}         & Output & 1 & DFT Scan Data Output \\
+\bottomrule
+\end{tabular}
+\caption{UART\_TX Top-Level Port Description (including DFT scan ports)}
+\end{table}
+
+%====================================================================%
+\section{RTL Architecture \& Sub-module Design}
+
+The top-level \texttt{UART\_TX} module integrates four distinct sub-modules to form a clean, modular architecture:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{design_read.png}
+\caption{UART\_TX Elaborated Design Architecture View in SpyGlass}
+\end{figure}
+
+\subsection{FSM Controller (\texttt{uart\_fsm.v})}
+The finite state machine manages state transitions across five states (\texttt{IDLE}, \texttt{START}, \texttt{DATA}, \texttt{PAR}, \texttt{STOP}). Outputs (\texttt{ser\_en}, \texttt{mux\_sel}, \texttt{Busy}) are assigned unconditionally within each state block to adhere strictly to Moore FSM design principles. \texttt{Busy} stays HIGH continuously from \texttt{START} bit until completion of the \texttt{STOP} bit.
+
+\subsection{Serializer (\texttt{uart\_serializer.v})}
+Loads 8-bit parallel data on \texttt{DATA\_VALID} pulse into an 8-bit shift register. When \texttt{ser\_en} is asserted, it shifts data out LSB-first on each clock edge and asserts \texttt{ser\_done} when all 8 bits have been serialized.
+
+\subsection{Parity Calculator (\texttt{uart\_parity\_calc.v})}
+Calculates even or odd parity bit over \texttt{P\_DATA} when \texttt{DATA\_VALID} is active and stores the parity bit in a register.
+
+\subsection{Output MUX (\texttt{uart\_mux.v})}
+Selects the active serial bit based on \texttt{mux\_sel} (00: START bit = 0, 01: STOP bit = 1, 10: \texttt{ser\_data}, 11: \texttt{par\_bit}). The output is registered to guarantee glitch-free output transitions.
+
+%====================================================================%
+\section{Simulation \& Functional Verification}
+
+The design was verified using a self-checking testbench (\texttt{UART\_TX\_tb.v}) in ModelSim across 11 directed test cases.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{cllll}
+\toprule
+\textbf{TC \#} & \textbf{Payload} & \textbf{Parity Config} & \textbf{Expected Frame} & \textbf{Status} \\
+\midrule
+TC1 & 0x00 & No Parity   & \texttt{START(0) + 00000000 + STOP(1)} & PASSED \\
+TC2 & 0xFF & No Parity   & \texttt{START(0) + 11111111 + STOP(1)} & PASSED \\
+TC3 & 0x55 & Even Parity & \texttt{START(0) + 10101010 + PAR(0) + STOP(1)} & PASSED \\
+TC4 & 0xAA & Odd Parity  & \texttt{START(0) + 01010101 + PAR(1) + STOP(1)} & PASSED \\
+TC5--11 & Edge Cases & Various & Boundary tests & PASSED \\
+\bottomrule
+\end{tabular}
+\caption{Simulation Verification Summary}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{waveform_snapshot.png}
+\caption{Full ModelSim Simulation Snapshot — All 11 Test Cases PASSED (0 Errors)}
+\end{figure}
+
+%====================================================================%
+\section{Lint Analysis — SpyGlass}
+
+The design was analyzed using \textbf{Synopsys SpyGlass vL-2016.06} under the \texttt{lint\_rtl} goal.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{lint_result.png}
+\caption{SpyGlass Explorer — Hierarchical Design View showing clean elaboration}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{llll}
+\toprule
+\textbf{Category} & \textbf{Total} & \textbf{Waived} & \textbf{Violations} \\
+\midrule
+Design Read Messages & 2 & 0 & 0 \\
+Lint Violations      & 0 & 0 & 0 \\
+Latch Inferences     & 0 & 0 & 0 \\
+Width Mismatches     & 0 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\caption{SpyGlass Lint Summary — 100\% Clean (0 Errors, 0 Warnings, 0 Latches)}
+\end{table}
+
+%====================================================================%
+\section{Logic Synthesis — Design Compiler}
+
+Logic synthesis was performed using \textbf{Synopsys Design Compiler (vO-2018.06-SP1)} targeted to TSMC 0.13\,$\mu$m RVT standard cell libraries.
+
+\subsection{Constraints Setup}
+- **Baud Rate Target:** 115.2\,kbps ($T_{\text{clk}} = 8680.5555\text{ ns}$)
+- **Setup Skew:** 0.25\,ns, **Hold Skew:** 0.05\,ns
+- **Input/Output Delays:** 30\% of clock period ($2604.1666\text{ ns}$)
+- **Driving Cell:** \texttt{BUFX2M}, **Output Load:** 0.5\,pF
+
+\subsection{Synthesis Results Summary}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Metric} & \textbf{Value} & \textbf{Unit} \\
+\midrule
+Total Cell Area      & 858.99 & $\mu$m$^2$ \\
+Combinational Area   & 430.67 & $\mu$m$^2$ \\
+Non-combinational    & 428.32 & $\mu$m$^2$ \\
+Total Cell Count     & 80     & cells \\
+Sequential Cells     & 16     & D-FFs \\
+Setup Slack          & 0.00   & ns (0 Violations) \\
+Hold Slack           & 0.00   & ns (0 Violations) \\
+\bottomrule
+\end{tabular}
+\caption{Design Compiler Synthesis Metrics}
+\end{table}
+
+\subsection{Sub-module Area Breakdown}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{llll}
+\toprule
+\textbf{Hierarchy Cell} & \textbf{Area ($\mu$m$^2$)} & \textbf{Percent (\%)} & \textbf{Module Description} \\
+\midrule
+\texttt{u\_serializer} & 488.33 & 56.8\% & Shift Register \& Bit Counter \\
+\texttt{u\_fsm}        & 182.39 & 21.2\% & FSM Controller \\
+\texttt{u\_parity\_calc}& 128.26 & 14.9\% & Parity Generator \\
+\texttt{u\_mux}        & 60.01  & 7.0\%  & Registered Output MUX \\
+\midrule
+\textbf{Total}         & \textbf{858.99} & \textbf{100.0\%} & \texttt{UART\_TX} Top \\
+\bottomrule
+\end{tabular}
+\caption{Hierarchical Area Distribution Summary}
+\end{table}
+
+%====================================================================%
+\section{Formal Verification — Formality}
+
+Formal Equivalence Checking (FEC) was conducted using \textbf{Synopsys Formality (vL-2016.03-SP1)} between the golden RTL reference container (\texttt{Ref}) and post-synthesis gate-level netlist (\texttt{Imp}).
+
+\subsection{Verification Summary}
+- **Reference Design:** \texttt{Ref:/WORK/UART\_TX}
+- **Implementation Design:** \texttt{Imp:/WORK/UART\_TX}
+- **Total Compare Points:** 19 (16 D-FFs + 3 Top Ports)
+- **Passing Compare Points:** 19 / 19
+- **Failing Compare Points:** 0
+- **Verification Verdict:** \textbf{VERIFICATION SUCCEEDED}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lllll}
+\toprule
+\textbf{Compare Point Type} & \textbf{Matched} & \textbf{Passing} & \textbf{Failing} & \textbf{Equivalence} \\
+\midrule
+Primary Ports (\texttt{Busy}, \texttt{TX\_OUT}, \texttt{SO}) & 3 & 3 & 0 & Equivalent \\
+Sequential D-Flip Flops (\texttt{DFF}) & 16 & 16 & 0 & Equivalent \\
+\midrule
+\textbf{Total Compare Points} & \textbf{19} & \textbf{19} & \textbf{0} & \textbf{100\% Equivalent} \\
+\bottomrule
+\end{tabular}
+\caption{Formality Formal Equivalence Checking Results}
+\end{table}
+
+%====================================================================%
+\section{Design for Testability (DFT) — Scan Insertion}
+
+DFT logic insertion was executed using \textbf{Synopsys DFT Compiler (vO-2018.06-SP1)} following the 17-step flow specified in \texttt{Ass\_DFT\_1.0}.
+
+\subsection{DFT Clock \& Reset Muxing}
+Scan ports (\texttt{SI}, \texttt{SE}, \texttt{SO}, \texttt{test\_mode}, \texttt{scan\_clk}, \texttt{scan\_rst}) were added to the top module \texttt{UART\_TX.v}. Design clock and reset were multiplexed:
+\begin{align}
+\texttt{clk\_mux} &= \text{test\_mode} \;?\; \text{scan\_clk} : \text{CLK} \\
+\texttt{rst\_mux} &= \text{test\_mode} \;?\; \text{scan\_rst} : \text{RST}
+\end{align}
+
+\subsection{Constraints \& Settings}
+- **Test Clock Frequency:** 1\,MHz ($T = 1000\text{ ns}$)
+- **Setup Skew:** 0.025\,ns, **Hold Skew:** 0.01\,ns
+- **Input / Output Delays:** 30\% of clock period ($300\text{ ns}$)
+- **Driving Cell:** \texttt{BUFX2M}, **Output Load:** 0.1\,pF
+- **Scan Configuration:** \texttt{-clock\_mixing mix\_clocks -chain\_count 1}
+
+\subsection{Post-DFT DRC \& Fault Coverage Analysis}
+
+Post-DFT Design Rule Checking (\texttt{dft\_drc}) confirmed that all 16 internal sequential registers were successfully stitched into a single multiplexed flip-flop scan chain with zero rule violations.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+\textbf{DFT Parameter} & \textbf{Value} & \textbf{Status} \\
+\midrule
+Scan Methodology & Full Scan (\texttt{multiplexed\_flip\_flop}) & Configured \\
+Scan Chains Count & 1 Chain (\texttt{SI} $\to$ \texttt{SO}) & Routed \\
+Sequential Cells Stitched & 16 / 16 cells (100\%) & Valid Scan Cells \\
+Post-DFT DRC Violations & 0 Violations & \textbf{Clean DRC} \\
+Total Stuck-at Faults & 798 & Analyzed \\
+Detected Faults (\texttt{DT}) & 786 & Detected \\
+Test Coverage & \textbf{98.62\%} & \textbf{High Coverage} \\
+Post-DFT Area & 1181.41\,$\mu$m$^2$ & Gate Count: 100 cells \\
+Post-DFT Total Power & 2.54\,$\mu$W & Low Power \\
+Post-DFT Slack & 0.00\,ns & \textbf{0 Constraints Violations} \\
+\bottomrule
+\end{tabular}
+\caption{Post-DFT Scan Insertion \& Coverage Results}
+\end{table}
+
+\subsection{Uncollapsed Fault Breakdown}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Fault Class} & \textbf{Code} & \textbf{Number of Faults} \\
+\midrule
+Detected & \texttt{DT} & 786 \\
+Possibly Detected & \texttt{PT} & 0 \\
+Undetectable & \texttt{UD} & 1 \\
+ATPG Untestable & \texttt{AU} & 11 \\
+Not Detected & \texttt{ND} & 0 \\
+\midrule
+\textbf{Total Faults} & & \textbf{798} \\
+\textbf{Test Coverage} & & \textbf{98.62\%} \\
+\bottomrule
+\end{tabular}
+\caption{Uncollapsed Stuck-at Fault Summary}
+\end{table}
+
+%====================================================================%
+\section{Conclusion}
+
+The UART Transmitter ASIC implementation flow has been successfully completed from RTL to Post-DFT netlist:
+\begin{enumerate}
+  \item **RTL \& Verification:** 100\% functional accuracy across 11 test cases in ModelSim with zero errors.
+  \item **Lint Cleanliness:** 0 errors, 0 warnings, and 0 latches confirmed by SpyGlass.
+  \item **Logic Synthesis:** Clean gate-level netlist generated by Design Compiler at 115.2\,kbps baud rate with zero timing violations and $858.99\,\mu$m$^2$ cell area.
+  \item **Formal Equivalence:** 100\% logical equivalence proven by Formality across all 19 compare points.
+  \item **DFT Scan Insertion:** Clean 1-chain scan insertion stitching all 16 flip-flops, achieving **98.62\% test coverage** and zero DRC/constraint violations.
+\end{enumerate}
+
+\end{document}

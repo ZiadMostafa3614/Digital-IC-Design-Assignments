@@ -1,0 +1,369 @@
+\documentclass[12pt,a4paper]{article}
+
+% ---- Packages ----
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{float}
+\usepackage{caption}
+
+% ---- Colors ----
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+
+% ---- Code Listings Style ----
+\lstdefinestyle{verilogstyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{darkblue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\scriptsize,
+    breaklines=true,
+    numbers=left,
+    numbersep=5pt,
+    frame=single,
+    tabsize=4,
+    captionpos=b,
+    morekeywords={module, endmodule, input, output, wire, reg, always, posedge, negedge, assign, begin, end, if, else, parameter, localparam}
+}
+\lstset{style=verilogstyle}
+
+% ---- Header / Footer ----
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Assignment 9 -- Data Synchronizer}
+\lhead{Digital IC Design}
+\rfoot{Page \thepage}
+
+% ---- Title Format ----
+\titleformat{\section}{\Large\bfseries\color{darkblue}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{darkblue!80}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{darkblue!60}}{\thesubsubsection}{1em}{}
+
+% ---- Hyperref ----
+\hypersetup{
+    colorlinks=true,
+    linkcolor=darkblue,
+    urlcolor=blue,
+    citecolor=darkblue
+}
+
+\begin{document}
+
+% ===========================================================================
+% TITLE PAGE
+% ===========================================================================
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\Huge\bfseries Data Synchronizer\\(DATA\_SYNC)\par}
+\vspace{1cm}
+{\Large Assignment 9 -- Digital IC Design Course\par}
+\vspace{2cm}
+{\large\textbf{Submitted by:} Ziad Mostafa Abdelaziz\par}
+\vspace{0.5cm}
+{\large\today\par}
+\vfill
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% ===========================================================================
+% 1. INTRODUCTION
+% ===========================================================================
+\section{Introduction}
+
+Clock Domain Crossing (CDC) in the digital domain is defined as the process of passing a signal or vector (multi-bit signal) from one clock domain to another clock domain, which introduces many issues such as \textbf{metastability}, \textbf{data incoherence}, and \textbf{data loss}.
+
+This assignment implements the \textbf{Synchronized MUX-Select Synchronization Scheme}, which is used to synchronize multiple bits safely across clock domains. The scheme uses a multi-stage flip-flop synchronizer to safely transfer a single-bit enable signal, and a MUX-registered data path to atomically capture the multi-bit data bus when the synchronized enable pulse fires.
+
+% ===========================================================================
+% 2. BLOCK INTERFACE
+% ===========================================================================
+\section{Block Interface}
+
+\subsection{Parameters}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Parameter Name} & \textbf{Description} \\
+\midrule
+\texttt{NUM\_STAGES} & Number of Flip Flop Stages (default = 2) \\
+\texttt{BUS\_WIDTH}  & Width of synchronized bus (default = 8) \\
+\bottomrule
+\end{tabular}
+\caption{Design Parameters}
+\end{table}
+
+\subsection{Ports Description}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}llc@{}}
+\toprule
+\textbf{Signal Name} & \textbf{Description} & \textbf{Width} \\
+\midrule
+\texttt{unsync\_bus}   & Unsynchronized bus from source domain & Parameterized (default = 8) \\
+\texttt{bus\_enable}   & Source domain enable signal            & 1 \\
+\texttt{CLK}           & Destination domain clock               & 1 \\
+\texttt{RST}           & Destination domain active-low async reset & 1 \\
+\texttt{sync\_bus}     & Synchronized bit/bus                  & Parameterized (default = 8) \\
+\texttt{enable\_pulse} & Destination domain enable signal      & 1 \\
+\bottomrule
+\end{tabular}
+\caption{Port Descriptions}
+\end{table}
+
+% ===========================================================================
+% 3. ARCHITECTURE
+% ===========================================================================
+\section{Architecture and Design}
+
+The DATA\_SYNC module implements the Synchronized MUX-Select scheme with four main components:
+
+\begin{enumerate}
+    \item \textbf{Multi Flip-Flop Synchronizer Chain:} A parameterized chain of \texttt{NUM\_STAGES} flip-flops synchronizes the \texttt{bus\_enable} signal from the source clock domain into the destination clock domain, mitigating metastability. The chain is implemented as a shift register:
+    \[
+        \texttt{sync\_stage\_reg} \leftarrow \{\texttt{sync\_stage\_reg[NUM\_STAGES-2:0]},\; \texttt{bus\_enable}\}
+    \]
+    
+    \item \textbf{Pulse Generator (Rising-Edge Detector):} Compares the synchronized enable output with a one-cycle delayed copy to produce a single-cycle \texttt{generated\_pulse}:
+    \[
+        \texttt{generated\_pulse} = \texttt{sync\_stage\_reg[NUM\_STAGES-1]} \;\land\; \overline{\texttt{enable\_flop}}
+    \]
+    This ensures the pulse fires exactly once on the $0 \to 1$ transition of the synchronized enable.
+    
+    \item \textbf{MUX-Select Registered Data Bus:} A 2-to-1 multiplexer controlled by \texttt{generated\_pulse} selects between the current \texttt{sync\_bus} value (hold) and \texttt{unsync\_bus} (update). The output is registered, ensuring \texttt{sync\_bus} updates atomically.
+    
+    \item \textbf{Enable Pulse Register:} Registers \texttt{generated\_pulse} to produce the output \texttt{enable\_pulse}, which is synchronized with the \texttt{sync\_bus} data update on the same clock edge.
+\end{enumerate}
+
+% ===========================================================================
+% 4. RTL CODE
+% ===========================================================================
+\section{RTL Verilog Code}
+
+\lstinputlisting[language=Verilog, caption={DATA\_SYNC.v -- Data Synchronizer RTL Module}]{../DATA_SYNC.v}
+
+% ===========================================================================
+% 5. TESTBENCH
+% ===========================================================================
+\section{Testbench}
+
+The self-checking testbench verifies the DATA\_SYNC module under an asynchronous dual-clock setup:
+\begin{itemize}
+    \item \textbf{Source Clock:} $f_{tx} = 50$ MHz (Period = 20 ns)
+    \item \textbf{Destination Clock:} $f_{dest} = 100$ MHz (Period = 10 ns)
+\end{itemize}
+
+A concurrent \texttt{always} block monitor captures \texttt{enable\_pulse} events and the corresponding \texttt{sync\_bus} data in real-time, avoiding race conditions between the source and destination clock domains.
+
+\subsection{Test Cases}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}clc@{}}
+\toprule
+\textbf{TC\#} & \textbf{Description} & \textbf{Expected Result} \\
+\midrule
+1 & Single Transfer (\texttt{0xA5})       & \texttt{sync\_bus} = \texttt{0xA5}, 1-cycle pulse \\
+2 & Consecutive (\texttt{0x5A} $\to$ \texttt{0xF0}) & Both values synchronized correctly \\
+3 & Dynamic Transfer (\texttt{0xC3})      & \texttt{sync\_bus} = \texttt{0xC3}, 1-cycle pulse \\
+4 & All-Ones (\texttt{0xFF})              & \texttt{sync\_bus} = \texttt{0xFF}, 1-cycle pulse \\
+5 & All-Zeros (\texttt{0x00})             & \texttt{sync\_bus} = \texttt{0x00}, 1-cycle pulse \\
+6 & Async Active-Low Reset               & Immediate clear of all outputs \\
+\bottomrule
+\end{tabular}
+\caption{Test Case Summary}
+\end{table}
+
+\lstinputlisting[language=Verilog, caption={DATA\_SYNC\_tb.v -- Self-Checking Testbench}]{../DATA_SYNC_tb.v}
+
+% ===========================================================================
+% 6. SIMULATION RESULTS
+% ===========================================================================
+\section{Simulation Results}
+
+\subsection{ModelSim Transcript Log}
+
+All 6 test cases passed successfully with 0 errors. The simulation completed in 1285 ns.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{log output.png}
+    \caption{ModelSim Transcript Log -- All 6 Test Cases PASSED (0 Errors)}
+\end{figure}
+
+\subsection{Output Waveform}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{output waveform.png}
+    \caption{ModelSim Output Waveform -- DATA\_SYNC Simulation}
+\end{figure}
+
+\subsection{Detailed Waveform and Signal Transition Analysis}
+
+The output waveform captures the complete simulation of all six test cases. Each signal group is analyzed below:
+
+\subsubsection{Source Domain Signals}
+
+\begin{itemize}
+    \item \textbf{\texttt{tx\_clk} (Cyan):} The source clock runs at $f_{tx} = 50$ MHz with a period of $T_{tx} = 20$ ns. This clock drives the \texttt{unsync\_bus} and \texttt{bus\_enable} signals.
+    
+    \item \textbf{\texttt{bus\_enable} (Yellow):} The source-domain enable signal pulses high for 4 source-clock cycles ($4 \times 20 = 80$ ns) per data transfer, then returns to 0. The waveform shows 7 distinct \texttt{bus\_enable} pulses corresponding to TC1 through TC6 (TC2 has two consecutive transfers). Between pulses, there is a sufficient idle gap for the synchronizer chain to fully propagate the falling edge before the next rising edge.
+    
+    \item \textbf{\texttt{unsync\_bus} (White, Hex):} The multi-bit data bus changes values at the source clock domain: \texttt{0xA5} $\to$ \texttt{0x5A} $\to$ \texttt{0xF0} $\to$ \texttt{0xC3} $\to$ \texttt{0xFF} $\to$ \texttt{0x00} $\to$ \texttt{0xBB} (reset test). Each value is held stable by the testbench for the entire duration of the \texttt{bus\_enable} pulse, ensuring the data is valid when the destination domain MUX captures it.
+\end{itemize}
+
+\subsubsection{Destination Domain Control Signals}
+
+\begin{itemize}
+    \item \textbf{\texttt{CLK} (Cyan):} The destination domain clock runs at $f_{dest} = 100$ MHz with a period of $T_{dest} = 10$ ns -- twice the frequency of the source clock. All internal synchronizer registers and output registers are clocked by this signal.
+    
+    \item \textbf{\texttt{RST} (Orange):} Active-low asynchronous reset. Stays high during normal operation. In TC6 (Async Reset test), \texttt{RST} drops to 0 mid-operation, causing an immediate asynchronous clear of all internal registers (\texttt{sync\_stage\_reg}, \texttt{enable\_flop}, \texttt{sync\_bus}, \texttt{enable\_pulse}) regardless of the clock state.
+\end{itemize}
+
+\subsubsection{Internal Synchronizer Signals}
+
+\begin{itemize}
+    \item \textbf{\texttt{sync\_stage\_reg} (Magenta, Binary):} The 2-stage flip-flop synchronizer shift register. For each \texttt{bus\_enable} pulse:
+    \begin{enumerate}
+        \item Initially \texttt{2'b00} (idle).
+        \item After 1 destination clock edge: \texttt{2'b01} (bit 0 samples \texttt{bus\_enable} = 1).
+        \item After 2 destination clock edges: \texttt{2'b11} (bit 1 propagates the synchronized enable).
+        \item After \texttt{bus\_enable} deasserts: returns to \texttt{2'b10} $\to$ \texttt{2'b00} over 2 destination clocks.
+    \end{enumerate}
+    The waveform clearly shows this \texttt{00} $\to$ \texttt{11} $\to$ \texttt{00} transition pattern repeating for each data transfer.
+    
+    \item \textbf{\texttt{enable\_flop} (Yellow):} A 1-cycle delayed copy of \texttt{sync\_stage\_reg[1]}. Rises one destination clock cycle \emph{after} \texttt{sync\_stage\_reg} reaches \texttt{2'b11}. Falls one cycle after \texttt{sync\_stage\_reg[1]} drops back to 0.
+    
+    \item \textbf{\texttt{generated\_pulse} (Purple):} The combinational rising-edge pulse:
+    \[
+        \texttt{generated\_pulse} = \texttt{sync\_stage\_reg[1]} \;\land\; \overline{\texttt{enable\_flop}}
+    \]
+    The waveform shows \texttt{generated\_pulse} as a clean single-cycle spike exactly on the clock cycle where \texttt{sync\_stage\_reg[1]} first becomes 1 while \texttt{enable\_flop} is still 0. This pulse is exactly 1 destination clock period wide ($T_{dest} = 10$ ns).
+\end{itemize}
+
+\subsubsection{Destination Domain Output Signals}
+
+\begin{itemize}
+    \item \textbf{\texttt{sync\_bus} (Green, Hex):} The synchronized multi-bit output bus. Initially \texttt{0x00} after reset. The waveform shows \texttt{sync\_bus} updating to each new data value exactly when \texttt{generated\_pulse} fires:
+    \begin{itemize}
+        \item \texttt{0x00} $\to$ \texttt{0xA5} (TC1): Data captured correctly.
+        \item \texttt{0xA5} $\to$ \texttt{0x5A} $\to$ \texttt{0xF0} (TC2): Both consecutive values captured in sequence.
+        \item \texttt{0xF0} $\to$ \texttt{0xC3} (TC3): Dynamic transfer verified.
+        \item \texttt{0xC3} $\to$ \texttt{0xFF} (TC4): All-ones captured correctly.
+        \item \texttt{0xFF} $\to$ \texttt{0x00} (TC5): All-zeros captured correctly.
+        \item \texttt{0x00} $\to$ \texttt{0xBB} $\to$ \texttt{0x00} (TC6): Data loaded, then cleared by async reset.
+    \end{itemize}
+    Between \texttt{generated\_pulse} events, \texttt{sync\_bus} holds its previous value (the MUX selects the feedback path), ensuring data stability.
+    
+    \item \textbf{\texttt{enable\_pulse} (Lime):} A registered version of \texttt{generated\_pulse}. The waveform confirms that \texttt{enable\_pulse} is a single destination-clock-cycle wide pulse that fires exactly one clock cycle after \texttt{generated\_pulse}. Since both \texttt{sync\_bus} and \texttt{enable\_pulse} are clocked by the same edge, they are guaranteed to be valid simultaneously -- the downstream logic can safely use \texttt{enable\_pulse} as a write-enable for \texttt{sync\_bus}.
+\end{itemize}
+
+\subsubsection{Synchronization Latency Analysis}
+
+The total synchronization latency from \texttt{bus\_enable} assertion (source domain) to \texttt{enable\_pulse} assertion (destination domain) is:
+
+\[
+    t_{sync} = (\texttt{NUM\_STAGES} + 2) \times T_{dest} + t_{setup}
+\]
+
+For the default configuration (\texttt{NUM\_STAGES} = 2, $T_{dest} = 10$ ns):
+\begin{itemize}
+    \item 2 cycles for the synchronizer chain to propagate \texttt{bus\_enable} through both flip-flops.
+    \item 1 cycle for \texttt{enable\_flop} delay (pulse generator).
+    \item 1 cycle for registering \texttt{generated\_pulse} into \texttt{enable\_pulse}.
+    \item Total: $\approx 4 \times 10 = 40$ ns (plus metastability resolution time $t_{setup}$).
+\end{itemize}
+
+\subsubsection{Asynchronous Reset Behavior (TC6)}
+
+In TC6, the waveform shows:
+\begin{itemize}
+    \item \texttt{sync\_bus} = \texttt{0xBB} is loaded via a normal transfer.
+    \item \texttt{RST} drops to 0 asynchronously (between clock edges).
+    \item Within less than 1 ns, all registers clear: \texttt{sync\_stage\_reg} $\to$ \texttt{2'b00}, \texttt{enable\_flop} $\to$ 0, \texttt{sync\_bus} $\to$ \texttt{0x00}, \texttt{enable\_pulse} $\to$ 0.
+    \item After \texttt{RST} returns to 1, the module resumes normal operation.
+\end{itemize}
+
+% ===========================================================================
+% 7. SPYGLASS LINT RESULTS
+% ===========================================================================
+\section{SpyGlass Lint Results}
+
+The design was analyzed using Synopsys SpyGlass (version vL-2016.06) with the \texttt{rtl\_handoff} methodology. The lint analysis covers multiple policies: lint, morelint, clock-reset, ERC, latch, simulation, STARC, STARC2005, timing, and TXV.
+
+\subsection{Design Read Step Output}
+
+SpyGlass successfully read and elaborated the \texttt{DATA\_SYNC.v} source file. The message tree shows \textbf{Total: 2 messages, Displayed: 2, Waived: 0} -- both are informational \texttt{Design Read} messages (no errors or warnings).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{run design read step output from spyglass.png}
+    \caption{SpyGlass Design Read Step Output -- 2 Info Messages, 0 Errors}
+\end{figure}
+
+\subsection{Lint RTL Goal Run Output}
+
+The Lint RTL goal run completed with a \textbf{clean lint result}. The message tree again shows \textbf{Total: 2 messages, Displayed: 2, Waived: 0} -- both are informational messages from the Design Read phase, confirming:
+
+\begin{itemize}
+    \item \textbf{0 Errors}: No design rule violations.
+    \item \textbf{0 Warnings}: No potential issues detected.
+    \item \textbf{0 Latches}: No unintended latches inferred.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{lint rtl goal run output clean lint spyglass.png}
+    \caption{SpyGlass Lint RTL Goal Run Output -- Clean Lint (0 Errors, 0 Warnings)}
+\end{figure}
+
+\subsection{SpyGlass Lint Summary Report (moresimple.rpt)}
+
+\begin{lstlisting}[language={}, caption={SpyGlass moresimple.rpt -- Lint Summary Report}]
+Total Number of Generated Messages :          2
+Number of Waived Messages          :          0
+Number of Reported Messages        :          2
+Number of Overlimit Messages       :          0
+
+MORESIMPLE REPORT:
+
+############### BuiltIn -> RuleGroup=Design Read ###############
+[1] DetectTopDesignUnits  Info  DATA_SYNC.v  Line 15
+    Module DATA_SYNC is a top level design unit
+[0] ElabSummary           Info
+    Please refer file elab_summary.rpt for elab summary report
+\end{lstlisting}
+
+Both reported messages are \textbf{Info} severity -- purely informational notifications confirming the top-level module detection and elaboration summary. No errors, warnings, or latch inferences were detected across all lint policies.
+
+% ===========================================================================
+% 8. CONCLUSION
+% ===========================================================================
+\section{Conclusion}
+
+The DATA\_SYNC module successfully implements the Synchronized MUX-Select Synchronization Scheme for safe multi-bit Clock Domain Crossing. Key achievements:
+
+\begin{itemize}
+    \item \textbf{Parameterized design} supporting configurable synchronizer stages (\texttt{NUM\_STAGES}) and bus width (\texttt{BUS\_WIDTH}).
+    \item \textbf{Rising-edge pulse generator} ensures a single-cycle enable pulse for precise data capture timing.
+    \item \textbf{MUX-registered data path} ensures \texttt{sync\_bus} updates atomically with \texttt{enable\_pulse}.
+    \item \textbf{Active-low asynchronous reset} clears all internal registers immediately.
+    \item \textbf{All 6 test cases PASSED} with 0 errors in ModelSim simulation.
+    \item \textbf{Clean SpyGlass lint}: 0 errors, 0 warnings, 0 latches across all lint policies.
+\end{itemize}
+
+\end{document}

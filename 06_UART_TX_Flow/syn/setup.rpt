@@ -1,0 +1,1369 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 100
+Design : UART_TX
+Version: O-2018.06-SP1
+Date   : Wed Sep  2 03:39:28 2026
+****************************************
+
+Operating Conditions: scmetro_tsmc_cl013g_rvt_ss_1p08v_125c   Library: scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+Wire Load Model Mode: top
+
+  Startpoint: DATA_VALID (input port clocked by TX_CLK)
+  Endpoint: u_serializer/bit_cnt_reg[2]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 r
+  DATA_VALID (in)                                         0.51    2604.68 r
+  u_serializer/Data_Valid (uart_serializer)               0.00    2604.68 r
+  u_serializer/U5/Y (NAND2BX1M)                           0.81    2605.49 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07    2606.56 r
+  u_serializer/U10/Y (INVX6M)                             0.65    2607.22 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54    2607.75 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87    2608.63 r
+  u_serializer/U11/Y (AOI21X2M)                           0.47    2609.09 f
+  u_serializer/U14/Y (AOI21BX2M)                          0.41    2609.51 f
+  u_serializer/U12/Y (OAI32X2M)                           0.46    2609.97 r
+  u_serializer/bit_cnt_reg[2]/D (DFFRX1M)                 0.00    2609.97 r
+  data arrival time                                               2609.97
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/bit_cnt_reg[2]/CK (DFFRX1M)                0.00    8680.31 r
+  library setup time                                     -0.38    8679.93
+  data required time                                              8679.93
+  --------------------------------------------------------------------------
+  data required time                                              8679.93
+  data arrival time                                              -2609.97
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6069.96
+
+
+  Startpoint: DATA_VALID (input port clocked by TX_CLK)
+  Endpoint: u_serializer/bit_cnt_reg[1]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 r
+  DATA_VALID (in)                                         0.51    2604.68 r
+  u_serializer/Data_Valid (uart_serializer)               0.00    2604.68 r
+  u_serializer/U5/Y (NAND2BX1M)                           0.81    2605.49 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07    2606.56 r
+  u_serializer/U10/Y (INVX6M)                             0.65    2607.22 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54    2607.75 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87    2608.63 r
+  u_serializer/U11/Y (AOI21X2M)                           0.47    2609.09 f
+  u_serializer/U3/Y (OAI32X2M)                            0.57    2609.67 r
+  u_serializer/bit_cnt_reg[1]/D (DFFRX2M)                 0.00    2609.67 r
+  data arrival time                                               2609.67
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/bit_cnt_reg[1]/CK (DFFRX2M)                0.00    8680.31 r
+  library setup time                                     -0.37    8679.94
+  data required time                                              8679.94
+  --------------------------------------------------------------------------
+  data required time                                              8679.94
+  data arrival time                                              -2609.67
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6070.27
+
+
+  Startpoint: DATA_VALID (input port clocked by TX_CLK)
+  Endpoint: u_serializer/bit_cnt_reg[0]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 r
+  DATA_VALID (in)                                         0.51    2604.68 r
+  u_serializer/Data_Valid (uart_serializer)               0.00    2604.68 r
+  u_serializer/U5/Y (NAND2BX1M)                           0.81    2605.49 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07    2606.56 r
+  u_serializer/U10/Y (INVX6M)                             0.65    2607.22 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54    2607.75 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87    2608.63 r
+  u_serializer/U15/Y (OAI2BB2X1M)                         0.48    2609.11 r
+  u_serializer/bit_cnt_reg[0]/D (DFFRX2M)                 0.00    2609.11 r
+  data arrival time                                               2609.11
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/bit_cnt_reg[0]/CK (DFFRX2M)                0.00    8680.31 r
+  library setup time                                     -0.34    8679.96
+  data required time                                              8679.96
+  --------------------------------------------------------------------------
+  data required time                                              8679.96
+  data arrival time                                              -2609.11
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6070.86
+
+
+  Startpoint: DATA_VALID (input port clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[7]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 r
+  DATA_VALID (in)                                         0.51    2604.68 r
+  u_serializer/Data_Valid (uart_serializer)               0.00    2604.68 r
+  u_serializer/U5/Y (NAND2BX1M)                           0.81    2605.49 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07    2606.56 r
+  u_serializer/U10/Y (INVX6M)                             0.65    2607.22 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54    2607.75 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87    2608.63 r
+  u_serializer/U30/Y (AO22X1M)                            0.50    2609.12 r
+  u_serializer/shift_reg_reg[7]/D (DFFRX1M)               0.00    2609.12 r
+  data arrival time                                               2609.12
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[7]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.02
+  data required time                                              8680.02
+  --------------------------------------------------------------------------
+  data required time                                              8680.02
+  data arrival time                                              -2609.12
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6070.90
+
+
+  Startpoint: DATA_VALID (input port clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[0]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 r
+  DATA_VALID (in)                                         0.51    2604.68 r
+  u_serializer/Data_Valid (uart_serializer)               0.00    2604.68 r
+  u_serializer/U5/Y (NAND2BX1M)                           0.81    2605.49 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07    2606.56 r
+  u_serializer/U10/Y (INVX6M)                             0.65    2607.22 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54    2607.75 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87    2608.63 r
+  u_serializer/U22/Y (OAI2BB1X2M)                         0.40    2609.02 r
+  u_serializer/shift_reg_reg[0]/D (DFFRX1M)               0.00    2609.02 r
+  data arrival time                                               2609.02
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[0]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.03
+  data required time                                              8680.03
+  --------------------------------------------------------------------------
+  data required time                                              8680.03
+  data arrival time                                              -2609.02
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6071.01
+
+
+  Startpoint: DATA_VALID (input port clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[6]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 r
+  DATA_VALID (in)                                         0.51    2604.68 r
+  u_serializer/Data_Valid (uart_serializer)               0.00    2604.68 r
+  u_serializer/U5/Y (NAND2BX1M)                           0.81    2605.49 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07    2606.56 r
+  u_serializer/U10/Y (INVX6M)                             0.65    2607.22 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54    2607.75 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87    2608.63 r
+  u_serializer/U16/Y (OAI2BB1X2M)                         0.38    2609.00 r
+  u_serializer/shift_reg_reg[6]/D (DFFRX1M)               0.00    2609.00 r
+  data arrival time                                               2609.00
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[6]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.03
+  data required time                                              8680.03
+  --------------------------------------------------------------------------
+  data required time                                              8680.03
+  data arrival time                                              -2609.00
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6071.03
+
+
+  Startpoint: DATA_VALID (input port clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[5]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 r
+  DATA_VALID (in)                                         0.51    2604.68 r
+  u_serializer/Data_Valid (uart_serializer)               0.00    2604.68 r
+  u_serializer/U5/Y (NAND2BX1M)                           0.81    2605.49 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07    2606.56 r
+  u_serializer/U10/Y (INVX6M)                             0.65    2607.22 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54    2607.75 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87    2608.63 r
+  u_serializer/U28/Y (OAI2BB1X2M)                         0.38    2609.00 r
+  u_serializer/shift_reg_reg[5]/D (DFFRX1M)               0.00    2609.00 r
+  data arrival time                                               2609.00
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[5]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.03
+  data required time                                              8680.03
+  --------------------------------------------------------------------------
+  data required time                                              8680.03
+  data arrival time                                              -2609.00
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6071.03
+
+
+  Startpoint: DATA_VALID (input port clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[4]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 r
+  DATA_VALID (in)                                         0.51    2604.68 r
+  u_serializer/Data_Valid (uart_serializer)               0.00    2604.68 r
+  u_serializer/U5/Y (NAND2BX1M)                           0.81    2605.49 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07    2606.56 r
+  u_serializer/U10/Y (INVX6M)                             0.65    2607.22 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54    2607.75 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87    2608.63 r
+  u_serializer/U24/Y (OAI2BB1X2M)                         0.38    2609.00 r
+  u_serializer/shift_reg_reg[4]/D (DFFRX1M)               0.00    2609.00 r
+  data arrival time                                               2609.00
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[4]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.03
+  data required time                                              8680.03
+  --------------------------------------------------------------------------
+  data required time                                              8680.03
+  data arrival time                                              -2609.00
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6071.03
+
+
+  Startpoint: DATA_VALID (input port clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[3]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 r
+  DATA_VALID (in)                                         0.51    2604.68 r
+  u_serializer/Data_Valid (uart_serializer)               0.00    2604.68 r
+  u_serializer/U5/Y (NAND2BX1M)                           0.81    2605.49 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07    2606.56 r
+  u_serializer/U10/Y (INVX6M)                             0.65    2607.22 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54    2607.75 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87    2608.63 r
+  u_serializer/U20/Y (OAI2BB1X2M)                         0.38    2609.00 r
+  u_serializer/shift_reg_reg[3]/D (DFFRX1M)               0.00    2609.00 r
+  data arrival time                                               2609.00
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[3]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.03
+  data required time                                              8680.03
+  --------------------------------------------------------------------------
+  data required time                                              8680.03
+  data arrival time                                              -2609.00
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6071.03
+
+
+  Startpoint: DATA_VALID (input port clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[2]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 r
+  DATA_VALID (in)                                         0.51    2604.68 r
+  u_serializer/Data_Valid (uart_serializer)               0.00    2604.68 r
+  u_serializer/U5/Y (NAND2BX1M)                           0.81    2605.49 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07    2606.56 r
+  u_serializer/U10/Y (INVX6M)                             0.65    2607.22 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54    2607.75 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87    2608.63 r
+  u_serializer/U18/Y (OAI2BB1X2M)                         0.38    2609.00 r
+  u_serializer/shift_reg_reg[2]/D (DFFRX1M)               0.00    2609.00 r
+  data arrival time                                               2609.00
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[2]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.03
+  data required time                                              8680.03
+  --------------------------------------------------------------------------
+  data required time                                              8680.03
+  data arrival time                                              -2609.00
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6071.03
+
+
+  Startpoint: DATA_VALID (input port clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[1]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 r
+  DATA_VALID (in)                                         0.51    2604.68 r
+  u_serializer/Data_Valid (uart_serializer)               0.00    2604.68 r
+  u_serializer/U5/Y (NAND2BX1M)                           0.81    2605.49 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07    2606.56 r
+  u_serializer/U10/Y (INVX6M)                             0.65    2607.22 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54    2607.75 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87    2608.63 r
+  u_serializer/U26/Y (OAI2BB1X2M)                         0.38    2609.00 r
+  u_serializer/shift_reg_reg[1]/D (DFFRX1M)               0.00    2609.00 r
+  data arrival time                                               2609.00
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[1]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.03
+  data required time                                              8680.03
+  --------------------------------------------------------------------------
+  data required time                                              8680.03
+  data arrival time                                              -2609.00
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6071.03
+
+
+  Startpoint: P_DATA[6] (input port clocked by TX_CLK)
+  Endpoint: u_parity_calc/parity_reg_reg
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 r
+  P_DATA[6] (in)                                          0.34    2604.51 r
+  u_parity_calc/P_DATA[6] (uart_parity_calc)              0.00    2604.51 r
+  u_parity_calc/U8/Y (CLKXOR2X2M)                         0.60    2605.11 f
+  u_parity_calc/U7/Y (XOR3XLM)                            0.72    2605.82 r
+  u_parity_calc/U5/Y (XOR3XLM)                            0.84    2606.66 f
+  u_parity_calc/U3/Y (OAI2BB2X1M)                         0.74    2607.40 r
+  u_parity_calc/parity_reg_reg/D (DFFRX1M)                0.00    2607.40 r
+  data arrival time                                               2607.40
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_parity_calc/parity_reg_reg/CK (DFFRX1M)               0.00    8680.31 r
+  library setup time                                     -0.35    8679.96
+  data required time                                              8679.96
+  --------------------------------------------------------------------------
+  data required time                                              8679.96
+  data arrival time                                              -2607.40
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6072.55
+
+
+  Startpoint: PAR_EN (input port clocked by TX_CLK)
+  Endpoint: u_fsm/current_state_reg[0]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 r
+  PAR_EN (in)                                             0.69    2604.86 r
+  u_fsm/PAR_EN (uart_fsm)                                 0.00    2604.86 r
+  u_fsm/U15/Y (INVX2M)                                    0.35    2605.20 f
+  u_fsm/U13/Y (OAI31X2M)                                  0.76    2605.97 r
+  u_fsm/current_state_reg[0]/D (DFFRX2M)                  0.00    2605.97 r
+  data arrival time                                               2605.97
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00    8680.31 r
+  library setup time                                     -0.35    8679.95
+  data required time                                              8679.95
+  --------------------------------------------------------------------------
+  data required time                                              8679.95
+  data arrival time                                              -2605.97
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6073.98
+
+
+  Startpoint: PAR_EN (input port clocked by TX_CLK)
+  Endpoint: u_fsm/current_state_reg[1]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 r
+  PAR_EN (in)                                             0.69    2604.86 r
+  u_fsm/PAR_EN (uart_fsm)                                 0.00    2604.86 r
+  u_fsm/U18/Y (NOR2X2M)                                   0.34    2605.19 f
+  u_fsm/U17/Y (OAI21X2M)                                  0.53    2605.73 r
+  u_fsm/current_state_reg[1]/D (DFFRX1M)                  0.00    2605.73 r
+  data arrival time                                               2605.73
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_fsm/current_state_reg[1]/CK (DFFRX1M)                 0.00    8680.31 r
+  library setup time                                     -0.31    8679.99
+  data required time                                              8679.99
+  --------------------------------------------------------------------------
+  data required time                                              8679.99
+  data arrival time                                              -2605.73
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6074.27
+
+
+  Startpoint: PAR_EN (input port clocked by TX_CLK)
+  Endpoint: u_fsm/current_state_reg[2]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: INREG
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  input external delay                                 2604.17    2604.17 f
+  PAR_EN (in)                                             0.37    2604.54 f
+  u_fsm/PAR_EN (uart_fsm)                                 0.00    2604.54 f
+  u_fsm/U16/Y (OAI31X2M)                                  0.83    2605.37 r
+  u_fsm/current_state_reg[2]/D (DFFRX2M)                  0.00    2605.37 r
+  data arrival time                                               2605.37
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_fsm/current_state_reg[2]/CK (DFFRX2M)                 0.00    8680.31 r
+  library setup time                                     -0.35    8679.95
+  data required time                                              8679.95
+  --------------------------------------------------------------------------
+  data required time                                              8679.95
+  data arrival time                                              -2605.37
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6074.58
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: Busy (output port clocked by TX_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  0.92       0.92 f
+  u_fsm/U6/Y (NOR3X4M)                                    0.81       1.72 r
+  u_fsm/U10/Y (INVX2M)                                    0.69       2.41 f
+  u_fsm/U11/Y (NAND2X2M)                                  0.74       3.15 r
+  u_fsm/U9/Y (INVX2M)                                     0.31       3.46 f
+  u_fsm/U3/Y (OAI211X1M)                                  0.44       3.90 r
+  u_fsm/U5/Y (BUFX10M)                                    0.85       4.74 r
+  u_fsm/Busy (uart_fsm)                                   0.00       4.74 r
+  Busy (out)                                              0.00       4.74 r
+  data arrival time                                                  4.74
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  output external delay                               -2604.17    6076.14
+  data required time                                              6076.14
+  --------------------------------------------------------------------------
+  data required time                                              6076.14
+  data arrival time                                                 -4.74
+  --------------------------------------------------------------------------
+  slack (MET)                                                     6071.40
+
+
+  Startpoint: u_mux/TX_OUT_reg
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: TX_OUT (output port clocked by TX_CLK)
+  Path Group: REGOUT
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock TX_CLK (rise edge)                 0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  u_mux/TX_OUT_reg/CK (DFFSHQX8M)          0.00       0.00 r
+  u_mux/TX_OUT_reg/Q (DFFSHQX8M)           1.00       1.00 r
+  u_mux/TX_OUT (uart_mux)                  0.00       1.00 r
+  TX_OUT (out)                             0.00       1.00 r
+  data arrival time                                   1.00
+
+  clock TX_CLK (rise edge)              8680.56    8680.56
+  clock network delay (ideal)              0.00    8680.56
+  clock uncertainty                       -0.25    8680.31
+  output external delay                -2604.17    6076.14
+  data required time                               6076.14
+  -----------------------------------------------------------
+  data required time                               6076.14
+  data arrival time                                  -1.00
+  -----------------------------------------------------------
+  slack (MET)                                      6075.14
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_serializer/bit_cnt_reg[2]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  1.19       1.19 r
+  u_fsm/U6/Y (NOR3X4M)                                    0.33       1.52 f
+  u_fsm/U10/Y (INVX2M)                                    0.80       2.32 r
+  u_fsm/U11/Y (NAND2X2M)                                  0.79       3.11 f
+  u_fsm/U9/Y (INVX2M)                                     0.42       3.53 r
+  u_fsm/U3/Y (OAI211X1M)                                  0.59       4.12 f
+  u_fsm/U5/Y (BUFX10M)                                    0.60       4.72 f
+  u_fsm/Busy (uart_fsm)                                   0.00       4.72 f
+  u_serializer/Busy (uart_serializer)                     0.00       4.72 f
+  u_serializer/U5/Y (NAND2BX1M)                           0.90       5.62 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07       6.69 r
+  u_serializer/U10/Y (INVX6M)                             0.65       7.34 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54       7.88 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87       8.75 r
+  u_serializer/U11/Y (AOI21X2M)                           0.47       9.22 f
+  u_serializer/U14/Y (AOI21BX2M)                          0.41       9.63 f
+  u_serializer/U12/Y (OAI32X2M)                           0.46      10.09 r
+  u_serializer/bit_cnt_reg[2]/D (DFFRX1M)                 0.00      10.09 r
+  data arrival time                                                 10.09
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/bit_cnt_reg[2]/CK (DFFRX1M)                0.00    8680.31 r
+  library setup time                                     -0.38    8679.93
+  data required time                                              8679.93
+  --------------------------------------------------------------------------
+  data required time                                              8679.93
+  data arrival time                                                -10.09
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8669.84
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_serializer/bit_cnt_reg[1]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  1.19       1.19 r
+  u_fsm/U6/Y (NOR3X4M)                                    0.33       1.52 f
+  u_fsm/U10/Y (INVX2M)                                    0.80       2.32 r
+  u_fsm/U11/Y (NAND2X2M)                                  0.79       3.11 f
+  u_fsm/U9/Y (INVX2M)                                     0.42       3.53 r
+  u_fsm/U3/Y (OAI211X1M)                                  0.59       4.12 f
+  u_fsm/U5/Y (BUFX10M)                                    0.60       4.72 f
+  u_fsm/Busy (uart_fsm)                                   0.00       4.72 f
+  u_serializer/Busy (uart_serializer)                     0.00       4.72 f
+  u_serializer/U5/Y (NAND2BX1M)                           0.90       5.62 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07       6.69 r
+  u_serializer/U10/Y (INVX6M)                             0.65       7.34 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54       7.88 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87       8.75 r
+  u_serializer/U11/Y (AOI21X2M)                           0.47       9.22 f
+  u_serializer/U3/Y (OAI32X2M)                            0.57       9.79 r
+  u_serializer/bit_cnt_reg[1]/D (DFFRX2M)                 0.00       9.79 r
+  data arrival time                                                  9.79
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/bit_cnt_reg[1]/CK (DFFRX2M)                0.00    8680.31 r
+  library setup time                                     -0.37    8679.94
+  data required time                                              8679.94
+  --------------------------------------------------------------------------
+  data required time                                              8679.94
+  data arrival time                                                 -9.79
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8670.15
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_serializer/bit_cnt_reg[0]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  1.19       1.19 r
+  u_fsm/U6/Y (NOR3X4M)                                    0.33       1.52 f
+  u_fsm/U10/Y (INVX2M)                                    0.80       2.32 r
+  u_fsm/U11/Y (NAND2X2M)                                  0.79       3.11 f
+  u_fsm/U9/Y (INVX2M)                                     0.42       3.53 r
+  u_fsm/U3/Y (OAI211X1M)                                  0.59       4.12 f
+  u_fsm/U5/Y (BUFX10M)                                    0.60       4.72 f
+  u_fsm/Busy (uart_fsm)                                   0.00       4.72 f
+  u_serializer/Busy (uart_serializer)                     0.00       4.72 f
+  u_serializer/U5/Y (NAND2BX1M)                           0.90       5.62 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07       6.69 r
+  u_serializer/U10/Y (INVX6M)                             0.65       7.34 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54       7.88 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87       8.75 r
+  u_serializer/U15/Y (OAI2BB2X1M)                         0.48       9.23 r
+  u_serializer/bit_cnt_reg[0]/D (DFFRX2M)                 0.00       9.23 r
+  data arrival time                                                  9.23
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/bit_cnt_reg[0]/CK (DFFRX2M)                0.00    8680.31 r
+  library setup time                                     -0.34    8679.96
+  data required time                                              8679.96
+  --------------------------------------------------------------------------
+  data required time                                              8679.96
+  data arrival time                                                 -9.23
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8670.73
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[7]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  1.19       1.19 r
+  u_fsm/U6/Y (NOR3X4M)                                    0.33       1.52 f
+  u_fsm/U10/Y (INVX2M)                                    0.80       2.32 r
+  u_fsm/U11/Y (NAND2X2M)                                  0.79       3.11 f
+  u_fsm/U9/Y (INVX2M)                                     0.42       3.53 r
+  u_fsm/U3/Y (OAI211X1M)                                  0.59       4.12 f
+  u_fsm/U5/Y (BUFX10M)                                    0.60       4.72 f
+  u_fsm/Busy (uart_fsm)                                   0.00       4.72 f
+  u_serializer/Busy (uart_serializer)                     0.00       4.72 f
+  u_serializer/U5/Y (NAND2BX1M)                           0.90       5.62 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07       6.69 r
+  u_serializer/U10/Y (INVX6M)                             0.65       7.34 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54       7.88 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87       8.75 r
+  u_serializer/U30/Y (AO22X1M)                            0.50       9.25 r
+  u_serializer/shift_reg_reg[7]/D (DFFRX1M)               0.00       9.25 r
+  data arrival time                                                  9.25
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[7]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.02
+  data required time                                              8680.02
+  --------------------------------------------------------------------------
+  data required time                                              8680.02
+  data arrival time                                                 -9.25
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8670.77
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[0]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  1.19       1.19 r
+  u_fsm/U6/Y (NOR3X4M)                                    0.33       1.52 f
+  u_fsm/U10/Y (INVX2M)                                    0.80       2.32 r
+  u_fsm/U11/Y (NAND2X2M)                                  0.79       3.11 f
+  u_fsm/U9/Y (INVX2M)                                     0.42       3.53 r
+  u_fsm/U3/Y (OAI211X1M)                                  0.59       4.12 f
+  u_fsm/U5/Y (BUFX10M)                                    0.60       4.72 f
+  u_fsm/Busy (uart_fsm)                                   0.00       4.72 f
+  u_serializer/Busy (uart_serializer)                     0.00       4.72 f
+  u_serializer/U5/Y (NAND2BX1M)                           0.90       5.62 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07       6.69 r
+  u_serializer/U10/Y (INVX6M)                             0.65       7.34 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54       7.88 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87       8.75 r
+  u_serializer/U22/Y (OAI2BB1X2M)                         0.40       9.15 r
+  u_serializer/shift_reg_reg[0]/D (DFFRX1M)               0.00       9.15 r
+  data arrival time                                                  9.15
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[0]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.03
+  data required time                                              8680.03
+  --------------------------------------------------------------------------
+  data required time                                              8680.03
+  data arrival time                                                 -9.15
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8670.88
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[6]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  1.19       1.19 r
+  u_fsm/U6/Y (NOR3X4M)                                    0.33       1.52 f
+  u_fsm/U10/Y (INVX2M)                                    0.80       2.32 r
+  u_fsm/U11/Y (NAND2X2M)                                  0.79       3.11 f
+  u_fsm/U9/Y (INVX2M)                                     0.42       3.53 r
+  u_fsm/U3/Y (OAI211X1M)                                  0.59       4.12 f
+  u_fsm/U5/Y (BUFX10M)                                    0.60       4.72 f
+  u_fsm/Busy (uart_fsm)                                   0.00       4.72 f
+  u_serializer/Busy (uart_serializer)                     0.00       4.72 f
+  u_serializer/U5/Y (NAND2BX1M)                           0.90       5.62 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07       6.69 r
+  u_serializer/U10/Y (INVX6M)                             0.65       7.34 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54       7.88 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87       8.75 r
+  u_serializer/U16/Y (OAI2BB1X2M)                         0.38       9.13 r
+  u_serializer/shift_reg_reg[6]/D (DFFRX1M)               0.00       9.13 r
+  data arrival time                                                  9.13
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[6]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.03
+  data required time                                              8680.03
+  --------------------------------------------------------------------------
+  data required time                                              8680.03
+  data arrival time                                                 -9.13
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8670.90
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[5]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  1.19       1.19 r
+  u_fsm/U6/Y (NOR3X4M)                                    0.33       1.52 f
+  u_fsm/U10/Y (INVX2M)                                    0.80       2.32 r
+  u_fsm/U11/Y (NAND2X2M)                                  0.79       3.11 f
+  u_fsm/U9/Y (INVX2M)                                     0.42       3.53 r
+  u_fsm/U3/Y (OAI211X1M)                                  0.59       4.12 f
+  u_fsm/U5/Y (BUFX10M)                                    0.60       4.72 f
+  u_fsm/Busy (uart_fsm)                                   0.00       4.72 f
+  u_serializer/Busy (uart_serializer)                     0.00       4.72 f
+  u_serializer/U5/Y (NAND2BX1M)                           0.90       5.62 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07       6.69 r
+  u_serializer/U10/Y (INVX6M)                             0.65       7.34 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54       7.88 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87       8.75 r
+  u_serializer/U28/Y (OAI2BB1X2M)                         0.38       9.13 r
+  u_serializer/shift_reg_reg[5]/D (DFFRX1M)               0.00       9.13 r
+  data arrival time                                                  9.13
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[5]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.03
+  data required time                                              8680.03
+  --------------------------------------------------------------------------
+  data required time                                              8680.03
+  data arrival time                                                 -9.13
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8670.90
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[4]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  1.19       1.19 r
+  u_fsm/U6/Y (NOR3X4M)                                    0.33       1.52 f
+  u_fsm/U10/Y (INVX2M)                                    0.80       2.32 r
+  u_fsm/U11/Y (NAND2X2M)                                  0.79       3.11 f
+  u_fsm/U9/Y (INVX2M)                                     0.42       3.53 r
+  u_fsm/U3/Y (OAI211X1M)                                  0.59       4.12 f
+  u_fsm/U5/Y (BUFX10M)                                    0.60       4.72 f
+  u_fsm/Busy (uart_fsm)                                   0.00       4.72 f
+  u_serializer/Busy (uart_serializer)                     0.00       4.72 f
+  u_serializer/U5/Y (NAND2BX1M)                           0.90       5.62 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07       6.69 r
+  u_serializer/U10/Y (INVX6M)                             0.65       7.34 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54       7.88 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87       8.75 r
+  u_serializer/U24/Y (OAI2BB1X2M)                         0.38       9.13 r
+  u_serializer/shift_reg_reg[4]/D (DFFRX1M)               0.00       9.13 r
+  data arrival time                                                  9.13
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[4]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.03
+  data required time                                              8680.03
+  --------------------------------------------------------------------------
+  data required time                                              8680.03
+  data arrival time                                                 -9.13
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8670.90
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[3]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  1.19       1.19 r
+  u_fsm/U6/Y (NOR3X4M)                                    0.33       1.52 f
+  u_fsm/U10/Y (INVX2M)                                    0.80       2.32 r
+  u_fsm/U11/Y (NAND2X2M)                                  0.79       3.11 f
+  u_fsm/U9/Y (INVX2M)                                     0.42       3.53 r
+  u_fsm/U3/Y (OAI211X1M)                                  0.59       4.12 f
+  u_fsm/U5/Y (BUFX10M)                                    0.60       4.72 f
+  u_fsm/Busy (uart_fsm)                                   0.00       4.72 f
+  u_serializer/Busy (uart_serializer)                     0.00       4.72 f
+  u_serializer/U5/Y (NAND2BX1M)                           0.90       5.62 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07       6.69 r
+  u_serializer/U10/Y (INVX6M)                             0.65       7.34 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54       7.88 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87       8.75 r
+  u_serializer/U20/Y (OAI2BB1X2M)                         0.38       9.13 r
+  u_serializer/shift_reg_reg[3]/D (DFFRX1M)               0.00       9.13 r
+  data arrival time                                                  9.13
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[3]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.03
+  data required time                                              8680.03
+  --------------------------------------------------------------------------
+  data required time                                              8680.03
+  data arrival time                                                 -9.13
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8670.90
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[2]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  1.19       1.19 r
+  u_fsm/U6/Y (NOR3X4M)                                    0.33       1.52 f
+  u_fsm/U10/Y (INVX2M)                                    0.80       2.32 r
+  u_fsm/U11/Y (NAND2X2M)                                  0.79       3.11 f
+  u_fsm/U9/Y (INVX2M)                                     0.42       3.53 r
+  u_fsm/U3/Y (OAI211X1M)                                  0.59       4.12 f
+  u_fsm/U5/Y (BUFX10M)                                    0.60       4.72 f
+  u_fsm/Busy (uart_fsm)                                   0.00       4.72 f
+  u_serializer/Busy (uart_serializer)                     0.00       4.72 f
+  u_serializer/U5/Y (NAND2BX1M)                           0.90       5.62 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07       6.69 r
+  u_serializer/U10/Y (INVX6M)                             0.65       7.34 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54       7.88 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87       8.75 r
+  u_serializer/U18/Y (OAI2BB1X2M)                         0.38       9.13 r
+  u_serializer/shift_reg_reg[2]/D (DFFRX1M)               0.00       9.13 r
+  data arrival time                                                  9.13
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[2]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.03
+  data required time                                              8680.03
+  --------------------------------------------------------------------------
+  data required time                                              8680.03
+  data arrival time                                                 -9.13
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8670.90
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_serializer/shift_reg_reg[1]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  1.19       1.19 r
+  u_fsm/U6/Y (NOR3X4M)                                    0.33       1.52 f
+  u_fsm/U10/Y (INVX2M)                                    0.80       2.32 r
+  u_fsm/U11/Y (NAND2X2M)                                  0.79       3.11 f
+  u_fsm/U9/Y (INVX2M)                                     0.42       3.53 r
+  u_fsm/U3/Y (OAI211X1M)                                  0.59       4.12 f
+  u_fsm/U5/Y (BUFX10M)                                    0.60       4.72 f
+  u_fsm/Busy (uart_fsm)                                   0.00       4.72 f
+  u_serializer/Busy (uart_serializer)                     0.00       4.72 f
+  u_serializer/U5/Y (NAND2BX1M)                           0.90       5.62 f
+  u_serializer/U7/Y (NAND2X2M)                            1.07       6.69 r
+  u_serializer/U10/Y (INVX6M)                             0.65       7.34 f
+  u_serializer/U9/Y (NOR2X2M)                             0.54       7.88 r
+  u_serializer/U8/Y (CLKBUFX6M)                           0.87       8.75 r
+  u_serializer/U26/Y (OAI2BB1X2M)                         0.38       9.13 r
+  u_serializer/shift_reg_reg[1]/D (DFFRX1M)               0.00       9.13 r
+  data arrival time                                                  9.13
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_serializer/shift_reg_reg[1]/CK (DFFRX1M)              0.00    8680.31 r
+  library setup time                                     -0.28    8680.03
+  data required time                                              8680.03
+  --------------------------------------------------------------------------
+  data required time                                              8680.03
+  data arrival time                                                 -9.13
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8670.90
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_parity_calc/parity_reg_reg
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  1.19       1.19 r
+  u_fsm/U6/Y (NOR3X4M)                                    0.33       1.52 f
+  u_fsm/U10/Y (INVX2M)                                    0.80       2.32 r
+  u_fsm/U11/Y (NAND2X2M)                                  0.79       3.11 f
+  u_fsm/U9/Y (INVX2M)                                     0.42       3.53 r
+  u_fsm/U3/Y (OAI211X1M)                                  0.59       4.12 f
+  u_fsm/U5/Y (BUFX10M)                                    0.60       4.72 f
+  u_fsm/Busy (uart_fsm)                                   0.00       4.72 f
+  u_parity_calc/Busy (uart_parity_calc)                   0.00       4.72 f
+  u_parity_calc/U4/Y (NAND3BX1M)                          1.08       5.81 f
+  u_parity_calc/U3/Y (OAI2BB2X1M)                         0.89       6.70 r
+  u_parity_calc/parity_reg_reg/D (DFFRX1M)                0.00       6.70 r
+  data arrival time                                                  6.70
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_parity_calc/parity_reg_reg/CK (DFFRX1M)               0.00    8680.31 r
+  library setup time                                     -0.35    8679.96
+  data required time                                              8679.96
+  --------------------------------------------------------------------------
+  data required time                                              8679.96
+  data arrival time                                                 -6.70
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8673.26
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_mux/TX_OUT_reg
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  1.19       1.19 r
+  u_fsm/U6/Y (NOR3X4M)                                    0.33       1.52 f
+  u_fsm/U10/Y (INVX2M)                                    0.80       2.32 r
+  u_fsm/U11/Y (NAND2X2M)                                  0.79       3.11 f
+  u_fsm/mux_sel[1] (uart_fsm)                             0.00       3.11 f
+  u_mux/mux_sel[1] (uart_mux)                             0.00       3.11 f
+  u_mux/U5/Y (NOR2BX2M)                                   0.42       3.53 f
+  u_mux/U3/Y (OAI21X2M)                                   0.52       4.06 r
+  u_mux/TX_OUT_reg/D (DFFSHQX8M)                          0.00       4.06 r
+  data arrival time                                                  4.06
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_mux/TX_OUT_reg/CK (DFFSHQX8M)                         0.00    8680.31 r
+  library setup time                                     -0.28    8680.02
+  data required time                                              8680.02
+  --------------------------------------------------------------------------
+  data required time                                              8680.02
+  data arrival time                                                 -4.06
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8675.97
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_fsm/current_state_reg[0]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  0.92       0.92 f
+  u_fsm/U6/Y (NOR3X4M)                                    0.81       1.72 r
+  u_fsm/U10/Y (INVX2M)                                    0.69       2.41 f
+  u_fsm/U13/Y (OAI31X2M)                                  0.84       3.25 r
+  u_fsm/current_state_reg[0]/D (DFFRX2M)                  0.00       3.25 r
+  data arrival time                                                  3.25
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00    8680.31 r
+  library setup time                                     -0.35    8679.95
+  data required time                                              8679.95
+  --------------------------------------------------------------------------
+  data required time                                              8679.95
+  data arrival time                                                 -3.25
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8676.70
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_fsm/current_state_reg[2]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  0.92       0.92 f
+  u_fsm/U6/Y (NOR3X4M)                                    0.81       1.72 r
+  u_fsm/U10/Y (INVX2M)                                    0.69       2.41 f
+  u_fsm/U16/Y (OAI31X2M)                                  0.84       3.24 r
+  u_fsm/current_state_reg[2]/D (DFFRX2M)                  0.00       3.24 r
+  data arrival time                                                  3.24
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_fsm/current_state_reg[2]/CK (DFFRX2M)                 0.00    8680.31 r
+  library setup time                                     -0.35    8679.95
+  data required time                                              8679.95
+  --------------------------------------------------------------------------
+  data required time                                              8679.95
+  data arrival time                                                 -3.24
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8676.71
+
+
+  Startpoint: u_fsm/current_state_reg[0]
+              (rising edge-triggered flip-flop clocked by TX_CLK)
+  Endpoint: u_fsm/current_state_reg[1]
+            (rising edge-triggered flip-flop clocked by TX_CLK)
+  Path Group: TX_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  UART_TX            tsmc13_wl30           scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock TX_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  u_fsm/current_state_reg[0]/CK (DFFRX2M)                 0.00       0.00 r
+  u_fsm/current_state_reg[0]/Q (DFFRX2M)                  0.92       0.92 f
+  u_fsm/U6/Y (NOR3X4M)                                    0.81       1.72 r
+  u_fsm/U10/Y (INVX2M)                                    0.69       2.41 f
+  u_fsm/U17/Y (OAI21X2M)                                  0.59       3.00 r
+  u_fsm/current_state_reg[1]/D (DFFRX1M)                  0.00       3.00 r
+  data arrival time                                                  3.00
+
+  clock TX_CLK (rise edge)                             8680.56    8680.56
+  clock network delay (ideal)                             0.00    8680.56
+  clock uncertainty                                      -0.25    8680.31
+  u_fsm/current_state_reg[1]/CK (DFFRX1M)                 0.00    8680.31 r
+  library setup time                                     -0.31    8679.99
+  data required time                                              8679.99
+  --------------------------------------------------------------------------
+  data required time                                              8679.99
+  data arrival time                                                 -3.00
+  --------------------------------------------------------------------------
+  slack (MET)                                                     8677.00
+
+
+1

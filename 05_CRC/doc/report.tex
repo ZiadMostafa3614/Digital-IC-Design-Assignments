@@ -1,0 +1,78 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{booktabs}
+\usepackage{caption}
+
+\title{Assignment 5: 8-Bit LFSR}
+\author{Ziad Mostafa Abdelaziz}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+The Linear Feedback Shift Register (LFSR) is a critical block used for cyclic redundancy checks (CRC) and pseudo-random pattern generation. The designed block operates serially, taking one bit at a time and computing the CRC using a predefined feedback polynomial.
+
+The module operates using a finite state machine that sequences through data input and CRC serialization phases.
+
+\section{Specifications}
+\begin{itemize}
+    \item \textbf{Clock and Reset}: The block is driven by a 10~MHz clock and uses an active-low asynchronous reset (\texttt{rst\_n}).
+    \item \textbf{Seed}: The shift register initializes to a seed value of \texttt{8'hD8} whenever reset is active.
+    \item \textbf{Data Shifting}: Data is shifted serially into the \texttt{DATA} input port, LSB first. The shift is active only when the \texttt{ACTIVE} signal is high.
+    \item \textbf{CRC Computation}: Feedback is generated using the logical expression \texttt{Feedback = LFSR[0] $\oplus$ DATA}. 
+    \item \textbf{Valid Flag}: Once \texttt{ACTIVE} drops to low, the internal computed CRC is shifted out over 8 clock cycles, while the \texttt{Valid} output signal is driven high to denote valid data.
+\end{itemize}
+
+\section{Simulation Waveforms $\&$ Analysis}
+The simulation verifies the operation of the LFSR over 10 random test cases utilizing a 10~MHz clock with a 50~ns low and 50~ns high duty cycle. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{{"wave form screen shot.png"}}
+    \caption{Full Simulation Waveforms of the 8-Bit LFSR}
+\end{figure}
+
+\subsection{Waveform Analysis $\&$ Commentary}
+The simulation waveforms in Figure~1 demonstrate the functional correctness of the design across all 10 test cases. A detailed breakdown of the observations from the waveform is provided below:
+
+\begin{itemize}
+    \item \textbf{Initial Reset (Time 0 to 100~ns)}:
+    At the start of the simulation, \texttt{rst\_n} is held low. The internal shift register \texttt{lfsr\_reg} is successfully initialized to the seed value \texttt{8'hD8}. The outputs \texttt{CRC} and \texttt{Valid} are registered to \texttt{1'b0}.
+
+    \item \textbf{Test Case 1 Verification (Time 100~ns to 1900~ns)}:
+    \begin{itemize}
+        \item \textbf{Input Phase}: \texttt{ACTIVE} rises high, and the input byte \texttt{0x39} (\texttt{00111001} in binary) is shifted in LSB-first (\texttt{1}, \texttt{0}, \texttt{0}, \texttt{1}, \texttt{1}, \texttt{1}, \texttt{0}, \texttt{0}) over 8 clock cycles of the 10~MHz clock.
+        \item \textbf{Output Phase}: Once \texttt{ACTIVE} falls low, the \texttt{Valid} flag immediately asserts high. Over the next 8 clock cycles, the computed CRC of \texttt{0x3C} (\texttt{00111100}) is shifted out LSB-first on the serial \texttt{CRC} line. As seen in the waveform, the \texttt{CRC} output is low for 2 cycles, high for 4 cycles, and low for 2 cycles, matching \texttt{0x3C} exactly.
+        \item \textbf{Success}: The testbench captures this serial stream, reconstructs the byte \texttt{0x3C}, compares it with \texttt{Expec\_Out\_h.txt}, and increments \texttt{pass\_count} to \texttt{1}.
+    \end{itemize}
+
+    \item \textbf{Analysis at Cursor Position (Time 2.29~$\mu$s)}:
+    The vertical yellow cursor is positioned at exactly \texttt{2,289,980~ps} ($2.29~\mu$s):
+    \begin{itemize}
+        \item The testbench loop index is \texttt{i = 1}, denoting the second test case (Test Case 2).
+        \item The test input byte is \texttt{test\_data[1] = 0x0C} (\texttt{00001100}).
+        \item The current bit counter is \texttt{j = 2}, which means the third bit (index 2) of \texttt{0x0C} is being shifted in. Since the byte is shifted LSB-first, the bits are \texttt{0} (bit 0), \texttt{0} (bit 1), and \texttt{1} (bit 2). Correspondingly, the \texttt{DATA} input line is high (\texttt{1'b1}) at the cursor.
+        \item \texttt{Valid} is low and \texttt{ACTIVE} is high, indicating the module is in the \texttt{SHIFT\_DATA} state.
+        \item The \texttt{pass\_count} is \texttt{1}, reflecting the successful passage of Test Case 1.
+    \end{itemize}
+
+    \item \textbf{Overall Results}:
+    This sequence repeats for all 10 test cases. At the end of the simulation, all 10 test cases pass, and the final \texttt{pass\_count} registers \texttt{10} with a \texttt{fail\_count} of \texttt{0}.
+\end{itemize}
+
+\section{Simulation Output Logs}
+The simulation log validates each function's expected value (parsed from \texttt{Expec\_Out\_h.txt}) versus its actual captured CRC, resulting in 10 PASSED test cases and 0 FAILED out of 10.
+\vspace{0.5cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{{"log output screen shot.png"}}
+    \caption{Simulation Log Output Screen Shot}
+\end{figure}
+
+\end{document}

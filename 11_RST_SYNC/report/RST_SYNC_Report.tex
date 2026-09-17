@@ -1,0 +1,288 @@
+\documentclass[12pt,a4paper]{article}
+
+% ---- Packages ----
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{float}
+\usepackage{caption}
+
+% ---- Colors ----
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+
+% ---- Code Listings Style ----
+\lstdefinestyle{verilogstyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{darkblue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\scriptsize,
+    breaklines=true,
+    numbers=left,
+    numbersep=5pt,
+    frame=single,
+    tabsize=4,
+    captionpos=b,
+    morekeywords={module, endmodule, input, output, wire, reg, always, posedge, negedge, assign, begin, end, if, else, parameter, localparam, integer, for}
+}
+\lstset{style=verilogstyle}
+
+% ---- Header / Footer ----
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Assignment 11 -- Reset Synchronizer}
+\lhead{Digital IC Design}
+\rfoot{Page \thepage}
+
+% ---- Title Format ----
+\titleformat{\section}{\Large\bfseries\color{darkblue}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{darkblue!80}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{darkblue!60}}{\thesubsubsection}{1em}{}
+
+% ---- Hyperref ----
+\hypersetup{
+    colorlinks=true,
+    linkcolor=darkblue,
+    urlcolor=blue,
+    citecolor=darkblue
+}
+
+\begin{document}
+
+% ===========================================================================
+% TITLE PAGE
+% ===========================================================================
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\Huge\bfseries Reset Synchronizer\\(RST\_SYNC)\par}
+\vspace{1cm}
+{\Large Assignment 11 -- Digital IC Design Course\par}
+\vspace{2cm}
+{\large\textbf{Submitted by:} Ziad Mostafa Abdelaziz\par}
+\vspace{0.5cm}
+{\large\today\par}
+\vfill
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% ===========================================================================
+% 1. INTRODUCTION
+% ===========================================================================
+\section{Introduction}
+
+In synchronous digital IC design, un-synchronized active-low asynchronous resets present severe timing hazards during reset release (de-assertion). If an asynchronous reset transitions from active ($0$) to inactive ($1$) near a clock edge, it can violate the \textbf{recovery time} ($t_{\text{recovery}}$) or \textbf{removal time} ($t_{\text{removal}}$) requirements of destination flip-flops, causing metastability and uncoordinated state transitions.
+
+The \textbf{Reset Synchronizer (\texttt{RST\_SYNC})} solves this timing hazard by providing:
+\begin{enumerate}
+    \item \textbf{Immediate Asynchronous Reset Assertion:} Resets all destination flip-flops immediately when \texttt{RST} drops to $0$ without waiting for a clock edge.
+    \item \textbf{Synchronous Reset De-assertion:} Releases the reset (\texttt{SYNC\_RST} $\to 1$) strictly on a rising edge of \texttt{CLK} after \texttt{NUM\_STAGES} clock cycles, preventing recovery/removal timing violations.
+\end{enumerate}
+
+% ===========================================================================
+% 2. BLOCK INTERFACE
+% ===========================================================================
+\section{Block Interface}
+
+\subsection{Parameters}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}llc@{}}
+\toprule
+\textbf{Parameter Name} & \textbf{Description} & \textbf{Default Value} \\
+\midrule
+\texttt{NUM\_STAGES} & Number of D Flip-Flop Synchronizer Stages & 2 \\
+\bottomrule
+\end{tabular}
+\caption{Design Parameters}
+\end{table}
+
+\subsection{Ports Description}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}llc@{}}
+\toprule
+\textbf{Signal Name} & \textbf{Description} & \textbf{Width} \\
+\midrule
+\texttt{RST}      & Asynchronous active-low reset input & 1 \\
+\texttt{CLK}      & Destination domain clock            & 1 \\
+\texttt{SYNC\_RST} & Synchronized active-low reset output & 1 \\
+\bottomrule
+\end{tabular}
+\caption{Port Descriptions}
+\end{table}
+
+% ===========================================================================
+% 3. ARCHITECTURE AND CIRCUIT OPERATION
+% ===========================================================================
+\section{Architecture and Circuit Operation}
+
+The \texttt{RST\_SYNC} module consists of a parameterized chain of \texttt{NUM\_STAGES} D flip-flops with active-low asynchronous reset inputs connected to the external \texttt{RST} line:
+
+\begin{figure}[H]
+\centering
+\begin{verbatim}
+       1 (VCC / Logic 1'b1)
+       |
+       v
+     [D Q]_1 ---> [D Q]_2 ---> ... ---> [D Q]_NUM_STAGES ---> SYNC_RST
+       ^            ^                     ^
+      CLK          CLK                   CLK
+       |            |                     |
+     (Async)      (Async)               (Async)
+       |            |                     |
+       +------------+---------------------+ <--- RST (Active-Low)
+\end{verbatim}
+\caption{Reset Synchronizer Shift Register Architecture}
+\end{figure}
+
+\subsection{Circuit Dynamics}
+\begin{itemize}
+    \item \textbf{Assertion Phase ($\texttt{RST} = 0$):} All flip-flops in the chain are asynchronously reset to $0$. \texttt{SYNC\_RST} drops to $0$ immediately ($< 1\text{ ns}$ delay).
+    \item \textbf{De-assertion Phase ($\texttt{RST} = 1$):} The asynchronous reset is released. Constant high logic ($1\text{'b1}$) shifts through the chain on each \texttt{posedge CLK}. After \texttt{NUM\_STAGES} clock edges, \texttt{SYNC\_RST} transitions to $1$ synchronously with \texttt{CLK}.
+\end{itemize}
+
+% ===========================================================================
+% 4. RTL VERILOG CODE
+% ===========================================================================
+\section{RTL Verilog Module}
+
+\lstinputlisting[language=Verilog, caption={RST\_SYNC.v -- Synthesizable Reset Synchronizer RTL}]{../rtl/RST_SYNC.v}
+
+% ===========================================================================
+% 5. TESTBENCH AND SIMULATION RESULTS
+% ===========================================================================
+\section{Testbench and Simulation Results}
+
+\subsection{Testbench Implementation}
+The self-checking testbench (\texttt{RST\_SYNC\_tb.v}) executes 4 comprehensive test cases simulating $100\text{ MHz}$ destination clock frequency ($T = 10\text{ ns}$).
+
+\lstinputlisting[language=Verilog, caption={RST\_SYNC\_tb.v -- Self-Checking Testbench}]{../tb/RST_SYNC_tb.v}
+
+\subsection{ModelSim Console Transcript}
+
+All 4 test cases passed successfully with 0 errors:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{log output.png}
+    \caption{ModelSim Transcript Log -- All 4 Test Cases PASSED (0 Errors)}
+\end{figure}
+
+\subsection{Output Waveform}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{output waveform.png}
+    \caption{ModelSim Output Waveform -- RST\_SYNC Simulation}
+\end{figure}
+
+\subsection{Detailed Waveform and Signal Transition Analysis}
+
+The output waveform captures the dynamic behavior of both 2-stage and 4-stage reset synchronizers:
+
+\subsubsection{Clock and Asynchronous Reset Input}
+\begin{itemize}
+    \item \textbf{\texttt{CLK} (Cyan):} Destination domain clock operating at $f = 100$ MHz ($T = 10$ ns).
+    \item \textbf{\texttt{RST} (Orange, Async Input):} Asynchronous active-low reset input.
+    \begin{itemize}
+        \item At initial time $t = 0$, \texttt{RST} $= 0$ (active reset).
+        \item At $t \approx 25$ ns, \texttt{RST} is de-asserted to $1$ asynchronously mid-cycle.
+        \item At $t \approx 75$ ns, \texttt{RST} is re-asserted to $0$ asynchronously mid-cycle.
+        \item At $t \approx 105$ ns, \texttt{RST} is de-asserted to $1$ again mid-cycle.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{2-Stage Synchronizer Operation (\texttt{NUM\_STAGES} = 2)}
+\begin{itemize}
+    \item \textbf{\texttt{sync\_reg} (Magenta, Binary):}
+    \begin{enumerate}
+        \item During active reset ($\texttt{RST} = 0$), \texttt{sync\_reg} $= \texttt{2'b00}$.
+        \item When \texttt{RST} de-asserts to $1$ mid-cycle, \texttt{sync\_reg} stays \texttt{2'b00} until the first clock edge.
+        \item On 1st \texttt{posedge CLK}: Stage 1 captures $1$, so \texttt{sync\_reg} $\to \texttt{2'b01}$. Output \texttt{SYNC\_RST} stays $0$.
+        \item On 2nd \texttt{posedge CLK}: Stage 2 captures $1$, so \texttt{sync\_reg} $\to \texttt{2'b11}$. Output \texttt{SYNC\_RST} de-asserts to $1$ \textbf{strictly on the clock edge}.
+    \end{enumerate}
+    \item \textbf{\texttt{SYNC\_RST\_2stage} (Lime):} Remains $0$ during the 2-cycle synchronization latency, then rises to $1$ synchronously on the 2nd rising clock edge. When \texttt{RST} drops to $0$ asynchronously, \texttt{SYNC\_RST\_2stage} drops to $0$ \textbf{immediately} ($< 1\text{ ns}$).
+\end{itemize}
+
+\subsubsection{4-Stage Synchronizer Operation (\texttt{NUM\_STAGES} = 4)}
+\begin{itemize}
+    \item \textbf{\texttt{sync\_reg} (Purple, Binary):} Shifts $1\text{'b1}$ sequentially through 4 flip-flops:
+    \[
+        \texttt{4'b0000} \;\to\; \texttt{4'b0001} \;\to\; \texttt{4'b0011} \;\to\; \texttt{4'b0111} \;\to\; \texttt{4'b1111}
+    \]
+    \item \textbf{\texttt{SYNC\_RST\_4stage} (Green):} De-asserts to $1$ on the 4th rising clock edge ($40\text{ ns}$ latency), confirming that \texttt{NUM\_STAGES} parameterization correctly scales the de-assertion latency.
+\end{itemize}
+
+% ===========================================================================
+% 6. SPYGLASS LINT RESULTS
+% ===========================================================================
+\section{SpyGlass Lint Results}
+
+The design was analyzed using Synopsys SpyGlass (version vL-2016.06) under the \texttt{rtl\_handoff} methodology.
+
+\subsection{Design Read Step Output}
+
+SpyGlass successfully read and elaborated \texttt{RST\_SYNC.v}. The message tree shows \textbf{Total: 2 messages, Displayed: 2, Waived: 0} -- both are informational messages.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Design Read Step output.png}
+    \caption{SpyGlass Design Read Step Output -- 2 Info Messages, 0 Errors}
+\end{figure}
+
+\subsection{Lint RTL Goal Run Output}
+
+The Lint RTL goal run completed with a \textbf{clean lint result} (0 Errors, 0 Warnings, 0 Latches).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{goal run output (lint clean).png}
+    \caption{SpyGlass Lint RTL Goal Run Output -- Clean Lint (0 Errors, 0 Warnings)}
+\end{figure}
+
+\subsection{SpyGlass Lint Summary Report (moresimple.rpt)}
+
+\begin{lstlisting}[language={}, caption={SpyGlass moresimple.rpt -- Lint Summary Report}]
+Total Number of Generated Messages :          2
+Number of Waived Messages          :          0
+Number of Reported Messages        :          2
+Number of Overlimit Messages       :          0
+
+MORESIMPLE REPORT:
+
+############### BuiltIn -> RuleGroup=Design Read ###############
+[1] DetectTopDesignUnits  Info  ../rtl/RST_SYNC.v  Line 11
+    Module RST_SYNC is a top level design unit
+[0] ElabSummary           Info
+    Please refer file elab_summary.rpt for elab summary report
+\end{lstlisting}
+
+% ===========================================================================
+% 7. CONCLUSION
+% ===========================================================================
+\section{Conclusion}
+
+The Reset Synchronizer (\texttt{RST\_SYNC}) module was successfully designed, modeled, and verified.
+\begin{itemize}
+    \item Immediate asynchronous reset assertion guarantees rapid system protection ($< 1\text{ ns}$).
+    \item Synchronous reset de-assertion eliminates recovery and removal timing violations across the destination clock domain.
+    \item Parameterized flip-flop stage depth (\texttt{NUM\_STAGES}) allows configurable synchronization latency.
+    \item All 4 test cases passed with 0 errors in ModelSim simulation.
+    \item Clean SpyGlass lint report: 0 errors, 0 warnings, 0 latches.
+\end{itemize}
+
+\end{document}

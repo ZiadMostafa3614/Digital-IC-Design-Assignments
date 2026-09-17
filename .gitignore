@@ -1,0 +1,38 @@
+# ModelSim / QuestaSim outputs
+work/
+transcript
+*.wlf
+*.vstf
+*.vcd
+*.ucdb
+*.mpf
+*.mti
+
+# Synopsys Design Compiler / Formality / EDA Tool outputs
+*.log
+*.syn
+*.svf
+*.mr
+*.pvt
+*.sdc.bak
+alib-*/
+command.log
+filenames.log
+FM_WORK*/
+*_WORK/
+*.dep
+*.pbd/
+formality_svf/
+
+# Cadence / Synopsys Simulation & Synthesis temporary files
+csrc/
+simv*
+ucli.key
+DVEfiles/
+vcs.key
+
+# OS & Editor junk
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

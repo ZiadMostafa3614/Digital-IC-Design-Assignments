@@ -1,0 +1,184 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{
+    margin=1in
+}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{parskip}
+
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Comprehensive Debugging Report - System ASIC Flow},
+}
+
+\title{\textbf{Comprehensive System Verification \& Debugging Report} \\
+\large Advanced Corner-Case Testing \& Bug Resolution}
+\author{Ziad Mostafa Abdelaziz}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introduction}
+This document serves as a comprehensive log of the trials, errors, debugging processes, and final resolutions encountered during the advanced verification of the Top-Level System (SYS\_TOP). Our primary goal was to subject the system to an advanced corner-case testbench designed to stress Clock Domain Crossing (CDC), handle asynchronous resets, test parity framing, and verify synchronization between clock domains.
+
+During the execution of this robust test suite, a series of complex failures emerged. Some failures were traced back to the testbench's interaction with the simulator's scheduling mechanisms, while others revealed critical, deeply hidden flaws within the System's RTL design.
+
+This report details the thought processes used to track down each issue, the root-cause analysis (RCA), and the precise corrective measures applied.
+
+\section{Testbench Evolution: Jitter \& Time Generation}
+
+\subsection{The Challenge: Realistic CDC Stressing}
+To truly verify a system bridging two disparate clock domains (\texttt{REF\_CLK} at 50 MHz and \texttt{UART\_CLK} at 3.6864 MHz), the testbench needed to emulate realistic clock jitter and phase drift. The initial attempt utilized randomized \texttt{\#delay} constructs and \texttt{real} data types.
+
+\subsection{Error 1: ModelSim Scheduling with Real Variables}
+\textbf{The Symptom:}
+The testbench implemented a \texttt{current\_bit\_period} variable of type \texttt{real} to calculate the baud rate on the fly based on injected jitter. However, when the UART framing task (\texttt{send\_uart\_frame}) fired, the bit periods calculated were completely zeroed out ($0.0$), causing simultaneous transitions on the \texttt{RX\_IN} line.
+
+\textbf{The Investigation:}
+We traced the value of \texttt{current\_bit\_period} via simulation logs. We noticed that although the variable was assigned within a combinatorial block (\texttt{always @(*)}), it was failing to trigger a re-evaluation when its dependencies changed. In Verilog, continuous assignments or combinatorial blocks involving \texttt{real} types are notoriously problematic in legacy simulators like ModelSim ASE, which often fail to schedule evaluation events properly for reals.
+
+\textbf{The Fix:}
+Instead of relying on an \texttt{always @(*)} block, we converted the timing logic into procedural assignments. More importantly, we introduced a highly deterministic custom task: \texttt{send\_uart\_frame\_custom}. This task explicitly consumed delays based on the exact \texttt{current\_bit\_period} parameter passed dynamically. This guaranteed that the \texttt{RX\_IN} stimulus correctly reflected the sub-nanosecond jitter injected.
+
+\section{Testbench Synchronization: The Stale Data Catch}
+
+\subsection{Error 2: Hanging Waits and Simulation Pollution}
+\textbf{The Symptom:}
+As the testbench progressed to Test 5 and beyond, it repeatedly suffered from catastrophic timeouts (e.g., reaching the \texttt{43402720000} ps global timeout). Furthermore, the ModelSim transcript was hopelessly flooded with \texttt{\$display} statements printing every clock cycle.
+
+\textbf{The Investigation:}
+First, we had to address the transcript pollution. The original author embedded unconditional \texttt{\$display} statements in purely combinatorial \texttt{always @(*)} blocks within \texttt{SYS\_CTRL.v} and \texttt{RegFile.v}. Because these blocks executed on every minor input transition, the simulator was bottlenecked by file I/O operations, making trace analysis nearly impossible.
+
+After creating a pristine \texttt{fresh\_stress\_run} directory and stripping out the \texttt{\$display} pollution, the root synchronization bug became evident. The testbench task \texttt{receive\_byte} was blindly executing \texttt{wait (!TX\_OUT)}. If the \texttt{ASYNC\_FIFO} hadn't fully drained from a previous back-to-back command (e.g., Test 4), \texttt{TX\_OUT} would transmit a stale byte, which the testbench would erroneously catch, misaligning the entire test sequence. Worse, if a stop-bit framing error occurred (Test 3) and no byte was transmitted, the \texttt{wait} statement hung indefinitely.
+
+\textbf{The Fix:}
+1. \textbf{Sanitized RTL}: Removed combinatorial prints from the RTL, relying solely on waveform dumps and structural \texttt{test\_bench} logging.
+2. \textbf{Timeout Protection}: Upgraded the \texttt{receive\_byte} task with explicit wait loop limits.
+3. \textbf{State Flushing}: Implemented mandatory idle-wait intervals (\texttt{\#(BIT\_PERIOD * 15)}) between tests and synchronized against \texttt{fifo\_empty == 1} to guarantee that each stress test began with a completely clean slate.
+
+\section{RTL Design Bug 1: The UART TX CDC Deadlock}
+
+\subsection{The Symptom}
+Even with a perfectly synchronized testbench, Test 5 completely failed. The testbench reported receiving `100` (which is $0\times64$ in hexadecimal) \textbf{twice}. The \texttt{UART\_TX} module was transmitting the byte $0\times64$ over and over in an infinite loop, starving the system of the second byte ($0\times00$) and trapping the state machine in a deadlock.
+
+\subsection{The Deep Dive}
+We extracted the FSM trace for the \texttt{UART\_TX} block. The protocol flow for reading data from the \texttt{ASYNC\_FIFO} was as follows:
+1. \texttt{UART\_TX} FSM resides in \texttt{IDLE}. 
+2. \texttt{ASYNC\_FIFO} asserts \texttt{Data\_Valid} (i.e., \texttt{\textasciitilde fifo\_empty}).
+3. FSM asserts \texttt{Busy} and transitions to \texttt{START}, \texttt{DATA}, \texttt{PAR}, and \texttt{STOP}.
+4. On the transition to \texttt{STOP}, the system generates a pulse (\texttt{fifo\_r\_inc}) to pop the FIFO.
+
+We inspected \texttt{PULSE\_GEN.v}. It generates the \texttt{fifo\_r\_inc} pulse exclusively on the \textbf{falling edge} of the \texttt{Busy} signal:
+\begin{lstlisting}[language=Verilog]
+always @(posedge CLK) q_reg <= LVL_SIG; // LVL_SIG is Busy
+assign PULSE_SIG = q_reg & ~LVL_SIG;
+\end{lstlisting}
+
+We then inspected the FSM in \texttt{uart\_fsm.v}:
+\begin{lstlisting}[language=Verilog]
+STOP: begin
+    ser_en  = 1'b0;
+    mux_sel = 2'b01; 
+    Busy    = 1'b1; // Busy remains HIGH!
+    if (Data_Valid)
+        next_state = START;
+    else
+        next_state = IDLE;
+end
+\end{lstlisting}
+
+\subsection{The Root Cause}
+This was a classic deadlock! In the \texttt{STOP} state, \texttt{Busy} remained asserted (\texttt{1'b1}). If the FIFO held multiple bytes, \texttt{Data\_Valid} was still true, meaning the FSM immediately looped back to \texttt{START}. Because \texttt{Busy} never went low, \texttt{PULSE\_GEN} never detected a falling edge, and thus \texttt{fifo\_r\_inc} was never asserted. The FIFO was never popped, causing the FSM to infinitely re-transmit the exact same byte ($0\times64$).
+
+\subsection{The Fix}
+We modified \texttt{uart\_fsm.v} to force a single-cycle transition to \texttt{IDLE} unconditionally, allowing \texttt{Busy} to drop:
+\begin{lstlisting}[language=Verilog]
+STOP: begin
+    ser_en  = 1'b0;
+    mux_sel = 2'b01;
+    Busy    = 1'b0; // Drop Busy
+    next_state = IDLE; // Unconditional transition
+end
+\end{lstlisting}
+This single cycle of \texttt{IDLE} flawlessly pulsed \texttt{fifo\_r\_inc}, popped the FIFO, loaded the new byte into the serializer, and broke the infinite loop.
+
+\section{RTL Design Bug 2: SYS\_CTRL ALU Clock Gating Defect}
+
+\subsection{The Symptom}
+With Test 5 passing, we moved to Test 6: an ALU Subtraction of $5 - 16$. The expected result was $-11$ ($0\text{xFFF5}$). Incredibly, the testbench received $0\text{x0064}$ (100 in decimal)---the exact result of Test 5's addition!
+
+\subsection{The Deep Dive}
+We verified via trace logs that \texttt{SYS\_CTRL} received the bytes perfectly. The operands were correctly parsed: \texttt{OP\_A = 5}, \texttt{OP\_B = 16}, \texttt{ALU\_FUN = 1}. The \texttt{SYS\_CTRL} state machine entered \texttt{ALU\_EXEC}, processed it, and transitioned to \texttt{TX\_BYTE1}. 
+
+If the inputs were correct, why was the output stale? We looked closely at \texttt{ALU.v} and its interaction with clock gating:
+\begin{lstlisting}[language=Verilog]
+// In ALU.v
+always @(posedge CLK or negedge RST) begin
+    if (Enable) begin
+        ALU_OUT   <= alu_comb_result;
+        OUT_VALID <= 1'b1;
+    end else begin
+        OUT_VALID <= 1'b0; // Clears validation flag
+    end
+end
+\end{lstlisting}
+
+The clock driving the ALU, \texttt{GATED\_CLK}, was provided by \texttt{SYS\_CTRL.v}:
+\begin{lstlisting}[language=Verilog]
+// In SYS_CTRL.v
+ALU_EXEC: begin
+    CLK_EN  = 1'b1;
+    EN      = 1'b1;
+    ALU_FUN = alu_fun_reg;
+    if (OUT_Valid)
+        next_state = TX_BYTE1;
+end
+\end{lstlisting}
+
+\subsection{The Root Cause}
+This was an insidious clock-gating bug. When \texttt{ALU.v} finished the computation, \texttt{OUT\_VALID} went high. On the immediate next clock cycle, \texttt{SYS\_CTRL} recognized the flag and transitioned to \texttt{TX\_BYTE1}.
+Because the state changed, \texttt{SYS\_CTRL} immediately de-asserted \texttt{CLK\_EN}, dropping it to $0$. 
+This instantly stopped the \texttt{GATED\_CLK}. 
+
+Crucially, because the clock stopped, \texttt{ALU.v} never received a clock edge where \texttt{Enable} was $0$. As a result, its \texttt{OUT\_VALID} register was permanently stuck at $1$! 
+When Test 6 initiated a subtraction, \texttt{SYS\_CTRL} entered \texttt{ALU\_EXEC} and saw that \texttt{OUT\_VALID} was \textbf{already high}. It immediately aborted the wait and captured the old \texttt{ALU\_OUT} ($0\text{x0064}$) before the ALU had the chance to process the new subtraction.
+
+\subsection{The Fix}
+We needed to grant the ALU one extra clock cycle with \texttt{Enable = 0} to clear its registers. We achieved this by asserting \texttt{CLK\_EN} during the \texttt{TX\_BYTE1} state:
+\begin{lstlisting}[language=Verilog]
+TX_BYTE1: begin
+    TX_D_VLD  = 1'b1;
+    CLK_EN    = 1'b1; // Extra tick to clear OUT_VALID
+    // ...
+end
+\end{lstlisting}
+This elegant fix gave the ALU exactly one tick to see \texttt{EN = 0} and successfully clear \texttt{OUT\_VALID}.
+
+\section{Conclusion}
+Following these critical structural fixes, the advanced stress test suite was executed in full. All 7 test cases---ranging from start-bit glitches to severe phase drift, back-to-back command saturation, parity corruption, and asynchronous resets---passed with $100\%$ success. 
+
+The integration of advanced CDC verification techniques systematically exposed hidden RTL flaws. By relying on rigorous simulation logs, edge-tracing, and logic-analyzer methodologies, we hardened the ASIC Flow design against catastrophic field failures.
+
+\end{document}

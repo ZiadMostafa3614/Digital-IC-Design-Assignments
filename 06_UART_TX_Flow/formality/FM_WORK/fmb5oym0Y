@@ -1,0 +1,7 @@
+     1  source -echo -verbose fm_script.tcl
+
+Received Signal 1 from: PID=34176 (UID=1000)
+
+
+Process terminated by hangup.
+

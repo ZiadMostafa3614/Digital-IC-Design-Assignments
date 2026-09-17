@@ -1,0 +1,64 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{caption}
+
+\title{Assignment 4.1: 8x16 Register File}
+\author{Ziad Mostafa Abdelaziz}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+A Register File consists of multiple operational registers configured within an array. This assignment implements an $8 \times 16$ Register File featuring 8 internal registers, each possessing a 16-bit width. 
+
+\section{Block Interface $\&$ Specs}
+The Register File integrates a common address space for both read and write operations. The block module is defined without Verilog parameters utilizing the generic structure specifications given:
+\begin{itemize}
+    \item \textbf{RdData (16-bit)}: Output for Read data bus.
+    \item \textbf{WrData (16-bit)}: Input for Write data bus.
+    \item \textbf{Address (3-bit)}: Shared address bus spanning exactly 8 registers.
+    \item \textbf{WrEn (1-bit)}: Write Enable - allows overwriting the register on the clock edge.
+    \item \textbf{RdEn (1-bit)}: Read Enable - latches register content to RdData.
+    \item \textbf{CLK (1-bit)}: Clock trigger set on the positive edge.
+    \item \textbf{RST (1-bit)}: Asynchronous active-low reset clearing all 8 registers simultaneously. 
+\end{itemize}
+* Only one operation (Read or Write) is evaluated at any given time.
+* The Reset condition was initialized as the primary asynchronous block.
+
+\section{Simulation Waveforms}
+The Register file was validated with synchronous tests writing specific Hex logic (`h5A5A` and `hC3C3`) respectively into Register 3 and Register 6 and properly ensuring no overwriting occurs incorrectly.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{{"register file output waveform.png"}}
+    \caption{Register File Read/Write Operations Over Local Clock Edge}
+\end{figure}
+
+\subsection{Waveform Analysis \& Commentary}
+\begin{itemize}
+    \item \textbf{Reset Phase}: At $t=0$, the \texttt{RST} signal is driven low (active-low assertion). This triggers the asynchronous reset path in the \texttt{always} block, forcing all eight registers (\texttt{Reg\_File[0]} through \texttt{Reg\_File[7]}) and the \texttt{RdData} output to \texttt{16'h0000}. In the waveform, all data buses remain at zero during this interval, confirming that the asynchronous clear operates independently of the clock edge.
+
+    \item \textbf{Write Scenario 1 (Register 3 $\leftarrow$ \texttt{0x5A5A})}: After \texttt{RST} is released high, \texttt{WrEn} is asserted with \texttt{Address = 3'd3} and \texttt{WrData = 16'h5A5A}. On the next rising edge of \texttt{CLK}, the value \texttt{0x5A5A} is latched into \texttt{Reg\_File[3]}. In the waveform, we observe that \texttt{WrData} transitions to \texttt{5A5A} before the clock edge, and \texttt{WrEn} is high, satisfying the setup requirements. The data is stored internally and does not appear on \texttt{RdData} until explicitly read.
+
+    \item \textbf{Write Scenario 2 (Register 6 $\leftarrow$ \texttt{0xC3C3})}: Similarly, \texttt{WrEn} is reasserted with \texttt{Address = 3'd6} and \texttt{WrData = 16'hC3C3}. On the subsequent positive clock edge, the value is latched into \texttt{Reg\_File[6]}. In the waveform, notice that \texttt{RdData} remains unchanged at \texttt{0x0000} during both write operations because \texttt{RdEn} is low --- this confirms that only one operation executes at a time.
+
+    \item \textbf{Read Scenario 1 (Register 3 $\rightarrow$ \texttt{0x5A5A})}: \texttt{RdEn} is asserted with \texttt{Address = 3'd3}. On the rising clock edge, \texttt{RdData} updates to \texttt{0x5A5A}, matching the previously written value. The waveform shows the \texttt{RdData} bus transitioning from \texttt{0x0000} to \texttt{0x5A5A} exactly one clock cycle after the read command is applied.
+
+    \item \textbf{Read Scenario 2 (Register 6 $\rightarrow$ \texttt{0xC3C3})}: \texttt{RdEn} remains high while \texttt{Address} switches to \texttt{3'd6}. On the next clock edge, \texttt{RdData} properly updates to \texttt{0xC3C3}. This confirms that the previous write to Register~6 was correctly stored, and that reading a different register does not corrupt the output of Register~3 --- each register maintains its own independent storage.
+\end{itemize}
+
+\section{Simulation Testbench Logs}
+The resulting logged behaviors detail 4 specifically driven scenarios capturing writes and reads exactly onto designated registers (showing address tracking correctly outputs on `RdData`).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{{"register file log output.png"}}
+    \caption{ModelSim Regfile Logging Output}
+\end{figure}
+
+\end{document}

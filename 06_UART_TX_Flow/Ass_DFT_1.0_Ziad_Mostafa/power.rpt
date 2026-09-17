@@ -1,0 +1,49 @@
+Loading db file '/home/ICer/Labs/UART_TX/std_cells/scmetro_tsmc_cl013g_rvt_ss_1p08v_125c.db'
+Information: Propagating switching activity (low effort zero delay simulation). (PWR-6)
+Warning: Design has unannotated primary inputs. (PWR-414)
+Warning: Design has unannotated sequential cell outputs. (PWR-415)
+ 
+****************************************
+Report : power
+        -hier
+        -analysis_effort low
+Design : UART_TX
+Version: O-2018.06-SP1
+Date   : Wed Sep  2 03:40:27 2026
+****************************************
+
+
+Library(s) Used:
+
+    scmetro_tsmc_cl013g_rvt_ss_1p08v_125c (File: /home/ICer/Labs/UART_TX/std_cells/scmetro_tsmc_cl013g_rvt_ss_1p08v_125c.db)
+
+
+Operating Conditions: scmetro_tsmc_cl013g_rvt_ss_1p08v_125c   Library: scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+Wire Load Model Mode: top
+
+Design        Wire Load Model            Library
+------------------------------------------------
+UART_TX                tsmc13_wl30       scmetro_tsmc_cl013g_rvt_ss_1p08v_125c
+
+
+Global Operating Voltage = 1.08 
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1pW
+
+
+--------------------------------------------------------------------------------
+                                       Switch   Int      Leak     Total
+Hierarchy                              Power    Power    Power    Power    %
+--------------------------------------------------------------------------------
+UART_TX                                1.23e-03 5.51e-04 7.57e+05 2.54e-03 100.0
+  u_mux (uart_mux_test_1)              3.31e-05 2.81e-05 2.84e+04 8.95e-05   3.5
+  u_parity_calc (uart_parity_calc_test_1)
+                                       4.50e-05 4.33e-05 1.10e+05 1.98e-04   7.8
+  u_serializer (uart_serializer_test_1)
+                                       3.42e-04 3.35e-04 3.79e+05 1.06e-03  41.6
+  u_fsm (uart_fsm_test_1)              1.24e-04 9.31e-05 1.41e+05 3.58e-04  14.1
+1
