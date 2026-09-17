@@ -1,0 +1,50 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{verbatim}
+
+\title{16-Bit ALU Assignment Report}
+\author{Mohamed Abdelsalam}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Synthesis Diagram}
+The following figure shows the synthesis diagram of the 16-Bit ALU design provided by Intel/Quartus or the used synthesis tool.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=0.4\textheight,keepaspectratio]{"ALU synthesiss diagram.png"}
+    \caption{16-Bit ALU Synthesis Diagram}
+\end{figure}
+
+\section{Simulation Waveforms}
+The simulation waveforms demonstrate the functional correctness of the ALU operations over the 16 test cases. The waveforms are divided into logic, shift, arithmetic, compare, and carry flag groups.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=0.25\textheight,keepaspectratio]{"carry flag and arthematic flag.png"}
+    \caption{Carry and Arithmetic Flags Simulation Waveforms}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=0.25\textheight,keepaspectratio]{"compare flags.png"}
+    \caption{Compare Flags Simulation Waveforms}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=0.25\textheight,keepaspectratio]{"shift flags and logic flags.png"}
+    \caption{Shift and Logic Flags Simulation Waveforms}
+\end{figure}
+
+\section{Simulation Logs}
+The output log from ModelSim verifies the numerical results of each ALU operation implemented in the testbench. All test cases output the corresponding ALU\_FUN status, Flag results, and the output Data.
+
+\verbatiminput{simulation_log.txt}
+
+\end{document}

@@ -1,0 +1,34 @@
+﻿Reading C:/intelFPGA/18.0/modelsim_ase/tcl/vsim/pref.tcl
+
+# 10.5b
+
+# vsim -c tb_ALU_16B -do "run -all; quit" 
+# Start time: 23:22:28 on Jul 08,2026
+# Loading work.tb_ALU_16B
+# Loading work.ALU_16B
+# run -all
+# ====  16-bit ALU Testbench  ====
+# Clock: 100 KHz  (period = 10 us)
+# ------------------------------------------------
+# TC1 | FUN=0000 | A=100 B=200 | OUT=300 | Cy=0 Ar=1 Lo=0 CM=0 Sh=0
+# TC2 | FUN=0000 | A=65535 B=1 | OUT=0 | Cy=1 Ar=1 Lo=0 CM=0 Sh=0
+# TC3 | FUN=0001 | A=500 B=200 | OUT=300 | Cy=0 Ar=1 Lo=0 CM=0 Sh=0
+# TC4 | FUN=0001 | A=10 B=20 | OUT=65526 | Cy=1 Ar=1 Lo=0 CM=0 Sh=0
+# TC5 | FUN=0010 | A=15 B=4 | OUT=60 | Cy=0 Ar=1 Lo=0 CM=0 Sh=0
+# TC6 | FUN=0011 | A=100 B=4 | OUT=25 | Cy=0 Ar=1 Lo=0 CM=0 Sh=0
+# TC7 | FUN=0100 | A=65280 B=4080 | OUT=3840 | Cy=0 Ar=0 Lo=1 CM=0 Sh=0
+# TC8 | FUN=0110 | A=65280 B=4080 | OUT=61695 | Cy=0 Ar=0 Lo=1 CM=0 Sh=0
+# TC9 | FUN=0101 | A=43605 B=21930 | OUT=65535 | Cy=0 Ar=0 Lo=1 CM=0 Sh=0
+# TC10 | FUN=0111 | A=43605 B=21930 | OUT=0 | Cy=0 Ar=0 Lo=1 CM=0 Sh=0
+# TC11 | FUN=1010 | A=42 B=42 | OUT=1 | Cy=0 Ar=0 Lo=0 CM=1 Sh=0
+# TC12 | FUN=1011 | A=100 B=50 | OUT=2 | Cy=0 Ar=0 Lo=0 CM=1 Sh=0
+# TC13 | FUN=1100 | A=5 B=99 | OUT=3 | Cy=0 Ar=0 Lo=0 CM=1 Sh=0
+# TC14 | FUN=1101 | A=43690 B=0 | OUT=21845 | Cy=0 Ar=0 Lo=0 CM=0 Sh=1
+# TC15 | FUN=1110 | A=21845 B=0 | OUT=43690 | Cy=0 Ar=0 Lo=0 CM=0 Sh=1
+# TC16 | FUN=1111 | A=1234 B=5678 | OUT=0 | Cy=0 Ar=0 Lo=0 CM=0 Sh=0
+# ------------------------------------------------
+# Simulation complete.
+# ** Note: $finish    : tb_ALU_16B.v(109)
+#    Time: 166 us  Iteration: 0  Instance: /tb_ALU_16B
+# End time: 23:22:28 on Jul 08,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
